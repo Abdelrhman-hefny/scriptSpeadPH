@@ -21,59 +21,52 @@ app.bringToFront();
         'TL/PR:': 'CCMarianChurchland'
     };
 
-    var defaultFont = 'CCWildWords'; // fallback الأساسي
-    var fontSize = 35;
+    var defaultFont = 'CCWildWords'; 
+    var fontSize = 33;
 
-    // تحميل النصوص
-    var pages = {}, currentPage = null;
+    // قراءة كل النصوص في مصفوفة واحدة
+    var allLines = [];
     txtFile.open("r");
     while (!txtFile.eof) {
         var line = txtFile.readln() || "";
         line = line.replace(/^\s+|\s+$/g, "");
         if (/^\s*page\s+\d+/i.test(line)) {
-            var num = line.match(/\d+/)[0];
-            if (num.length === 1) num = "0" + num;
-            currentPage = "page_" + num;
-            pages[currentPage] = [];
-        } else if (line !== "" && currentPage) {
-            pages[currentPage].push(line);
+            continue; // تخطي عناوين الصفحات
+        } else if (line !== "") {
+            allLines.push(line);
         }
     }
     txtFile.close();
 
-    var doc = app.activeDocument;
-    var paths = doc.pathItems;
-    if (paths.length === 0) {
-        alert("مفيش Paths في الملف!");
+    if (allLines.length === 0) {
+        alert("ملف النص فاضي أو مفيهوش سطور صالحة!");
         return;
     }
 
     var totalInserted = 0;
     var logEntries = [];
+    var lineIndex = 0; // مؤشر عالمي للسطور
 
-    // دالة تجيب أول خط متاح من الخطوط
     function getAvailableFont(preferred, fallback) {
-        try {
-            if (app.fonts.getByName(preferred)) return preferred;
-        } catch (e) {}
-        try {
-            if (app.fonts.getByName(fallback)) return fallback;
-        } catch (e) {}
-        // آخر اختيار: أي خط متاح
+        try { if (app.fonts.getByName(preferred)) return preferred; } catch (e) {}
+        try { if (app.fonts.getByName(fallback)) return fallback; } catch (e) {}
         return app.fonts.length > 0 ? app.fonts[0].postScriptName : "ArialMT";
     }
 
-    for (var pName in pages) {
-        if (!pages.hasOwnProperty(pName)) continue;
-        var pageTexts = pages[pName];
+    // نلف على كل الملفات المفتوحة بالترتيب
+    for (var d = 0; d < app.documents.length; d++) {
+        var doc = app.documents[d];
+        app.activeDocument = doc;
 
-        var pagePaths = [];
-        for (var j = 0; j < paths.length; j++) {
-            try {
-                if (paths[j].name.toLowerCase().indexOf(pName) === 0) pagePaths.push(paths[j]);
-            } catch (e) {}
+        var paths = doc.pathItems;
+        if (paths.length === 0) {
+            logEntries.push("ملف " + doc.name + " مفيهوش Paths");
+            continue;
         }
 
+        // ترتيب الباثات حسب الترقيم bubble#
+        var pagePaths = [];
+        for (var j = 0; j < paths.length; j++) pagePaths.push(paths[j]);
         pagePaths.sort(function (a, b) {
             function getNum(item) {
                 var m = item.name.match(/bubble(\d+)$/i);
@@ -82,14 +75,14 @@ app.bringToFront();
             return getNum(a) - getNum(b);
         });
 
-        if (pagePaths.length === 0) continue;
+        for (var k = 0; k < pagePaths.length; k++) {
+            if (lineIndex >= allLines.length) break; // خلصنا النصوص
 
-        var count = Math.min(pagePaths.length, pageTexts.length);
-        for (var k = 0; k < count; k++) {
             var status = "OK";
             var usedFont = defaultFont;
             var wantedFont = defaultFont;
-            var lineText = pageTexts[k];
+            var lineText = allLines[lineIndex];
+            lineIndex++;
 
             try {
                 var path = pagePaths[k];
@@ -108,35 +101,50 @@ app.bringToFront();
 
                 usedFont = getAvailableFont(wantedFont, defaultFont);
 
-                // إنشاء طبقة النص
-                var textLayer = doc.artLayers.add();
-                textLayer.kind = LayerKind.TEXT;
-                try { textLayer.textItem.kind = TextType.PARAGRAPHTEXT; } catch (e) {}
-                textLayer.textItem.contents = lineText;
-                textLayer.textItem.size = fontSize;
-                textLayer.textItem.justification = Justification.CENTER;
+// إنشاء طبقة النص
+var textLayer = doc.artLayers.add();
+textLayer.kind = LayerKind.TEXT;
+try { textLayer.textItem.kind = TextType.PARAGRAPHTEXT; } catch (e) {}
+textLayer.textItem.contents = lineText;
+textLayer.textItem.size = fontSize;
+textLayer.textItem.justification = Justification.CENTER;
+try { textLayer.textItem.font = usedFont; } catch (e) { status = "FontError"; }
 
-                try { textLayer.textItem.font = usedFont; } catch (e) {
-                    status = "FontError";
-                }
+try {
+    // نخلي الصندوق قريب من حجم الفقاعة
+    var boxWidth  = w * 0.8;
+    var boxHeight = h * 0.8;
 
-                try {
-                    textLayer.textItem.width = w;
-                    textLayer.textItem.height = h;
-                    textLayer.textItem.position = [x1, y1 + h / 2 - fontSize / 2];
-                } catch (e) {
-                    status = "PositionError";
-                }
+    textLayer.textItem.width  = boxWidth;
+    textLayer.textItem.height = boxHeight;
+    textLayer.textItem.position = [x1, y1]; // مؤقت
 
-                doc.selection.deselect();
-                totalInserted++;
+    // ----------------------------
+    // هنا بيجي شغل الـ Align
+    // ----------------------------
+    var textBounds = textLayer.bounds;
+    var textW = textBounds[2] - textBounds[0];
+    var textH = textBounds[3] - textBounds[1];
+
+    var moveX = (w - textW) / 2 - (textBounds[0] - x1);
+    var moveY = (h - textH) / 2 - (textBounds[1] - y1);
+
+    textLayer.translate(moveX, moveY);
+
+} catch (e) {
+    status = "PositionError";
+}
+
+doc.selection.deselect();
+totalInserted++;
+
+
             } catch (err) {
                 status = "Fail: " + err;
             }
 
-            // سجل تفصيلي
             logEntries.push(
-                "Page=" + pName +
+                "File=" + doc.name +
                 " | Bubble=" + (k + 1) +
                 " | WantedFont=" + wantedFont +
                 " | UsedFont=" + usedFont +
@@ -146,18 +154,16 @@ app.bringToFront();
         }
     }
 
-    // كتابة ملف اللوج
+    // كتابة ملف لوج شامل
     try {
-        var logFile = new File(doc.path + "/photoshop_text_log.txt");
+        var logFile = new File(Folder.desktop + "/photoshop_text_log.txt");
         logFile.open("w");
-        for (var i = 0; i < logEntries.length; i++) {
-            logFile.writeln(logEntries[i]);
-        }
+        for (var i = 0; i < logEntries.length; i++) logFile.writeln(logEntries[i]);
         logFile.close();
     } catch (e) {
         alert("مشكلة في إنشاء ملف اللوج: " + e);
     }
 
     alert("تم إدخال النصوص في " + totalInserted + " فقاعات ✅\n" +
-          "تم إنشاء ملف لوج تفصيلي باسم photoshop_text_log.txt");
+          "تم إنشاء ملف لوج شامل على سطح المكتب باسم photoshop_text_log.txt");
 })();
