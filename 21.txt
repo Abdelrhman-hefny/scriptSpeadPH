@@ -1,0 +1,27 @@
+page 1
+I can see they didn’t even expect me to greet them.
+From now on, changing that perception will be the most important.
+“” The head maid is nowhere to be seen. Where is she?
+“” I’d like to entrust the Marquis’s wife’s guidance to her.
+() Head maid?
+() Now that you mention it, I don’t see anyone who looks like the head maid.
+** Whisper
+“” Well, master…
+# The fact that the head maid, who should have come with the butler to greet the master and mistress, did not appear…
+# Does this mean she refuses to acknowledge me?
+“” That’s too much speculation. Go and bring Granada at once.
+“” But…
+** Thud
+page 2
+** Thud
+“” There’s no need for that, master.
+“” I came myself.
+[] Granada Vileno, Head Maid of Lonheim
+“” It’s an honor to meet you, Princess. I am Granada Vileno, head maid of Lonheim Castle.
+“” Please call me Granada.
+“” As you can see, my body is not whole, so the butler thought Your Highness would be displeased to see me,
+“” and he hid me away.
+() Your leg?!!
+** I was wondering what that sound was—so it was this.
+“” I'm a little late because I had to break down the door. Sorry.
+** Granada, please, don’t do this…
