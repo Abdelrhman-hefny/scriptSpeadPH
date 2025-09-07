@@ -1,12 +1,13 @@
 Photoshop Text Import - verbose log
-Date: Sun Sep 07 2025 11:39:18 GMT+0300
+Date: Sun Sep 07 2025 12:01:32 GMT+0300
 TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
 Total lines read: 2
-Pages detected: 0
+Pages detected: 1
 Base font size: 33  minFontSize: 20
 ========================================
 
 --- Processing document: 01.psd ---
+ Reset lineIndex to start of page 1 (line 0)
 
 File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
   Warning: Could not apply visual effects: TypeError: undefined is not an object

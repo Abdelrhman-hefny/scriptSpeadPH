@@ -24,6 +24,8 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
             return;
         }
     }
+    // إغلاق نافذة التقدم في النهاية
+    closeProgress();
 
     // فتح الملف تلقائياً بدون رسائل
     try {
@@ -285,6 +287,49 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     L("Base font size: " + baseFontSize + "  minFontSize: " + minFontSize);
     L("========================================");
 
+    // ====== Progress UI (ScriptUI) ======
+    var progressWin = null, progressBar = null, progressText = null;
+    var progressTotal = 0, progressValue = 0;
+    var cancelRequested = false;
+    function createProgress(total) {
+        try {
+            progressTotal = Math.max(1, total|0);
+            progressValue = 0;
+            progressWin = new Window('palette', 'Import Progress');
+            progressWin.orientation = 'column';
+            progressText = progressWin.add('statictext', undefined, 'Starting...');
+            progressText.preferredSize = [360, 20];
+            progressBar = progressWin.add('progressbar', undefined, 0, progressTotal);
+            progressBar.preferredSize = [360, 18];
+            var row = progressWin.add('group');
+            row.orientation = 'row';
+            var cancelBtn = row.add('button', undefined, 'Cancel');
+            cancelBtn.onClick = function () { cancelRequested = true; };
+            progressWin.show();
+            app.refresh();
+        } catch (e) {}
+    }
+    function updateProgress(increment, message) {
+        try {
+            progressValue += (increment|0);
+            if (progressBar) progressBar.value = Math.min(progressTotal, Math.max(0, progressValue));
+            if (progressText && typeof message === 'string') progressText.text = message + '  (' + progressValue + '/' + progressTotal + ')';
+            if (progressWin) progressWin.update();
+        } catch (e) {}
+    }
+    function closeProgress() {
+        try { if (progressWin) progressWin.close(); } catch (e) {}
+    }
+
+    // حساب إجمالي الفقاعات قبل البدء لعرض تقدم دقيق
+    try {
+        var totalBubbles = 0;
+        for (var dd = 0; dd < app.documents.length; dd++) {
+            try { var pcount = app.documents[dd].pathItems.length; totalBubbles += (pcount|0); } catch (_e) {}
+        }
+        createProgress(totalBubbles);
+    } catch (_pe) {}
+
     var totalInserted = 0;
     var totalSkipped = 0;
     var totalErrors = 0;
@@ -341,6 +386,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
                 break;
             }
 
+            if (cancelRequested) { L('Cancelled by user'); break; }
             var pathItem = pagePaths[k];
             var pathName = "(unknown)";
             try { pathName = pathItem.name; } catch (e) {}
@@ -530,6 +576,9 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
                 totalErrors++;
                 try { doc.selection.deselect(); } catch (e2) {}
             }
+
+            // تحديث التقدم بعد كل فقاعة
+            updateProgress(1, 'Processing ' + doc.name + ' - ' + (k+1) + '/' + pagePaths.length);
         }
 
         // ====== Summary ======
