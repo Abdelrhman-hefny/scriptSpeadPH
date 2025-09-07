@@ -1,2 +1,0 @@
-File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1 : EXCEPTION : ReferenceError: String().replace().trim is not a function at line 173
-File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2 : EXCEPTION : ReferenceError: String().replace().trim is not a function at line 173

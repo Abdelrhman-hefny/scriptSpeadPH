@@ -2,9 +2,6 @@
 
 app.bringToFront();
 $.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
-$.evalFile("C:/Users/abdoh/Downloads/testScript/lib/psHelpers.jsx");
-$.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textReader.jsx");
-$.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
 
 (function() {
     // التحقق من وجود Photoshop
@@ -27,6 +24,8 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
             return;
         }
     }
+    // إغلاق نافذة التقدم في النهاية
+    closeProgress();
 
     // فتح الملف تلقائياً بدون رسائل
     try {
@@ -37,9 +36,55 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
 
     // مسار ملف JSON
     var jsonFile = File("C:/Users/abdoh/Downloads/testScript/teams.json");
-    var teams; try { teams = loadTeams(jsonFile); } catch (e) { alert(e); return; }
+    if (!jsonFile.exists) {
+        alert("ملف الفرق غير موجود: " + jsonFile.fsName);
+        return;
+    }
 
-    // getObjectKeys provided by utils.jsx
+    try {
+        jsonFile.open("r");
+        var jsonStr = jsonFile.read();
+        jsonFile.close();
+    } catch (e) {
+        alert("فشل في قراءة ملف JSON: " + e);
+        return;
+    }
+
+    if (!jsonStr) {
+        alert("ملف JSON فارغ!");
+        return;
+    }
+
+    var teams;
+    try {
+        teams = JSON.parse(jsonStr);
+    } catch (e) {
+        alert("خطأ في قراءة JSON: " + e);
+        return;
+    }
+
+// دالة بديلة لـ Array.isArray في ExtendScript
+function isArray(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+
+if (!teams || typeof teams !== "object" || isArray(teams)) {
+    alert("الـ JSON غير صالح ككائن: تحقق من teams.json");
+    return;
+}
+
+    // دالة بديلة لـ Object.keys في ExtendScript
+    function getObjectKeys(obj) {
+        var keys = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty && obj.hasOwnProperty(key)) {
+                keys.push(key);
+            } else if (obj[key] !== undefined) {
+                keys.push(key);
+            }
+        }
+        return keys;
+    }
 
     // اختيار الفريق الحالي
     var teamNames = getObjectKeys(teams); // أسماء الفرق من JSON
@@ -73,8 +118,6 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     var fastMode = true;
     // إلغاء الوضع فائق السرعة افتراضياً لإبقاء نافذة التقدم مرئية
     var ultraFastMode = false;
-    // إلغاء البروجرس بار للسرعة القصوى
-    var noProgressBar = true;
     
     // قراءة آخر قيمة محفوظة لاستخدامها كقيمة افتراضية
     var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
@@ -113,12 +156,117 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
         settingsFile.close();
     } catch (_we) {}
 
-    // helpers provided by utils.jsx: tryGetFont, pickFont, optimizeFontSettings, toNum, trimString
+    // ========= دوال مساعدة ==========
+    function tryGetFont(name) {
+        try {
+            if (!name) return null;
+            var f = app.fonts.getByName(name);
+            return f ? name : null;
+        } catch (e) {
+            return null;
+        }
+    }
+    
+    function pickFont(preferred, fallback) {
+        // جرّب المطلوب ثم fallback من JSON
+        var p = tryGetFont(preferred);
+        if (p) return p;
+        var f = tryGetFont(fallback);
+        if (f) return f;
 
+        // قائمة بدائل شائعة على ويندوز (PostScriptName أو العائلة)
+        var commonFallbacks = [
+            "Tahoma",
+            "Arial",
+            "SegoeUI",
+            "SegoeUI-Regular",
+            "Segoe UI",
+            "Verdana",
+            "Georgia",
+            "TimesNewRomanPSMT",
+            "Times New Roman",
+            "Impact",
+            "ComicSansMS",
+            "Comic Sans MS"
+        ];
+
+        for (var i = 0; i < commonFallbacks.length; i++) {
+            var cf = tryGetFont(commonFallbacks[i]);
+            if (cf) return cf;
+        }
+
+        // آخر حل: أول خط متاح في فوتوشوب
+        try {
+            if (app.fonts.length > 0) return app.fonts[0].postScriptName;
+        } catch (e) {}
+        return "Arial"; // خط آمن كبديل نهائي
+    }
+    
+    // دالة لتحسين إعدادات الخط بناءً على نوعه
+    function optimizeFontSettings(textLayer, fontName, fontSize) {
+        try {
+            // تحسينات خاصة لأنواع الخطوط المختلفة
+            var fontLower = fontName.toLowerCase();
+            
+            if (fontLower.indexOf("comic") !== -1 || fontLower.indexOf("manga") !== -1) {
+                // خطوط الكوميكس تحتاج مسافات أكثر
+                textLayer.textItem.tracking = 10;
+                textLayer.textItem.leading = fontSize * 1.15;
+            } else if (fontLower.indexOf("arial") !== -1 || fontLower.indexOf("helvetica") !== -1) {
+                // الخطوط العادية
+                textLayer.textItem.tracking = 0;
+                textLayer.textItem.leading = fontSize * 1.1;
+            } else if (fontLower.indexOf("times") !== -1 || fontLower.indexOf("serif") !== -1) {
+                // الخطوط المزخرفة
+                textLayer.textItem.tracking = -5;
+                textLayer.textItem.leading = fontSize * 1.05;
+            }
+            
+            // تحسين عام للوضوح
+            textLayer.textItem.antiAliasMethod = AntiAlias.SMOOTH;
+            textLayer.textItem.autoKerning = AutoKernType.METRICS;
+            
+        } catch (e) {
+            // تجاهل الأخطاء في تحسين الخط
+        }
+    }
+    
+    function toNum(unitVal) {
+        try { return parseFloat(String(unitVal)); } catch (e) { return NaN; }
+    }
+    
+    // دالة بديلة لـ trim في ExtendScript
+    function trimString(str) {
+        return str.replace(/^\s+|\s+$/g, "");
+    }
     
     // ========= قراءة النصوص + بداية كل صفحة ==========
-    var allLines = [], pageStartIndices = [];
-    try { var _t = readMangaText(txtFile); allLines = _t.lines; pageStartIndices = _t.pageStarts; } catch (e) { alert("فشل في قراءة ملف النص: " + e); return; }
+    var pageStartIndices = [];
+    var currentPage = -1;
+    var allLines = [];
+
+    try {
+        txtFile.open("r");
+        while (!txtFile.eof) {
+            var line = txtFile.readln() || "";
+            line = trimString(line); // إزالة المسافات من بداية ونهاية السطر
+
+            var m = line.match(/(?:===\s*)?page\s*(\d+)/i);
+            if (m) {
+                currentPage++;
+                pageStartIndices.push(allLines.length);
+                continue; 
+            }
+
+            if (/^sfx\b/i.test(line)) continue;
+
+            if (line !== "") allLines.push(line);
+        }
+        txtFile.close();
+    } catch (e) {
+        alert("فشل في قراءة ملف النص: " + e);
+        return;
+    }
 
     // التحقق بعد قراءة الملف بالكامل
     if (allLines.length === 0) {
@@ -127,12 +275,65 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     }
 
     // ========= لوج ==========
-    function L(_) {}
-    function E(_) {}
+    var log = [];
+    var errors = [];
+    function L(s) { log.push(s); }
+    function E(s) { errors.push(s); log.push("ERROR: " + s); }
 
-    // ====== Progress removed for maximum speed ======
+    L("Photoshop Text Import - verbose log");
+    L("Date: " + (new Date()).toString());
+    L("TXT file: " + txtFile.fsName);
+    L("Total lines read: " + allLines.length);
+    L("Pages detected: " + pageStartIndices.length);
+    L("Base font size: " + baseFontSize + "  minFontSize: " + minFontSize);
+    L("========================================");
 
-    // Skip progress-bar setup for speed
+    // ====== Progress UI (ScriptUI) ======
+    var progressWin = null, progressBar = null, progressText = null;
+    var progressTotal = 0, progressValue = 0;
+    var cancelRequested = false;
+    function createProgress(total) {
+        try {
+            progressTotal = Math.max(1, total|0);
+            progressValue = 0;
+            progressWin = new Window('palette', 'Progress');
+            progressWin.orientation = 'column';
+            progressText = progressWin.add('statictext', undefined, 'Starting...');
+            progressText.preferredSize = [320, 18];
+            if (!ultraFastMode) {
+                progressBar = progressWin.add('progressbar', undefined, 0, progressTotal);
+                progressBar.preferredSize = [320, 14];
+                var row = progressWin.add('group');
+                row.orientation = 'row';
+                var cancelBtn = row.add('button', undefined, 'Cancel');
+                cancelBtn.onClick = function () { cancelRequested = true; };
+            }
+            progressWin.show();
+            app.refresh();
+        } catch (e) {}
+    }
+    function updateProgress(increment, message) {
+        try {
+            progressValue += (increment|0);
+            // حدّث النص دائماً؛ في UltraFast لا يوجد شريط تقدّم
+            if (progressText && typeof message === 'string') progressText.text = message + '  (' + progressValue + '/' + progressTotal + ')';
+            if (!ultraFastMode && progressBar) progressBar.value = Math.min(progressTotal, Math.max(0, progressValue));
+            if (progressWin) progressWin.update();
+            if (ultraFastMode && (progressValue % 10 === 0)) $.writeln(message + '  (' + progressValue + '/' + progressTotal + ')');
+        } catch (e) {}
+    }
+    function closeProgress() {
+        try { if (progressWin) progressWin.close(); } catch (e) {}
+    }
+
+    // حساب إجمالي الفقاعات قبل البدء لعرض تقدم دقيق
+    try {
+        var totalBubbles = 0;
+        for (var dd = 0; dd < app.documents.length; dd++) {
+            try { var pcount = app.documents[dd].pathItems.length; totalBubbles += (pcount|0); } catch (_e) {}
+        }
+        createProgress(totalBubbles);
+    } catch (_pe) {}
 
     var totalInserted = 0;
     var totalSkipped = 0;
@@ -190,7 +391,7 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
                 break;
             }
 
-            // removed cancelRequested/progress UI for speed
+            if (cancelRequested) { L('Cancelled by user'); break; }
             var pathItem = pagePaths[k];
             var pathName = "(unknown)";
             try { pathName = pathItem.name; } catch (e) {}
@@ -370,10 +571,48 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
                 try { doc.selection.deselect(); } catch (e2) {}
             }
 
-            // progress updates removed for speed
+            // تحديث التقدم بعد كل فقاعة
+            updateProgress(1, 'Processing ' + doc.name + ' - ' + (k+1) + '/' + pagePaths.length);
+            if (ultraFastMode && progressValue % 20 === 0) app.refresh();
         }
 
-        // summaries and file logging removed to reduce size and I/O
+        // ====== Summary ======
+        L("\n===== Summary =====");
+        L("Inserted: " + totalInserted);
+        L("Errors: " + totalErrors);
+        L("Skipped: " + totalSkipped);
+
+        try {
+            var logFile = new File(txtFile.path + "/photoshop_text_log_verbose.txt");
+            logFile.open("w");
+            for (var i = 0; i < log.length; i++) {
+                try {
+                    logFile.writeln(log[i]);
+                } catch (e) {
+                    // تجاهل الأخطاء في كتابة سطر واحد
+                }
+            }
+            logFile.close();
+        } catch (e) {
+            alert("فشل في كتابة ملف اللوج: " + e);
+        }
+
+        try {
+            if (errors.length > 0) {
+                var errFile = new File(txtFile.path + "/photoshop_text_errors.txt");
+                errFile.open("w");
+                for (var j = 0; j < errors.length; j++) {
+                    try {
+                        errFile.writeln(errors[j]);
+                    } catch (e) {
+                        // تجاهل الأخطاء في كتابة سطر واحد
+                    }
+                }
+                errFile.close();
+            }
+        } catch (e2) {
+            alert("فشل في كتابة ملف الأخطاء: " + e2);
+        }
 
         // عرض النتائج مع معلومات إضافية عن التحسينات
         if (totalErrors > 0) {
