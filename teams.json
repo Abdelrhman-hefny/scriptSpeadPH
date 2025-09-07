@@ -1,0 +1,52 @@
+{
+  "rezo": {
+    "defaultFont": "CCWildWords",
+    "baseFontSize": 30,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "():": "CCMightyMouth",
+      "“”:": "CCVictorySpeech-Regular",
+      "\"\":": "CCVictorySpeech-Regular",
+      "//:": "CCVictorySpeech-Regular",
+      "//": "CCVictorySpeech-Regular",
+      "NA:": "Argone_W00_Regular",
+      "<>:": "CCShoutOutGSN",
+      "::": "CCShoutOutGSN",
+      "[]:": "CCTallTales",
+      "**:": "Gloucester MT Extra Condensed",
+      "SFX:": "CCPhilYeh",
+      "ST:": "BestMarker",
+      "St:": "BestMarker",
+      "OT:": "CCMarianChurchland-Regular",
+      "Ot:": "CCMarianChurchland-Regular",
+      "#": "CCMEANWHILEUNCIAL",
+      "BGT:": "Heart_Warming_Font_by_Situjuh_7NTypes",
+      "TL/N:": "CCAskForMercy",
+      "TL/PR:": "CCAskForMercy"
+    }
+  },
+  "siren": {
+    "defaultFont": "CCVictorySpeechW00-Regular",
+    "baseFontSize": 30,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "()": "CCVictorySpeechW00-Italic",
+      "“”": "CCVictorySpeechW00-Regular",
+      "\"\"": "CCVictorySpeechW00-Regular",
+      "//": "CCVictorySpeechW00-Regular",
+      "<>": "CCDearDiaryOMG",
+      "NA:": "SSRosehip",
+      "[]": "SSRosehip",
+      "**": "CreatorcreditsBB-Italic",
+      "SFX:": "BlambasticAltBB",
+      "ST:": "KomikaSlim",
+      "OT:": "OrangeFizz-Regular",
+      "#": "OrangeFizz-Regular",
+      "BGT:": "TightSpotBB-Italic",
+      "TL/N:": "CCDashDecent-Light",
+      "TL/PR:": "CCDashDecent-Light"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+Photoshop Text Import - verbose log
+Date: Sun Sep 07 2025 09:14:33 GMT+0300
+TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
+Total lines read: 7
+Pages detected: 0
+Base font size: 30  minFontSize: 20
+========================================
+
+--- Processing document: 01.psd ---
+
+File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
+  >>> OK inserted line index 1 textPreview: "sdsfdfdfgdggsfsffddsfdsdff"
+
+File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2
+  >>> OK inserted line index 2 textPreview: "sfd"
+
+File=01.psd | BubbleIndex=3 | PathName=page_01_bubble3
+
+File=01.psd | BubbleIndex=4 | PathName=page_01_bubble4
+  >>> OK inserted line index 4 textPreview: "fd"
+
+File=01.psd | BubbleIndex=5 | PathName=page_01_bubble5
+  >>> OK inserted line index 5 textPreview: "dd"
+
+File=01.psd | BubbleIndex=6 | PathName=page_01_bubble6
+  >>> OK inserted line index 6 textPreview: "f"
+
+File=01.psd | BubbleIndex=7 | PathName=page_01_bubble7
+  >>> OK inserted line index 7 textPreview: "df"
+No more lines to place (finished allLines).
+
+===== Summary =====
+Inserted: 7
+Errors: 0
+Skipped: 0

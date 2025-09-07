@@ -1,0 +1,5 @@
+File=01.psd | Bubble=1 | WantedFont=CCWildWords | UsedFont=CCWildWords | Text="I can see they didn’t even expect me to greet them." | Status=OK
+File=01.psd | Bubble=2 | WantedFont=CCWildWords | UsedFont=CCWildWords | Text="From now on, changing that perception will be the most important." | Status=OK
+File=01.psd | Bubble=3 | WantedFont=CCWildWords | UsedFont=CCWildWords | Text="The head maid is nowhere to be seen. Where is she?" | Status=OK
+File=01.psd | Bubble=4 | WantedFont=CCWildWords | UsedFont=CCWildWords | Text="I’d like to entrust the Marquis’s wife’s guidance to her." | Status=OK
+File=01.psd | Bubble=5 | WantedFont=CCWildWords faux italics | UsedFont=CCWildWords | Text="Head maid?" | Status=OK

@@ -1,39 +1,60 @@
 #target photoshop
 app.bringToFront();
+$.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
 
-(function () {
-    // ========== إعدادات عامة ==========
-    var txtFile = File.openDialog("اختر ملف النص (TXT)", "Text Files: *.txt");
-    if (!txtFile) {
-        alert("لم يتم اختيار ملف TXT. الخروج.");
-        return;
+(function() {
+    // مسار ملف النص الثابت
+    var txtFile = File("C:/Users/abdoh/Downloads/testScript/manga_text.txt");
+
+    // لو الملف غير موجود أنشئه
+    if (!txtFile.exists) {
+        txtFile.open("w");
+        txtFile.writeln("// الصق النص هنا، استخدم 'page 1' لتحديد بداية الصفحة الأولى");
+        txtFile.close();
     }
 
-    // خريطة الخطوط (عدل الأسماء لو عندك أسماء مختلفة)
-var fontMap = {
-    '()': 'CCVictorySpeechW00-Italic',     // Thoughts
-    '“”': 'CCVictorySpeechW00-Regular',    // Dialogue
-    '""': 'CCVictorySpeechW00-Regular',    // Dialogue
-    '//': 'CCVictorySpeechW00-Regular',    // Dialogue
-    '<>': 'CCDearDiaryOMG',                // Shout
-    'NA:': 'SSRosehip',                    // Narration (Boxes)
-    '[]': 'SSRosehip',                     // Box text
-    '**': 'CreatorcreditsBB-Italic',       // Phone/Mechanical
-    'SFX:': 'BlambasticAltBB',             // Sound effects
-    'ST:': 'KomikaSlim',                   // Small text (stress/whisper)
-    'OT:': 'OrangeFizz-Regular',           // Outside bubble
-    'BGT:': 'TightSpotBB-Italic',          // Side text / background
-    'TL/N:': 'CCDashDecent-Light',         // Notes
-    'TL/PR:': 'CCDashDecent-Light',        // Notes
-};
+    // فتح الملف
+    try {
+        txtFile.execute(); // يفتح الملف بالبرنامج الافتراضي (Notepad غالبًا)
+        alert("افتح الملف وأضف النص، بعد الحفظ أغلق الملف ثم اضغط OK للاستمرار.");
+    } catch (e) {
+        alert("فشل في فتح الملف تلقائيًا. أضف النص يدويًا في:\n" + txtFile.fsName);
+    }
+
+  // مسار ملف JSON
+var jsonFile = File("C:/Users/abdoh/Downloads/testScript/teams.json");
+
+if (!jsonFile.exists) {
+    alert("ملف الفرق غير موجود: " + jsonFile.fsName);
+    return;
+}
+
+jsonFile.open("r");
+var jsonStr = jsonFile.read();
+jsonFile.close();
+
+var teams;
+try {
+    teams = JSON.parse(jsonStr);
+} catch (e) {
+    alert("خطأ في قراءة JSON: " + e);
+    return;
+}
+
+// اختيار الفريق الحالي
+var currentTeam = "rezo"; // أو يمكن جعله ديناميكي
+if (!teams[currentTeam]) {
+    alert("الفريق المحدد غير موجود في JSON: " + currentTeam);
+    return;
+}
+
+var defaultFont = teams[currentTeam].defaultFont;
+var baseFontSize = teams[currentTeam].baseFontSize;
+var minFontSize = teams[currentTeam].minFontSize;
+var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
+var fontMap = teams[currentTeam].fontMap;
 
 
-
-
-    var defaultFont = 'CCWildWords';
-    var baseFontSize = 33;   // الحجم الابتدائي (يمكن تغييره)
-    var minFontSize  = 8;    // أقل حجم مسموح به عند تقليل الخط
-    var boxPaddingRatio = 0.18; // نسبة الـ padding داخل الفقاعة (0..0.4 مثلا)
 
     // ========= دوال مساعدة ==========
     function tryGetFont(name) {
@@ -53,30 +74,42 @@ var fontMap = {
         try {
             if (app.fonts.length > 0) return app.fonts[0].postScriptName;
         } catch (e) {}
-        return "ArialMT";
+        return "Arial"; // خط آمن كبديل نهائي
     }
     function toNum(unitVal) {
         try { return parseFloat(String(unitVal)); } catch (e) { return NaN; }
     }
-
-    // ========= قراءة كل الأسطر (بترتيب) ==========
+	
+    // ========= قراءة النصوص + بداية كل صفحة ==========
+    var pageStartIndices = [];
+    var currentPage = -1;
     var allLines = [];
+
     txtFile.open("r");
     while (!txtFile.eof) {
         var line = txtFile.readln() || "";
         line = line.replace(/^\s+|\s+$/g, "");
-        // لو عندك عناوين page X وتريد تجاهلها، هذا السطر يتخطاها
-        if (/^\s*page\s+\d+/i.test(line)) continue;
+
+        var m = line.match(/(?:===\s*)?page\s*(\d+)/i);
+        if (m) {
+            currentPage++;
+            pageStartIndices.push(allLines.length);
+            continue; 
+        }
+
+        if (/^sfx\b/i.test(line)) continue;
+
         if (line !== "") allLines.push(line);
     }
     txtFile.close();
 
+    // التحقق بعد قراءة الملف بالكامل
     if (allLines.length === 0) {
-        alert("ملف النص فاضي أو مفيهوش سطور صالحة!");
+        alert("الملف فارغ أو لم يتم إدخال نص!");
         return;
     }
 
-    // ========= لوج تفصيلي ==========
+    // ========= لوج ==========
     var log = [];
     var errors = [];
     function L(s) { log.push(s); }
@@ -86,16 +119,17 @@ var fontMap = {
     L("Date: " + (new Date()).toString());
     L("TXT file: " + txtFile.fsName);
     L("Total lines read: " + allLines.length);
+    L("Pages detected: " + pageStartIndices.length);
     L("Base font size: " + baseFontSize + "  minFontSize: " + minFontSize);
-    L("boxPaddingRatio: " + boxPaddingRatio);
     L("========================================");
 
     var totalInserted = 0;
     var totalSkipped = 0;
     var totalErrors = 0;
     var lineIndex = 0;
+    var pageCounter = 0;
 
-    // ====== نلف على كل المستندات المفتوحة بالترتيب
+    // ====== نلف على كل المستندات المفتوحة بالترتيب ======
     for (var d = 0; d < app.documents.length; d++) {
         var doc = app.documents[d];
         try {
@@ -107,13 +141,19 @@ var fontMap = {
 
         L("\n--- Processing document: " + doc.name + " ---");
 
+        // كل مستند يبدأ من بداية صفحة جديدة
+        if (pageCounter < pageStartIndices.length) {
+            lineIndex = pageStartIndices[pageCounter];
+            L(" Reset lineIndex to start of page " + (pageCounter+1) + " (line " + lineIndex + ")");
+            pageCounter++;
+        }
+
         var paths = doc.pathItems;
         if (!paths || paths.length === 0) {
             L("Document '" + doc.name + "' has no path items. Skipping.");
             continue;
         }
-
-        // نجمع و نرتب الباثس حسب bubble# إن وُجد
+        // نجمع ونرتب الباثس
         var pagePaths = [];
         for (var p = 0; p < paths.length; p++) {
             try { pagePaths.push(paths[p]); } catch (e) {}
@@ -128,6 +168,10 @@ var fontMap = {
             } catch (e) { return 0; }
         });
 
+        // ======= قبل حلقة pagePaths =======
+        var lastUsedFont = null;
+        var lastFontSize = baseFontSize;
+
         for (var k = 0; k < pagePaths.length; k++) {
             if (lineIndex >= allLines.length) {
                 L("No more lines to place (finished allLines).");
@@ -141,173 +185,141 @@ var fontMap = {
             var entryPrefix = "File=" + doc.name + " | BubbleIndex=" + (k+1) + " | PathName=" + pathName;
             L("\n" + entryPrefix);
 
-            var lineText = allLines[lineIndex];
-            lineIndex++;
+            var lineText = allLines[lineIndex++];
 
-            // نحدّد الخط المطلوب من بداية السطر إن وُجد
-		var wantedFont = null;
-for (var key in fontMap) {
-    var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")); 
-    if (regex.test(lineText)) {
-        wantedFont = fontMap[key];
-        lineText = lineText.replace(regex, "");  
-        lineText = lineText.replace(/^\s+|\s+$/g, ""); // شيل المسافات
-        break;
-    }
-}
-if (!wantedFont) wantedFont = defaultFont;
-var usedFont = pickFont(wantedFont, defaultFont);
+            if (!lineText) {
+                L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
+                totalSkipped++;
+                continue;
+            }
 
+            // التأكد من أن الباث صالح
+            if (!pathItem || !pathItem.subPathItems || pathItem.subPathItems.length === 0) {
+                E("Invalid or empty path: " + pathName);
+                totalErrors++;
+                continue;
+            }
 
+            // تحديد الخط
+            var wantedFont = null;
+            for (var key in fontMap) {
+                var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"));
+                if (regex.test(lineText)) {
+                    wantedFont = fontMap[key];
+                    lineText = lineText.replace(regex, "").trim();
+                    break;
+                }
+            }
 
+            var usedFont, curFontSize;
+            if (/^\/\/:?/.test(lineText)) {
+                usedFont = lastUsedFont || defaultFont;
+                curFontSize = lastFontSize || baseFontSize;
+            } else {
+                if (!wantedFont) wantedFont = defaultFont;
+                usedFont = pickFont(wantedFont, defaultFont);
+                curFontSize = baseFontSize;
+            }
 
             try {
-                // محاولات تحديد الباث والتحويل إلى سليكشن
-                try {
-                    pathItem.makeSelection();
-                } catch (eSel) {
-                    throw new Error("makeSelection() failed: " + eSel);
+                pathItem.makeSelection();
+                if (!doc.selection || !doc.selection.bounds) {
+                    throw new Error("No valid selection for path: " + pathName);
                 }
 
-                // قراءة حدود السليكشن
-                var selBounds;
-                try {
-                    selBounds = doc.selection.bounds;
-                } catch (eb) {
-                    // لو ما قدرنا ناخد bounds نلغى التحديد ونرمي خطأ
-                    doc.selection.deselect();
-                    throw new Error("selection.bounds failed: " + eb);
-                }
-
+                var selBounds = doc.selection.bounds;
                 var x1 = toNum(selBounds[0]), y1 = toNum(selBounds[1]), x2 = toNum(selBounds[2]), y2 = toNum(selBounds[3]);
                 var w = x2 - x1, h = y2 - y1;
-                L(" selection bounds: x1=" + x1.toFixed(1) + " y1=" + y1.toFixed(1) + " x2=" + x2.toFixed(1) + " y2=" + y2.toFixed(1) + "  w=" + w.toFixed(1) + " h=" + h.toFixed(1));
 
-                // نحدد صندوق داخلي (padding)
-                var boxWidth  = Math.max(10, w * (1 - boxPaddingRatio));
+                var boxWidth = Math.max(10, w * (1 - boxPaddingRatio));
                 var boxHeight = Math.max(10, h * (1 - boxPaddingRatio));
                 var centerX = (x1 + x2) / 2;
                 var centerY = (y1 + y2) / 2;
-                L(" boxWidth=" + boxWidth.toFixed(1) + " boxHeight=" + boxHeight.toFixed(1) + " centerX=" + centerX.toFixed(1) + " centerY=" + centerY.toFixed(1));
 
-                // إنشاء طبقة النص (Paragraph)
                 var textLayer = doc.artLayers.add();
                 textLayer.kind = LayerKind.TEXT;
-                try { textLayer.textItem.kind = TextType.PARAGRAPHTEXT; } catch (ee) {}
+                if (!textLayer.textItem) {
+                    throw new Error("Failed to create text item for path: " + pathName);
+                }
+
+                textLayer.textItem.kind = TextType.PARAGRAPHTEXT;
                 textLayer.textItem.contents = lineText;
                 textLayer.textItem.justification = Justification.CENTER;
-                // حجم مبدئي
-                var curFontSize = baseFontSize;
-                try { textLayer.textItem.font = usedFont; } catch (fe) { L(" warning: font set failed: " + fe); }
+                try { textLayer.textItem.font = usedFont; } catch (fe) {
+                    E("Font not found: " + usedFont + ", using Arial");
+                    textLayer.textItem.font = "Arial";
+                }
                 textLayer.textItem.size = curFontSize;
 
-                // تعيين الصندوق مبدئياً top-left بناءً على المركز
                 var startLeft = centerX - (boxWidth / 2);
-                var startTop  = centerY - (boxHeight / 2);
-                textLayer.textItem.width  = boxWidth;
+                var startTop = centerY - (boxHeight / 2);
+                textLayer.textItem.width = boxWidth;
                 textLayer.textItem.height = boxHeight;
-                textLayer.textItem.position = [ startLeft, startTop ];
+                textLayer.textItem.position = [startLeft, startTop];
 
-                // ======== Auto-fit loop: نخفض الخط لو النص خارج الصندوق =========
-                var attempts = 0;
-                var fitted = false;
-                while (true) {
-                    attempts++;
-                    // قراءة حدود طبقة النص
-                    var tbounds;
-                    try { tbounds = textLayer.bounds; } catch (tbE) {
-                        // لو bounds غير متاحة، نكسر
-                        L("  - could not read textLayer.bounds: " + tbE);
-                        break;
-                    }
-                    var tLeft = toNum(tbounds[0]), tTop = toNum(tbounds[1]), tRight = toNum(tbounds[2]), tBottom = toNum(tbounds[3]);
-                    var tW = tRight - tLeft, tH = tBottom - tTop;
-                    L("  - text bounds: left=" + tLeft.toFixed(1) + " top=" + tTop.toFixed(1) + " w=" + tW.toFixed(1) + " h=" + tH.toFixed(1) + " (fontSize=" + curFontSize + ")");
+                // قياس النص والتعديل على الحجم
+                var tbounds = textLayer.bounds;
+                var tLeft = toNum(tbounds[0]), tTop = toNum(tbounds[1]), tRight = toNum(tbounds[2]), tBottom = toNum(tbounds[3]);
+                var tW = tRight - tLeft;
+                var tH = tBottom - tTop;
 
-                    // هل النص يتجاوز الصندوق؟
-                    if (tW <= boxWidth + 0.5 && tH <= boxHeight + 0.5) {
-                        fitted = true;
-                        break;
-                    }
+                var scaleW = boxWidth / tW;
+                var scaleH = boxHeight / tH;
+                var fontScale = Math.min(scaleW, scaleH, 1);
 
-                    // لو لم تنجح، نقلل الحجم
-                    if (curFontSize <= minFontSize || attempts > 30) break;
-                    curFontSize = Math.max(minFontSize, Math.floor(curFontSize * 0.92)); // تقليل تدريجي (~8%)
-                    try { textLayer.textItem.size = curFontSize; } catch (e) { L("  - failed set size: " + e); break; }
+                var newFontSize = Math.max(minFontSize, Math.floor(curFontSize * fontScale));
+                textLayer.textItem.size = newFontSize;
 
-                    // إعادة محاذاة الصندوق لأن تغيير الحجم قد يغير القياسات
-                    textLayer.textItem.width  = boxWidth;
-                    textLayer.textItem.height = boxHeight;
-                    textLayer.textItem.position = [ startLeft, startTop ];
-                }
-
-                // الآن حنحسب مركز نص الطبقة ونعمل translate لمركزة داخل الفقاعة
-                try {
-                    var finalBounds = textLayer.bounds;
-                    var fL = toNum(finalBounds[0]), fT = toNum(finalBounds[1]), fR = toNum(finalBounds[2]), fB = toNum(finalBounds[3]);
-                    var fCX = (fL + fR) / 2;
-                    var fCY = (fT + fB) / 2;
-                    var dx = centerX - fCX;
-                    var dy = centerY - fCY;
-
-                    // ننقل طبقة النص
-                    try { textLayer.translate(dx, dy); } catch (trE) {
-                        L("  - translate failed: " + trE);
-                    }
-
-                    // قراءة bounds بعد الترجمة (للتوثيق)
-                    var afterBounds = textLayer.bounds;
-                    L("  => placed. final fontSize=" + curFontSize + "  translate(dx,dy)=(" + dx.toFixed(1) + "," + dy.toFixed(1) + ")");
-                    L("     afterBounds: " + [toNum(afterBounds[0]).toFixed(1), toNum(afterBounds[1]).toFixed(1), toNum(afterBounds[2]).toFixed(1), toNum(afterBounds[3]).toFixed(1)].join(", "));
-                } catch (finalE) {
-                    L("  - final centering failed: " + finalE);
-                }
+                tbounds = textLayer.bounds;
+                var fL = toNum(tbounds[0]), fT = toNum(tbounds[1]);
+                var fR = toNum(tbounds[2]), fB = toNum(tbounds[3]);
+                var fCX = (fL + fR) / 2;
+                var fCY = (fT + fB) / 2;
+                var dx = centerX - fCX;
+                var dy = centerY - fCY;
+                textLayer.translate(dx, dy);
 
                 doc.selection.deselect();
                 totalInserted++;
-                L("  >>> OK inserted line index " + (lineIndex) + " textPreview: \"" + (lineText.length>80?lineText.substring(0,80)+"...":lineText) + "\"");
+                L("  >>> OK inserted line index " + (lineIndex) + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
+
+                lastUsedFont = usedFont;
+                lastFontSize = newFontSize;
 
             } catch (bubbleErr) {
-                // سجل الخطأ وحاول الاستمرار
-                var errMsg = entryPrefix + " : EXCEPTION : " + bubbleErr.toString();
+                var errMsg = entryPrefix + " : EXCEPTION : " + bubbleErr.toString() + " at line " + bubbleErr.line;
                 E(errMsg);
                 totalErrors++;
                 try { doc.selection.deselect(); } catch (e2) {}
             }
-        } // end for pagePaths
-    } // end for documents
+        }
 
-    // خاتمة اللوج وإحصاء
-    L("\n===== Summary =====");
-    L("Inserted: " + totalInserted);
-    L("Errors: " + totalErrors);
-    L("Skipped (if any): " + totalSkipped);
+        // ====== Summary ======
+        L("\n===== Summary =====");
+        L("Inserted: " + totalInserted);
+        L("Errors: " + totalErrors);
+        L("Skipped: " + totalSkipped);
 
-    // كتابة ملف اللوج المفصل (في نفس فولدر ملف الـ TXT)
-    try {
-        var logFile = new File(txtFile.path + "/photoshop_text_log_verbose.txt");
-        logFile.open("w");
-        for (var i = 0; i < log.length; i++) logFile.writeln(log[i]);
-        logFile.close();
-        L("Wrote verbose log: " + logFile.fsName);
-    } catch (e) {
-        alert("فشل في كتابة ملف اللوج: " + e);
+        try {
+            var logFile = new File(txtFile.path + "/photoshop_text_log_verbose.txt");
+            logFile.open("w");
+            for (var i = 0; i < log.length; i++) logFile.writeln(log[i]);
+            logFile.close();
+        } catch (e) {
+            alert("فشل في كتابة ملف اللوج: " + e);
+        }
+
+        try {
+            if (errors.length > 0) {
+                var errFile = new File(txtFile.path + "/photoshop_text_errors.txt");
+                errFile.open("w");
+                for (var j = 0; j < errors.length; j++) errFile.writeln(errors[j]);
+                errFile.close();
+            }
+        } catch (e2) {
+            alert("فشل في كتابة ملف الأخطاء: " + e2);
+        }
+
+        alert("انتهى التشغيل.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
     }
-
-// كتابة ملف الاخطاء فقط (لو في)
-try {
-    if (errors.length > 0) {
-        var errFile = new File(txtFile.path + "/photoshop_text_errors.txt");
-        errFile.open("w");
-        for (var j = 0; j < errors.length; j++) errFile.writeln(errors[j]);
-        errFile.close();
-        L("Wrote errors log: " + errFile.fsName);
-    }
-} catch (e2) {
-    alert("فشل في كتابة ملف الأخطاء: " + e2);
-}
-
-alert("انتهى التشغيل.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
-
 })();
-
