@@ -114,6 +114,11 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
     var fontMap = teams[currentTeam].fontMap;
     
+    // تفعيل وضع السرعة افتراضياً، بدون برومبت
+    var fastMode = true;
+    // إلغاء الوضع فائق السرعة افتراضياً لإبقاء نافذة التقدم مرئية
+    var ultraFastMode = false;
+    
     // قراءة آخر قيمة محفوظة لاستخدامها كقيمة افتراضية
     var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
     var lastBase = null;
@@ -128,24 +133,20 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
         }
     } catch (_re) {}
 
-    // مطالبة المستخدم بحجم الخط الأساسي مع قيمة افتراضية (آخر قيمة أو 30)
+    // برومبت حجم الخط: نستخدم آخر قيمة محفوظة كافتراضي
+    var fsDefault = (lastBase && !isNaN(lastBase) && lastBase > 0) ? lastBase : (baseFontSize || 30);
     try {
-        var fsDefault = (lastBase && !isNaN(lastBase) && lastBase > 0) ? lastBase : (baseFontSize || 30);
         var fsPrompt = prompt("أدخل حجم الخط الأساسي (pt):", String(fsDefault));
         if (fsPrompt !== null && fsPrompt !== undefined) {
             var fsVal = parseInt(fsPrompt, 10);
-            if (!isNaN(fsVal) && fsVal > 0) {
-                baseFontSize = fsVal;
-                // تأكد من أن الحد الأدنى لا يتجاوز الأساس
-                if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
-            }
+            if (!isNaN(fsVal) && fsVal > 0) baseFontSize = fsVal; else baseFontSize = fsDefault;
         } else {
-            // لا إدخال: استخدم 30 كافتراضي
-            baseFontSize = 30;
+            baseFontSize = fsDefault;
         }
     } catch (_pf) {
-        baseFontSize = baseFontSize || 30;
+        baseFontSize = fsDefault;
     }
+    if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
 
     // حفظ آخر قيمة للاستخدام القادم
     try {
@@ -295,16 +296,18 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
         try {
             progressTotal = Math.max(1, total|0);
             progressValue = 0;
-            progressWin = new Window('palette', 'Import Progress');
+            progressWin = new Window('palette', 'Progress');
             progressWin.orientation = 'column';
             progressText = progressWin.add('statictext', undefined, 'Starting...');
-            progressText.preferredSize = [360, 20];
-            progressBar = progressWin.add('progressbar', undefined, 0, progressTotal);
-            progressBar.preferredSize = [360, 18];
-            var row = progressWin.add('group');
-            row.orientation = 'row';
-            var cancelBtn = row.add('button', undefined, 'Cancel');
-            cancelBtn.onClick = function () { cancelRequested = true; };
+            progressText.preferredSize = [320, 18];
+            if (!ultraFastMode) {
+                progressBar = progressWin.add('progressbar', undefined, 0, progressTotal);
+                progressBar.preferredSize = [320, 14];
+                var row = progressWin.add('group');
+                row.orientation = 'row';
+                var cancelBtn = row.add('button', undefined, 'Cancel');
+                cancelBtn.onClick = function () { cancelRequested = true; };
+            }
             progressWin.show();
             app.refresh();
         } catch (e) {}
@@ -312,9 +315,11 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     function updateProgress(increment, message) {
         try {
             progressValue += (increment|0);
-            if (progressBar) progressBar.value = Math.min(progressTotal, Math.max(0, progressValue));
+            // حدّث النص دائماً؛ في UltraFast لا يوجد شريط تقدّم
             if (progressText && typeof message === 'string') progressText.text = message + '  (' + progressValue + '/' + progressTotal + ')';
+            if (!ultraFastMode && progressBar) progressBar.value = Math.min(progressTotal, Math.max(0, progressValue));
             if (progressWin) progressWin.update();
+            if (ultraFastMode && (progressValue % 10 === 0)) $.writeln(message + '  (' + progressValue + '/' + progressTotal + ')');
         } catch (e) {}
     }
     function closeProgress() {
@@ -346,7 +351,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
             continue;
         }
 
-        L("\n--- Processing document: " + doc.name + " ---");
+        if (!ultraFastMode) L("\n--- Processing document: " + doc.name + " ---");
 
         // كل مستند يبدأ من بداية صفحة جديدة
         if (pageCounter < pageStartIndices.length) {
@@ -392,7 +397,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
             try { pathName = pathItem.name; } catch (e) {}
 
             var entryPrefix = "File=" + doc.name + " | BubbleIndex=" + (k+1) + " | PathName=" + pathName;
-            L("\n" + entryPrefix);
+            if (!ultraFastMode) L("\n" + entryPrefix);
 
             var lineText = allLines[lineIndex++];
             
@@ -527,40 +532,29 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
                 if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) textLayer.translate(dxx, dyy);
 
                 // ========= إضافة التحسينات البصرية للخط =========
-                try {
-                    // إضافة حدود للخط (Stroke) لجعله أكثر وضوحاً
-                    var stroke = textLayer.effects.add();
-                    stroke.kind = "stroke";
-                    stroke.enabled = true;
-                    stroke.mode = "normal";
-                    stroke.opacity = 75;
-                    stroke.size = Math.max(1, Math.floor(newFontSize * 0.02)); // حجم حدود أخف مع الهامش
-                    stroke.position = "outside";
-                    stroke.color = new SolidColor();
-                    stroke.color.rgb.red = 255;
-                    stroke.color.rgb.green = 255;
-                    stroke.color.rgb.blue = 255; // حدود بيضاء
-                    
-                    // تحسين لون النص
-                    var textColor = new SolidColor();
-                    textColor.rgb.red = 0;
-                    textColor.rgb.green = 0;
-                    textColor.rgb.blue = 0; // نص أسود
-                    textLayer.textItem.color = textColor;
-                    
-                    // تحسين المسافات بين الأحرف للقراءة الأفضل
-                    if (textLength > 15) {
-                        textLayer.textItem.tracking = -20; // تقليل المسافة بين الأحرف للنصوص الطويلة
-                    } else if (textLength <= 5) {
-                        textLayer.textItem.tracking = 20; // زيادة المسافة بين الأحرف للكلمات القصيرة
-                    }
-                    
-                    // تحسين المسافة بين الأسطر لجعل النص أكثر اتزاناً داخل الصندوق
-                    textLayer.textItem.leading = Math.round(newFontSize * 1.05);
-                    
-                } catch (effectError) {
-                    // إذا فشل تطبيق التأثيرات، نكمل بدونها
-                    L("  Warning: Could not apply visual effects: " + effectError);
+                if (!fastMode) {
+                    try {
+                        // حدود خفيفة + لون
+                        var stroke = textLayer.effects.add();
+                        stroke.kind = "stroke";
+                        stroke.enabled = true;
+                        stroke.mode = "normal";
+                        stroke.opacity = 75;
+                        stroke.size = Math.max(1, Math.floor(newFontSize * 0.02));
+                        stroke.position = "outside";
+                        stroke.color = new SolidColor();
+                        stroke.color.rgb.red = 255;
+                        stroke.color.rgb.green = 255;
+                        stroke.color.rgb.blue = 255;
+                        var textColor = new SolidColor();
+                        textColor.rgb.red = 0;
+                        textColor.rgb.green = 0;
+                        textColor.rgb.blue = 0;
+                        textLayer.textItem.color = textColor;
+                        if (textLength > 15) textLayer.textItem.tracking = -20;
+                        else if (textLength <= 5) textLayer.textItem.tracking = 20;
+                        textLayer.textItem.leading = Math.round(newFontSize * 1.05);
+                    } catch (effectError) { if (!ultraFastMode) L("  Warning: Could not apply visual effects: " + effectError); }
                 }
 
                 doc.selection.deselect();
@@ -579,6 +573,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
 
             // تحديث التقدم بعد كل فقاعة
             updateProgress(1, 'Processing ' + doc.name + ' - ' + (k+1) + '/' + pagePaths.length);
+            if (ultraFastMode && progressValue % 20 === 0) app.refresh();
         }
 
         // ====== Summary ======

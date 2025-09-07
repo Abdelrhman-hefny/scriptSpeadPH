@@ -1,7 +1,7 @@
 Photoshop Text Import - verbose log
-Date: Sun Sep 07 2025 12:01:32 GMT+0300
+Date: Sun Sep 07 2025 12:17:59 GMT+0300
 TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
-Total lines read: 2
+Total lines read: 1
 Pages detected: 1
 Base font size: 33  minFontSize: 20
 ========================================
@@ -10,15 +10,10 @@ Base font size: 33  minFontSize: 20
  Reset lineIndex to start of page 1 (line 0)
 
 File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
-  Warning: Could not apply visual effects: TypeError: undefined is not an object
   >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
-
-File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2
-  Warning: Could not apply visual effects: TypeError: undefined is not an object
-  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Aaaargh! That's it! This is so frustrating!"
 No more lines to place (finished allLines).
 
 ===== Summary =====
-Inserted: 2
+Inserted: 1
 Errors: 0
 Skipped: 0
