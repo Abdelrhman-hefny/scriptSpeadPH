@@ -48,5 +48,61 @@
       "TL/N:": "CCDashDecent-Light",
       "TL/PR:": "CCDashDecent-Light"
     }
+  },
+  "ez scan": {
+    "defaultFont": "Bang-Zoom!-Regular",
+    "baseFontSize": 29,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "\"\":": "Bang-Zoom!-Regular",
+      "““:": "Bang-Zoom!-Regular",
+      "“”": "Bang-Zoom!-Regular",
+      "()": "Bang-Zoom!-Italic",
+      "():": "Bang-Zoom!-Italic",
+      "[]:": "DomCasual-Regular",
+      "[]": "Timelapse-Regular",
+      "::": "CCShoutOut"
+    }
+  },
+  "ez japan": {
+    "defaultFont": "Bang-Zoom!-Regular",
+    "baseFontSize": 29,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "\"\":": "Bang-Zoom!-Regular",
+      "““:": "Bang-Zoom!-Regular",
+      "“”": "Bang-Zoom!-Regular",
+      "()": "Bang-Zoom!-Italic",
+      "():": "Bang-Zoom!-Italic",
+      "::": "CCShoutOut",
+      "[]:": "DomCasual-Regular",
+      "[]": "Timelapse-Regular"
+    }
+  },
+  "quantom": {
+    "defaultFont": "CCMightyMouth-Regular",
+    "baseFontSize": 38,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "\"\":": "Bang-Zoom!-Regular",
+      "““:": "Bang-Zoom!-Regular",
+      "“”": "Bang-Zoom!-Regular",
+      "()": "Bang-Zoom!-Italic",
+      "():": "Bang-Zoom!-Italic",
+      "::": "CCShoutOut",
+      "[]:": "DomCasual-Regular",
+      "[]": "Timelapse-Regular",
+      "st:": "HandOfSeanDemo",
+      "ST:": "HandOfSeanDemo",
+      "St:": "HandOfSeanDemo",
+      "**:": "HandOfSeanDemo",
+      "**": "HandOfSeanDemo",
+      "st": "HandOfSeanDemo",
+      "MONSTERS": "Tahoma",
+      "SYSTEM": "Tahoma"
+    }
   }
 }

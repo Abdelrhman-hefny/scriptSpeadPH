@@ -1,60 +1,115 @@
 #target photoshop
+
 app.bringToFront();
 $.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
 
 (function() {
+    // التحقق من وجود Photoshop
+    if (typeof app === "undefined" || !app) {
+        alert("هذا السكريبت يجب تشغيله في Photoshop فقط!");
+        return;
+    }
+
     // مسار ملف النص الثابت
     var txtFile = File("C:/Users/abdoh/Downloads/testScript/manga_text.txt");
 
     // لو الملف غير موجود أنشئه
     if (!txtFile.exists) {
-        txtFile.open("w");
-        txtFile.writeln("// الصق النص هنا، استخدم 'page 1' لتحديد بداية الصفحة الأولى");
-        txtFile.close();
+        try {
+            txtFile.open("w");
+            txtFile.writeln("// الصق النص هنا، استخدم 'page 1' لتحديد بداية الصفحة الأولى");
+            txtFile.close();
+        } catch (e) {
+            alert("فشل في إنشاء ملف النص: " + e);
+            return;
+        }
     }
 
-    // فتح الملف
+    // فتح الملف تلقائياً بدون رسائل
     try {
-        txtFile.execute(); // يفتح الملف بالبرنامج الافتراضي (Notepad غالبًا)
-        alert("افتح الملف وأضف النص، بعد الحفظ أغلق الملف ثم اضغط OK للاستمرار.");
+        txtFile.execute(); // يفتح الملف بالبرنامج الافتراضي
     } catch (e) {
-        alert("فشل في فتح الملف تلقائيًا. أضف النص يدويًا في:\n" + txtFile.fsName);
+        // فشل في فتح الملف - نكمل بدون إيقاف
     }
 
-  // مسار ملف JSON
-var jsonFile = File("C:/Users/abdoh/Downloads/testScript/teams.json");
+    // مسار ملف JSON
+    var jsonFile = File("C:/Users/abdoh/Downloads/testScript/teams.json");
+    if (!jsonFile.exists) {
+        alert("ملف الفرق غير موجود: " + jsonFile.fsName);
+        return;
+    }
 
-if (!jsonFile.exists) {
-    alert("ملف الفرق غير موجود: " + jsonFile.fsName);
+    try {
+        jsonFile.open("r");
+        var jsonStr = jsonFile.read();
+        jsonFile.close();
+    } catch (e) {
+        alert("فشل في قراءة ملف JSON: " + e);
+        return;
+    }
+
+    if (!jsonStr) {
+        alert("ملف JSON فارغ!");
+        return;
+    }
+
+    var teams;
+    try {
+        teams = JSON.parse(jsonStr);
+    } catch (e) {
+        alert("خطأ في قراءة JSON: " + e);
+        return;
+    }
+
+// دالة بديلة لـ Array.isArray في ExtendScript
+function isArray(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+
+if (!teams || typeof teams !== "object" || isArray(teams)) {
+    alert("الـ JSON غير صالح ككائن: تحقق من teams.json");
     return;
 }
 
-jsonFile.open("r");
-var jsonStr = jsonFile.read();
-jsonFile.close();
+    // دالة بديلة لـ Object.keys في ExtendScript
+    function getObjectKeys(obj) {
+        var keys = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty && obj.hasOwnProperty(key)) {
+                keys.push(key);
+            } else if (obj[key] !== undefined) {
+                keys.push(key);
+            }
+        }
+        return keys;
+    }
 
-var teams;
-try {
-    teams = JSON.parse(jsonStr);
-} catch (e) {
-    alert("خطأ في قراءة JSON: " + e);
-    return;
-}
+    // اختيار الفريق الحالي
+    var teamNames = getObjectKeys(teams); // أسماء الفرق من JSON
+    var choiceStr = "اختر الفريق:\n";
+    for (var i = 0; i < teamNames.length; i++) {
+        choiceStr += (i+1) + ". " + teamNames[i] + "\t";
+    }
 
-// اختيار الفريق الحالي
-var currentTeam = "rezo"; // أو يمكن جعله ديناميكي
-if (!teams[currentTeam]) {
-    alert("الفريق المحدد غير موجود في JSON: " + currentTeam);
-    return;
-}
+    var sel = prompt(choiceStr, "1"); // يطلب الرقم من المستخدم
+    var idx = parseInt(sel, 10) - 1;
 
-var defaultFont = teams[currentTeam].defaultFont;
-var baseFontSize = teams[currentTeam].baseFontSize;
-var minFontSize = teams[currentTeam].minFontSize;
-var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
-var fontMap = teams[currentTeam].fontMap;
+    if (isNaN(idx) || idx < 0 || idx >= teamNames.length) {
+        alert("اختيار غير صالح!");
+        return;
+    }
 
+    var currentTeam = teamNames[idx]; // الفريق المختار
+    if (!teams[currentTeam]) {
+        alert("الفريق المحدد غير موجود في JSON: " + currentTeam);
+        return;
+    }
 
+    var defaultFont = teams[currentTeam].defaultFont;
+    var baseFontSize = teams[currentTeam].baseFontSize;
+    var minFontSize = teams[currentTeam].minFontSize;
+    var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
+    var fontMap = teams[currentTeam].fontMap;
 
     // ========= دوال مساعدة ==========
     function tryGetFont(name) {
@@ -66,6 +121,7 @@ var fontMap = teams[currentTeam].fontMap;
             return null;
         }
     }
+    
     function pickFont(preferred, fallback) {
         var p = tryGetFont(preferred);
         if (p) return p;
@@ -76,32 +132,38 @@ var fontMap = teams[currentTeam].fontMap;
         } catch (e) {}
         return "Arial"; // خط آمن كبديل نهائي
     }
+    
     function toNum(unitVal) {
         try { return parseFloat(String(unitVal)); } catch (e) { return NaN; }
     }
-	
+    
     // ========= قراءة النصوص + بداية كل صفحة ==========
     var pageStartIndices = [];
     var currentPage = -1;
     var allLines = [];
 
-    txtFile.open("r");
-    while (!txtFile.eof) {
-        var line = txtFile.readln() || "";
-        line = line.replace(/^\s+|\s+$/g, "");
+    try {
+        txtFile.open("r");
+        while (!txtFile.eof) {
+            var line = txtFile.readln() || "";
+            line = line.replace(/^\s+|\s+$/g, "");
 
-        var m = line.match(/(?:===\s*)?page\s*(\d+)/i);
-        if (m) {
-            currentPage++;
-            pageStartIndices.push(allLines.length);
-            continue; 
+            var m = line.match(/(?:===\s*)?page\s*(\d+)/i);
+            if (m) {
+                currentPage++;
+                pageStartIndices.push(allLines.length);
+                continue; 
+            }
+
+            if (/^sfx\b/i.test(line)) continue;
+
+            if (line !== "") allLines.push(line);
         }
-
-        if (/^sfx\b/i.test(line)) continue;
-
-        if (line !== "") allLines.push(line);
+        txtFile.close();
+    } catch (e) {
+        alert("فشل في قراءة ملف النص: " + e);
+        return;
     }
-    txtFile.close();
 
     // التحقق بعد قراءة الملف بالكامل
     if (allLines.length === 0) {
@@ -153,6 +215,7 @@ var fontMap = teams[currentTeam].fontMap;
             L("Document '" + doc.name + "' has no path items. Skipping.");
             continue;
         }
+        
         // نجمع ونرتب الباثس
         var pagePaths = [];
         for (var p = 0; p < paths.length; p++) {
@@ -245,7 +308,9 @@ var fontMap = teams[currentTeam].fontMap;
                 textLayer.textItem.kind = TextType.PARAGRAPHTEXT;
                 textLayer.textItem.contents = lineText;
                 textLayer.textItem.justification = Justification.CENTER;
-                try { textLayer.textItem.font = usedFont; } catch (fe) {
+                try { 
+                    textLayer.textItem.font = usedFont; 
+                } catch (fe) {
                     E("Font not found: " + usedFont + ", using Arial");
                     textLayer.textItem.font = "Arial";
                 }
@@ -281,13 +346,13 @@ var fontMap = teams[currentTeam].fontMap;
 
                 doc.selection.deselect();
                 totalInserted++;
-                L("  >>> OK inserted line index " + (lineIndex) + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
+                L("  >>> OK inserted line index " + (lineIndex - 1) + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
 
                 lastUsedFont = usedFont;
                 lastFontSize = newFontSize;
 
             } catch (bubbleErr) {
-                var errMsg = entryPrefix + " : EXCEPTION : " + bubbleErr.toString() + " at line " + bubbleErr.line;
+                var errMsg = entryPrefix + " : EXCEPTION : " + bubbleErr.toString() + (bubbleErr.line ? " at line " + bubbleErr.line : "");
                 E(errMsg);
                 totalErrors++;
                 try { doc.selection.deselect(); } catch (e2) {}
@@ -303,7 +368,13 @@ var fontMap = teams[currentTeam].fontMap;
         try {
             var logFile = new File(txtFile.path + "/photoshop_text_log_verbose.txt");
             logFile.open("w");
-            for (var i = 0; i < log.length; i++) logFile.writeln(log[i]);
+            for (var i = 0; i < log.length; i++) {
+                try {
+                    logFile.writeln(log[i]);
+                } catch (e) {
+                    // تجاهل الأخطاء في كتابة سطر واحد
+                }
+            }
             logFile.close();
         } catch (e) {
             alert("فشل في كتابة ملف اللوج: " + e);
@@ -313,13 +384,24 @@ var fontMap = teams[currentTeam].fontMap;
             if (errors.length > 0) {
                 var errFile = new File(txtFile.path + "/photoshop_text_errors.txt");
                 errFile.open("w");
-                for (var j = 0; j < errors.length; j++) errFile.writeln(errors[j]);
+                for (var j = 0; j < errors.length; j++) {
+                    try {
+                        errFile.writeln(errors[j]);
+                    } catch (e) {
+                        // تجاهل الأخطاء في كتابة سطر واحد
+                    }
+                }
                 errFile.close();
             }
         } catch (e2) {
             alert("فشل في كتابة ملف الأخطاء: " + e2);
         }
 
-        alert("انتهى التشغيل.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
+        // عرض النتائج فقط عند وجود أخطاء
+        if (totalErrors > 0) {
+            alert("انتهى التشغيل مع أخطاء.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
+        } else if (totalInserted === 0) {
+            alert("لم يتم إدراج أي نص.\nتأكد من وجود paths في المستند.");
+        }
     }
 })();
