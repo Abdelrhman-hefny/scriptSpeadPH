@@ -1,4 +1,4 @@
-#target photoshop
+//#target photoshop
 
 app.bringToFront();
 $.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
@@ -88,7 +88,8 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     var teamNames = getObjectKeys(teams); // أسماء الفرق من JSON
     var choiceStr = "اختر الفريق:\n";
     for (var i = 0; i < teamNames.length; i++) {
-        choiceStr += (i+1) + ". " + teamNames[i] + "\t";
+        // اسماء الفرق جنب بعض
+        choiceStr += (i+1) + ". " + teamNames[i] ;
     }
 
     var sel = prompt(choiceStr, "1"); // يطلب الرقم من المستخدم
@@ -110,6 +111,47 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     var minFontSize = teams[currentTeam].minFontSize;
     var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
     var fontMap = teams[currentTeam].fontMap;
+    
+    // قراءة آخر قيمة محفوظة لاستخدامها كقيمة افتراضية
+    var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
+    var lastBase = null;
+    try {
+        if (settingsFile.exists) {
+            settingsFile.open('r');
+            var sraw = settingsFile.read();
+            settingsFile.close();
+            var sobj = null;
+            try { sobj = JSON.parse(sraw); } catch (_je) { sobj = null; }
+            if (sobj && sobj.lastBaseFontSize) lastBase = parseInt(sobj.lastBaseFontSize, 10);
+        }
+    } catch (_re) {}
+
+    // مطالبة المستخدم بحجم الخط الأساسي مع قيمة افتراضية (آخر قيمة أو 30)
+    try {
+        var fsDefault = (lastBase && !isNaN(lastBase) && lastBase > 0) ? lastBase : (baseFontSize || 30);
+        var fsPrompt = prompt("أدخل حجم الخط الأساسي (pt):", String(fsDefault));
+        if (fsPrompt !== null && fsPrompt !== undefined) {
+            var fsVal = parseInt(fsPrompt, 10);
+            if (!isNaN(fsVal) && fsVal > 0) {
+                baseFontSize = fsVal;
+                // تأكد من أن الحد الأدنى لا يتجاوز الأساس
+                if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
+            }
+        } else {
+            // لا إدخال: استخدم 30 كافتراضي
+            baseFontSize = 30;
+        }
+    } catch (_pf) {
+        baseFontSize = baseFontSize || 30;
+    }
+
+    // حفظ آخر قيمة للاستخدام القادم
+    try {
+        var toSave = { lastBaseFontSize: baseFontSize };
+        settingsFile.open('w');
+        settingsFile.write(JSON.stringify(toSave));
+        settingsFile.close();
+    } catch (_we) {}
 
     // ========= دوال مساعدة ==========
     function tryGetFont(name) {
@@ -123,18 +165,76 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
     }
     
     function pickFont(preferred, fallback) {
+        // جرّب المطلوب ثم fallback من JSON
         var p = tryGetFont(preferred);
         if (p) return p;
         var f = tryGetFont(fallback);
         if (f) return f;
+
+        // قائمة بدائل شائعة على ويندوز (PostScriptName أو العائلة)
+        var commonFallbacks = [
+            "Tahoma",
+            "Arial",
+            "SegoeUI",
+            "SegoeUI-Regular",
+            "Segoe UI",
+            "Verdana",
+            "Georgia",
+            "TimesNewRomanPSMT",
+            "Times New Roman",
+            "Impact",
+            "ComicSansMS",
+            "Comic Sans MS"
+        ];
+
+        for (var i = 0; i < commonFallbacks.length; i++) {
+            var cf = tryGetFont(commonFallbacks[i]);
+            if (cf) return cf;
+        }
+
+        // آخر حل: أول خط متاح في فوتوشوب
         try {
             if (app.fonts.length > 0) return app.fonts[0].postScriptName;
         } catch (e) {}
         return "Arial"; // خط آمن كبديل نهائي
     }
     
+    // دالة لتحسين إعدادات الخط بناءً على نوعه
+    function optimizeFontSettings(textLayer, fontName, fontSize) {
+        try {
+            // تحسينات خاصة لأنواع الخطوط المختلفة
+            var fontLower = fontName.toLowerCase();
+            
+            if (fontLower.indexOf("comic") !== -1 || fontLower.indexOf("manga") !== -1) {
+                // خطوط الكوميكس تحتاج مسافات أكثر
+                textLayer.textItem.tracking = 10;
+                textLayer.textItem.leading = fontSize * 1.15;
+            } else if (fontLower.indexOf("arial") !== -1 || fontLower.indexOf("helvetica") !== -1) {
+                // الخطوط العادية
+                textLayer.textItem.tracking = 0;
+                textLayer.textItem.leading = fontSize * 1.1;
+            } else if (fontLower.indexOf("times") !== -1 || fontLower.indexOf("serif") !== -1) {
+                // الخطوط المزخرفة
+                textLayer.textItem.tracking = -5;
+                textLayer.textItem.leading = fontSize * 1.05;
+            }
+            
+            // تحسين عام للوضوح
+            textLayer.textItem.antiAliasMethod = AntiAlias.SMOOTH;
+            textLayer.textItem.autoKerning = AutoKernType.METRICS;
+            
+        } catch (e) {
+            // تجاهل الأخطاء في تحسين الخط
+        }
+    }
+    
     function toNum(unitVal) {
         try { return parseFloat(String(unitVal)); } catch (e) { return NaN; }
+    }
+    
+    // دالة بديلة لـ trim في ExtendScript
+    function trimString(str) {
+        return str.replace(/^\s+|\s+$/g, "");
     }
     
     // ========= قراءة النصوص + بداية كل صفحة ==========
@@ -146,7 +246,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
         txtFile.open("r");
         while (!txtFile.eof) {
             var line = txtFile.readln() || "";
-            line = line.replace(/^\s+|\s+$/g, "");
+            line = trimString(line); // إزالة المسافات من بداية ونهاية السطر
 
             var m = line.match(/(?:===\s*)?page\s*(\d+)/i);
             if (m) {
@@ -249,6 +349,9 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
             L("\n" + entryPrefix);
 
             var lineText = allLines[lineIndex++];
+            
+            // إزالة المسافات الزائدة من بداية ونهاية النص
+            lineText = trimString(lineText);
 
             if (!lineText) {
                 L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
@@ -269,7 +372,7 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
                 var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"));
                 if (regex.test(lineText)) {
                     wantedFont = fontMap[key];
-                    lineText = lineText.replace(regex, "").trim();
+                    lineText = trimString(lineText.replace(regex, ""));
                     break;
                 }
             }
@@ -299,54 +402,124 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
                 var centerX = (x1 + x2) / 2;
                 var centerY = (y1 + y2) / 2;
 
+                // حساب مساحة متاحة مع هامش صغير ثابت وواضح
+                var textLength = lineText.length;
+                // هامش صغير جداً لملء الفقاعة قدر الإمكان
+                var padding = Math.max(2, Math.min(8, Math.min(boxWidth, boxHeight) * 0.03));
+                var availableWidth = Math.max(10, boxWidth - (padding * 2));
+                var availableHeight = Math.max(10, boxHeight - (padding * 2));
+
+                // مربع داخلي ليعطي شكل دائري متناسق
+                var innerSide = Math.min(availableWidth, availableHeight);
+
+                // بحث ثنائي داخل صندوق فقرة مربع مع حد أقصى يساوي قيمة البرومبت
+                var low = Math.max(minFontSize, 6);
+                var high = Math.max(low, baseFontSize); // أقصى حد هو قيمة المستخدم
+                var best = low;
+                var tries = 0;
+                var testLayer = doc.artLayers.add();
+                testLayer.kind = LayerKind.TEXT;
+                testLayer.textItem.kind = TextType.PARAGRAPHTEXT;
+                testLayer.textItem.contents = lineText;
+                testLayer.textItem.justification = Justification.CENTER;
+                try { testLayer.textItem.font = usedFont; } catch (_e) { testLayer.textItem.font = "Arial"; }
+                testLayer.textItem.width = innerSide;
+                testLayer.textItem.height = innerSide;
+                testLayer.textItem.position = [centerX - (innerSide/2), centerY - (innerSide/2)];
+
+                // ضبط أولي للمسافات لتعزيز المظهر الدائري
+                if (lineText.length > 24) testLayer.textItem.tracking = -10;
+                else if (lineText.length <= 8) testLayer.textItem.tracking = 10;
+
+                while (low <= high && tries < 20) {
+                    var mid = Math.floor((low + high) / 2);
+                    testLayer.textItem.size = mid;
+                    // قياس دقيق
+                    var bb = testLayer.bounds;
+                    var bw = Math.max(1, toNum(bb[2]) - toNum(bb[0]));
+                    var bh = Math.max(1, toNum(bb[3]) - toNum(bb[1]));
+                    if (bw <= innerSide && bh <= innerSide) {
+                        best = mid; // صالح
+                        low = mid + 1;
+                    } else {
+                        high = mid - 1;
+                    }
+                    tries++;
+                }
+                var newFontSize = Math.min(best, baseFontSize);
+                try { testLayer.remove(); } catch (_rm) {}
+
+                // إنشاء الطبقة النهائية كنص فقرة داخل المساحة المتاحة مع هامش
                 var textLayer = doc.artLayers.add();
                 textLayer.kind = LayerKind.TEXT;
                 if (!textLayer.textItem) {
                     throw new Error("Failed to create text item for path: " + pathName);
                 }
-
                 textLayer.textItem.kind = TextType.PARAGRAPHTEXT;
                 textLayer.textItem.contents = lineText;
                 textLayer.textItem.justification = Justification.CENTER;
-                try { 
-                    textLayer.textItem.font = usedFont; 
-                } catch (fe) {
-                    E("Font not found: " + usedFont + ", using Arial");
-                    textLayer.textItem.font = "Arial";
-                }
-                textLayer.textItem.size = curFontSize;
-
-                var startLeft = centerX - (boxWidth / 2);
-                var startTop = centerY - (boxHeight / 2);
-                textLayer.textItem.width = boxWidth;
-                textLayer.textItem.height = boxHeight;
-                textLayer.textItem.position = [startLeft, startTop];
-
-                // قياس النص والتعديل على الحجم
-                var tbounds = textLayer.bounds;
-                var tLeft = toNum(tbounds[0]), tTop = toNum(tbounds[1]), tRight = toNum(tbounds[2]), tBottom = toNum(tbounds[3]);
-                var tW = tRight - tLeft;
-                var tH = tBottom - tTop;
-
-                var scaleW = boxWidth / tW;
-                var scaleH = boxHeight / tH;
-                var fontScale = Math.min(scaleW, scaleH, 1);
-
-                var newFontSize = Math.max(minFontSize, Math.floor(curFontSize * fontScale));
+                optimizeFontSettings(textLayer, usedFont, newFontSize);
+                try { textLayer.textItem.font = usedFont; } catch (fe) { E("Font not found: " + usedFont + ", using Arial"); textLayer.textItem.font = "Arial"; }
                 textLayer.textItem.size = newFontSize;
 
-                tbounds = textLayer.bounds;
-                var fL = toNum(tbounds[0]), fT = toNum(tbounds[1]);
-                var fR = toNum(tbounds[2]), fB = toNum(tbounds[3]);
-                var fCX = (fL + fR) / 2;
-                var fCY = (fT + fB) / 2;
-                var dx = centerX - fCX;
-                var dy = centerY - fCY;
-                textLayer.translate(dx, dy);
+                var startLeft = centerX - (availableWidth / 2);
+                var startTop = centerY - (availableHeight / 2);
+                // حرّك الصندوق للداخل ليترك هامش داخل حدود الفقاعة
+                startLeft = startLeft + 0; // المركزية بالفعل تحقق الهامش عبر availableWidth/Height
+                startTop = startTop + 0;
+                textLayer.textItem.width = availableWidth;
+                textLayer.textItem.height = availableHeight;
+                textLayer.textItem.position = [startLeft, startTop];
+
+                // قياس وتحريك دقيق لتوسيط الطبقة داخل مركز الفقاعة
+                var tb = textLayer.bounds;
+                var tl = toNum(tb[0]), tt = toNum(tb[1]), tr = toNum(tb[2]), tbm = toNum(tb[3]);
+                var cX = (tl + tr) / 2;
+                var cY = (tt + tbm) / 2;
+                var dxx = centerX - cX;
+                var dyy = centerY - cY;
+                if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) textLayer.translate(dxx, dyy);
+
+                // ========= إضافة التحسينات البصرية للخط =========
+                try {
+                    // إضافة حدود للخط (Stroke) لجعله أكثر وضوحاً
+                    var stroke = textLayer.effects.add();
+                    stroke.kind = "stroke";
+                    stroke.enabled = true;
+                    stroke.mode = "normal";
+                    stroke.opacity = 75;
+                    stroke.size = Math.max(1, Math.floor(newFontSize * 0.02)); // حجم حدود أخف مع الهامش
+                    stroke.position = "outside";
+                    stroke.color = new SolidColor();
+                    stroke.color.rgb.red = 255;
+                    stroke.color.rgb.green = 255;
+                    stroke.color.rgb.blue = 255; // حدود بيضاء
+                    
+                    // تحسين لون النص
+                    var textColor = new SolidColor();
+                    textColor.rgb.red = 0;
+                    textColor.rgb.green = 0;
+                    textColor.rgb.blue = 0; // نص أسود
+                    textLayer.textItem.color = textColor;
+                    
+                    // تحسين المسافات بين الأحرف للقراءة الأفضل
+                    if (textLength > 15) {
+                        textLayer.textItem.tracking = -20; // تقليل المسافة بين الأحرف للنصوص الطويلة
+                    } else if (textLength <= 5) {
+                        textLayer.textItem.tracking = 20; // زيادة المسافة بين الأحرف للكلمات القصيرة
+                    }
+                    
+                    // تحسين المسافة بين الأسطر لجعل النص أكثر اتزاناً داخل الصندوق
+                    textLayer.textItem.leading = Math.round(newFontSize * 1.05);
+                    
+                } catch (effectError) {
+                    // إذا فشل تطبيق التأثيرات، نكمل بدونها
+                    L("  Warning: Could not apply visual effects: " + effectError);
+                }
 
                 doc.selection.deselect();
                 totalInserted++;
-                L("  >>> OK inserted line index " + (lineIndex - 1) + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
+                L("  >>> OK inserted line index " + (lineIndex - 1) + " fontSize: " + textLayer.textItem.size + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
 
                 lastUsedFont = usedFont;
                 lastFontSize = newFontSize;
@@ -397,11 +570,20 @@ if (!teams || typeof teams !== "object" || isArray(teams)) {
             alert("فشل في كتابة ملف الأخطاء: " + e2);
         }
 
-        // عرض النتائج فقط عند وجود أخطاء
+        // عرض النتائج مع معلومات إضافية عن التحسينات
         if (totalErrors > 0) {
             alert("انتهى التشغيل مع أخطاء.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
         } else if (totalInserted === 0) {
             alert("لم يتم إدراج أي نص.\nتأكد من وجود paths في المستند.");
+        } else {
+            // رسالة نجاح مع معلومات عن التحسينات المطبقة
+            alert("تم إدراج النصوص بنجاح! ✨\n\n" +
+                  "التحسينات المطبقة:\n" +
+                  "• تكيف ذكي لحجم الخط مع الفقاعة\n" +
+                  "• حدود للوضوح\n" +
+                  "• تحسين المسافات والموضع\n" +
+                  "• تحسينات بصرية للخط\n\n" +
+                  "عدد النصوص المدرجة: " + totalInserted);
         }
     }
 })();

@@ -1,34 +1,23 @@
 Photoshop Text Import - verbose log
-Date: Sun Sep 07 2025 10:02:08 GMT+0300
+Date: Sun Sep 07 2025 11:39:18 GMT+0300
 TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
-Total lines read: 6
-Pages detected: 2
-Base font size: 30  minFontSize: 20
+Total lines read: 2
+Pages detected: 0
+Base font size: 33  minFontSize: 20
 ========================================
 
 --- Processing document: 01.psd ---
- Reset lineIndex to start of page 1 (line 0)
 
 File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
-  >>> OK inserted line index 0 textPreview: "dfsd1"
+  Warning: Could not apply visual effects: TypeError: undefined is not an object
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
 
 File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2
-  >>> OK inserted line index 1 textPreview: "f"
-
-File=01.psd | BubbleIndex=3 | PathName=page_01_bubble3
-  >>> OK inserted line index 2 textPreview: "dfdsfd"
-
-File=01.psd | BubbleIndex=4 | PathName=page_01_bubble4
-  >>> OK inserted line index 3 textPreview: "sfdsf"
-
-File=01.psd | BubbleIndex=5 | PathName=page_01_bubble5
-  >>> OK inserted line index 4 textPreview: "dsfddf"
-
-File=01.psd | BubbleIndex=6 | PathName=page_01_bubble6
-  >>> OK inserted line index 5 textPreview: "df"
+  Warning: Could not apply visual effects: TypeError: undefined is not an object
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Aaaargh! That's it! This is so frustrating!"
 No more lines to place (finished allLines).
 
 ===== Summary =====
-Inserted: 6
+Inserted: 2
 Errors: 0
 Skipped: 0
