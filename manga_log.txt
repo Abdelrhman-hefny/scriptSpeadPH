@@ -1,0 +1,14 @@
+===== Run @ Monday, 08 Sep 2025 06:36:40 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+

@@ -17,6 +17,9 @@
         if (typeof toNum === 'undefined') {
             toNum = function (unitVal) { try { return parseFloat(String(unitVal)); } catch (e) { return NaN; } };
         }
+        if (typeof toPx === 'undefined') {
+            toPx = function (v) { try { return v.as("px"); } catch (e) { return Number(v); } };
+        }
         if (typeof trimString === 'undefined') {
             trimString = function (str) { return String(str).replace(/^\s+|\s+$/g, ""); };
         }

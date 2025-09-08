@@ -6,6 +6,58 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/psHelpers.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textReader.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
 
+// ===== Text Layer Helpers =====
+// trimString and toPx are already defined in psHelpers.jsx
+
+// اجمع كل طبقات النص (Recursive)
+function collectTextLayers(container, out) {
+    for (var i = 0; i < container.layers.length; i++) {
+        var lyr = container.layers[i];
+        if (lyr.typename === "ArtLayer" && lyr.kind === LayerKind.TEXT) {
+            out.push(lyr);
+        } else if (lyr.typename === "LayerSet") {
+            collectTextLayers(lyr, out);
+        }
+    }
+}
+
+// حساب السطوع من RGB
+function luminance(r, g, b) {
+    return 0.299*r + 0.587*g + 0.114*b;
+}
+
+// اخد عينة من بكسل معين
+function samplePixel(doc, x, y) {
+    try {
+        // مسح ColorSamplers الموجودة أولاً
+        while (doc.colorSamplers.length > 0) {
+            doc.colorSamplers[0].remove();
+        }
+        
+        var colorSampler = doc.colorSamplers.add([UnitValue(x,"px"), UnitValue(y,"px")]);
+        var c = colorSampler.color.rgb;
+        var rgb = [c.red, c.green, c.blue];
+        colorSampler.remove();
+        return rgb;
+    } catch (e) {
+        // في حالة الفشل، أرجع لون افتراضي
+        return [128, 128, 128]; // رمادي متوسط
+    }
+}
+
+(function() {
+    // تمييز الأسطر التي تتطلب ستروك 3px وعكس اللون
+    function parseStrokeTag(line) {
+        try {
+            var m = String(line).match(/^\s*(?:NA:\s*|\*\*:\s*|SFX:\s*|ST:\s*|Ot:\s*|OT:\s*|#\s*)([\s\S]*)$/);
+            if (m) { return { needed: true, text: trimString(m[1]) }; }
+        } catch (_e) {}
+        return { needed: false, text: line };
+    }
+    // نعرّفها على النطاق العام للاستخدام بالأسفل
+    this.__parseStrokeTag = parseStrokeTag;
+}).call(this);
+
 (function() {
     // التحقق من وجود Photoshop
     if (typeof app === "undefined" || !app) {
@@ -76,6 +128,10 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     // إلغاء البروجرس بار للسرعة القصوى
     var noProgressBar = true;
     
+    // تعويض بصري لتمركز النص رأسيًا داخل البوكس (بسبب اختلاف الـ ascender/descender)
+    // يمكن تعديل النسبة لو لاحظت انحرافًا بسيطًا لأعلى/أسفل
+    var verticalCenterCompensationRatio = 0.12; // 12% من حجم الخط
+    
     // قراءة آخر قيمة محفوظة لاستخدامها كقيمة افتراضية
     var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
     var lastBase = null;
@@ -127,8 +183,10 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     }
 
     // ========= لوج ==========
-    function L(_) {}
-    function E(_) {}
+    var __logs = [];
+    var __errs = [];
+    function L(msg) { try { __logs.push(String(msg)); } catch (_l) {} }
+    function E(msg) { try { __errs.push(String(msg)); } catch (_e) {} }
 
     // ====== Progress removed for maximum speed ======
 
@@ -143,6 +201,9 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     // ====== نلف على كل المستندات المفتوحة بالترتيب ======
     for (var d = 0; d < app.documents.length; d++) {
         var doc = app.documents[d];
+        // فرض استخدام البيكسل لتوحيد الحسابات ثم نرجع الإعداد لاحقًا
+        var prevUnits = app.preferences.rulerUnits;
+        try { app.preferences.rulerUnits = Units.PIXELS; } catch (_ue) {}
         try {
             app.activeDocument = doc;
         } catch (e) {
@@ -159,61 +220,116 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
             pageCounter++;
         }
 
+        // جمع الباثس
         var paths = doc.pathItems;
-        if (!paths || paths.length === 0) {
-            L("Document '" + doc.name + "' has no path items. Skipping.");
-            continue;
+        var pagePaths = [];
+        if (paths && paths.length > 0) {
+            for (var p = 0; p < paths.length; p++) {
+                try { pagePaths.push(paths[p]); } catch (e) {}
+            }
+            pagePaths.sort(function (a, b) {
+                try {
+                    var ma = a.name.match(/bubble[_\s-]?(\d+)/i);
+                    var mb = b.name.match(/bubble[_\s-]?(\d+)/i);
+                    var na = ma ? parseInt(ma[1], 10) : 999999;
+                    var nb = mb ? parseInt(mb[1], 10) : 999999;
+                    return na - nb;
+                } catch (e) { return 0; }
+            });
         }
         
-        // نجمع ونرتب الباثس
-        var pagePaths = [];
-        for (var p = 0; p < paths.length; p++) {
-            try { pagePaths.push(paths[p]); } catch (e) {}
+        // جمع طبقات النص
+        var textLayers = [];
+        collectTextLayers(doc, textLayers);
+        if (textLayers.length > 0) {
+            // ترتيب بصري من أعلى لأسفل حسب bounds
+            textLayers.sort(function(a, b) {
+                var ay = toPx(a.bounds[1]); // top
+                var by = toPx(b.bounds[1]);
+                return ay - by; // الأصغر فوق
+            });
         }
-        pagePaths.sort(function (a, b) {
-            try {
-                var ma = a.name.match(/bubble[_\s-]?(\d+)/i);
-                var mb = b.name.match(/bubble[_\s-]?(\d+)/i);
-                var na = ma ? parseInt(ma[1], 10) : 999999;
-                var nb = mb ? parseInt(mb[1], 10) : 999999;
-                return na - nb;
-            } catch (e) { return 0; }
-        });
+        
+        // إذا لم يوجد باثس ولا طبقات نص، نتخطى المستند
+        if (pagePaths.length === 0 && textLayers.length === 0) {
+            L("Document '" + doc.name + "' has no path items or text layers. Skipping.");
+            continue;
+        }
 
-        // ======= قبل حلقة pagePaths =======
+        // ======= قبل حلقة المعالجة =======
         var lastUsedFont = null;
         var lastFontSize = baseFontSize;
+        
+        // اختيار إما الباثس أو طبقات النص (الباثس له الأولوية)
+        var allItems = [];
+        if (pagePaths.length > 0) {
+            // إذا وجد باثس، استخدم الباثس فقط
+            for (var k = 0; k < pagePaths.length; k++) {
+                allItems.push({type: "path", item: pagePaths[k], index: k});
+            }
+            L("Found " + pagePaths.length + " paths. Using paths only (text layers ignored).");
+        } else if (textLayers.length > 0) {
+            // إذا لم يوجد باثس، استخدم طبقات النص
+            for (var t = 0; t < textLayers.length; t++) {
+                allItems.push({type: "text", item: textLayers[t], index: t});
+            }
+            L("No paths found. Using " + textLayers.length + " text layers.");
+        }
 
-        for (var k = 0; k < pagePaths.length; k++) {
+        for (var k = 0; k < allItems.length; k++) {
             if (lineIndex >= allLines.length) {
                 L("No more lines to place (finished allLines).");
                 break;
             }
 
             // removed cancelRequested/progress UI for speed
-            var pathItem = pagePaths[k];
-            var pathName = "(unknown)";
-            try { pathName = pathItem.name; } catch (e) {}
+            var currentItem = allItems[k];
+            var itemType = currentItem.type;
+            var item = currentItem.item;
+            var itemName = "(unknown)";
+            try { 
+                if (itemType === "path") {
+                    itemName = item.name;
+                } else {
+                    itemName = item.name || "TextLayer_" + (currentItem.index + 1);
+                }
+            } catch (e) {}
 
-            var entryPrefix = "File=" + doc.name + " | BubbleIndex=" + (k+1) + " | PathName=" + pathName;
+            var entryPrefix = "File=" + doc.name + " | " + (itemType === "path" ? "BubbleIndex" : "TextIndex") + "=" + (currentItem.index+1) + " | " + (itemType === "path" ? "PathName" : "LayerName") + "=" + itemName;
             if (!ultraFastMode) L("\n" + entryPrefix);
 
             var lineText = allLines[lineIndex++];
             
             // إزالة المسافات الزائدة من بداية ونهاية النص
             lineText = trimString(lineText);
+            // تحليل وسوم الستروك الخاصة
+            var __strokeNeed = false;
+            (function(){
+                try {
+                    var m = String(lineText).match(/^\s*(?:NA:\s*|\*\*:\s*|SFX:\s*|ST:\s*|Ot:\s*|OT:\s*|#\s*)([\s\S]*)$/);
+                    if (m) { __strokeNeed = true; lineText = trimString(m[1]); }
+                } catch(_pt) {}
+            })();
 
             if (!lineText) {
-                L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
+                L("Skipped " + itemType + " " + (currentItem.index+1) + " in " + doc.name + " because no text line is available.");
                 totalSkipped++;
                 continue;
             }
 
-            // التأكد من أن الباث صالح
-            if (!pathItem || !pathItem.subPathItems || pathItem.subPathItems.length === 0) {
-                E("Invalid or empty path: " + pathName);
-                totalErrors++;
-                continue;
+            // التأكد من أن العنصر صالح
+            if (itemType === "path") {
+                if (!item || !item.subPathItems || item.subPathItems.length === 0) {
+                    E("Invalid or empty path: " + itemName);
+                    totalErrors++;
+                    continue;
+                }
+            } else if (itemType === "text") {
+                if (!item || item.kind !== LayerKind.TEXT) {
+                    E("Invalid text layer: " + itemName);
+                    totalErrors++;
+                    continue;
+                }
             }
 
             // تحديد الخط
@@ -238,9 +354,210 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
             }
 
             try {
-                pathItem.makeSelection();
-                if (!doc.selection || !doc.selection.bounds) {
-                    throw new Error("No valid selection for path: " + pathName);
+                if (itemType === "path") {
+                    // معالجة الباث
+                    item.makeSelection();
+                    if (!doc.selection || !doc.selection.bounds) {
+                        throw new Error("No valid selection for path: " + itemName);
+                    }
+                } else if (itemType === "text") {
+                    // معالجة طبقة النص
+                    // حساب حدود الطبقة قبل تحديث المحتوى (للحصول على الحجم الأصلي)
+                    var originalBounds = item.bounds;
+                    var x1 = toPx(originalBounds[0]), y1 = toPx(originalBounds[1]), x2 = toPx(originalBounds[2]), y2 = toPx(originalBounds[3]);
+                    var w = x2 - x1, h = y2 - y1;
+                    var centerX = (x1 + x2) / 2;
+                    var centerY = (y1 + y2) / 2;
+                    
+                    // تحديث محتوى النص بعد حساب الحدود
+                    item.textItem.contents = lineText;
+                    try { item.name = lineText; } catch (e) {}
+                    
+                    // التأكد من تحديث النص
+                    if (item.textItem.contents !== lineText) {
+                        item.textItem.contents = lineText;
+                    }
+
+                    // حساب مساحة متاحة مع هامش (نفس منطق الباثس)
+                    var boxWidth = Math.max(10, w * (1 - boxPaddingRatio));
+                    var boxHeight = Math.max(10, h * (1 - boxPaddingRatio));
+                    
+                    // هامش صغير لملء الفقاعة قدر الإمكان
+                    var padding = Math.max(2, Math.min(8, Math.min(boxWidth, boxHeight) * 0.03));
+                    var availableWidth = Math.max(10, boxWidth - (padding * 2));
+                    var availableHeight = Math.max(10, boxHeight - (padding * 2));
+
+                    // مربع داخلي ليعطي شكل دائري متناسق
+                    var innerSide = Math.min(availableWidth, availableHeight);
+
+                    // بحث ثنائي لحجم الخط المناسب (نفس منطق الباثس)
+                    var low = Math.max(minFontSize, 6);
+                    var high = Math.max(low, baseFontSize);
+                    var best = low;
+                    var tries = 0;
+                    var testLayer = doc.artLayers.add();
+                    testLayer.kind = LayerKind.TEXT;
+                    testLayer.textItem.kind = TextType.PARAGRAPHTEXT;
+                    testLayer.textItem.contents = lineText;
+                    testLayer.textItem.justification = Justification.CENTER;
+                    try { testLayer.textItem.font = usedFont; } catch (_e) { testLayer.textItem.font = "Arial"; }
+                    testLayer.textItem.width = innerSide;
+                    testLayer.textItem.height = innerSide;
+                    testLayer.textItem.position = [centerX - (innerSide/2), centerY - (innerSide/2)];
+
+                    // ضبط أولي للمسافات لتعزيز المظهر الدائري
+                    if (lineText.length > 24) testLayer.textItem.tracking = -10;
+                    else if (lineText.length <= 8) testLayer.textItem.tracking = 10;
+
+                    while (low <= high && tries < 20) {
+                        var mid = Math.floor((low + high) / 2);
+                        testLayer.textItem.size = mid;
+                        var bb = testLayer.bounds;
+                        var bw = Math.max(1, toNum(bb[2]) - toNum(bb[0]));
+                        var bh = Math.max(1, toNum(bb[3]) - toNum(bb[1]));
+                        if (bw <= innerSide && bh <= innerSide) {
+                            best = mid;
+                            low = mid + 1;
+                        } else {
+                            high = mid - 1;
+                        }
+                        tries++;
+                    }
+                    var newFontSize = Math.min(best, baseFontSize);
+                    try { testLayer.remove(); } catch (_rm) {}
+
+                    // تطبيق الإعدادات على الطبقة الأصلية
+                    item.textItem.kind = TextType.PARAGRAPHTEXT;
+                    item.textItem.justification = Justification.CENTER;
+                    try { item.textItem.font = usedFont; } catch (fe) { 
+                        E("Font not found: " + usedFont + ", using Arial"); 
+                        item.textItem.font = "Arial"; 
+                    }
+                    item.textItem.size = newFontSize;
+
+                    // ضبط نوع المحاذاة وضمان تمركز baseline
+                    item.textItem.justification = Justification.CENTER;
+                    item.textItem.direction = Direction.HORIZONTAL;
+
+                    // تحديد موضع النص في المنتصف بدقة (left, top)
+                    var startLeft = centerX - (availableWidth / 2);
+                    // تعويض رأسي بسيط لتمركز بصري أدق
+                    var startTop = centerY - (availableHeight / 2) - (newFontSize * verticalCenterCompensationRatio);
+                    item.textItem.width = availableWidth;
+                    item.textItem.height = availableHeight;
+                    item.textItem.position = [startLeft, startTop];
+
+                    // قياس وتحريك دقيق لتوسيط الطبقة داخل مركز الفقاعة (نعتمد على bounds بعد ضبط width/height)
+                    var tb = item.bounds;
+                    var tl = toNum(tb[0]), tt = toNum(tb[1]), tr = toNum(tb[2]), tbm = toNum(tb[3]);
+                    var cX = (tl + tr) / 2;
+                    var cY = (tt + tbm) / 2;
+                    var dxx = centerX - cX;
+                    // عوض الفرق الرأسي وفق حجم الخط
+                    var dyy = (centerY - cY) - (newFontSize * verticalCenterCompensationRatio);
+                    
+                    // تحريك الطبقة للمركز بدقة أكبر
+                    if (Math.abs(dxx) > 0.5 || Math.abs(dyy) > 0.5) {
+                        item.translate(dxx, dyy);
+                    }
+                    
+                    // إعادة تطبيق الموضع للتأكد من التوسيط
+                    var finalBounds = item.bounds;
+                    var finalX = (toNum(finalBounds[0]) + toNum(finalBounds[2])) / 2;
+                    var finalY = (toNum(finalBounds[1]) + toNum(finalBounds[3])) / 2;
+                    var finalDx = centerX - finalX;
+                    var finalDy = (centerY - finalY) - (newFontSize * verticalCenterCompensationRatio);
+                    if (Math.abs(finalDx) > 0.5 || Math.abs(finalDy) > 0.5) {
+                        item.translate(finalDx, finalDy);
+                    }
+
+                    // تأكد أن الطبقة مرئية
+                    item.visible = true;
+
+                    // خد عينة لون من الخلفية (بدون إخفاء الطبقة)
+                    var rgb = samplePixel(doc, centerX, centerY);
+
+                    var bright = luminance(rgb[0], rgb[1], rgb[2]);
+
+                    // غامق أو فاتح
+                    var c = new SolidColor();
+                    if (bright < 128) {
+                        // خلفية غامقة → نص أبيض
+                        c.rgb.red = 255; c.rgb.green = 255; c.rgb.blue = 255;
+                    } else {
+                        // خلفية فاتحة → نص أسود
+                        c.rgb.red = 0; c.rgb.green = 0; c.rgb.blue = 0;
+                    }
+                    item.textItem.color = c;
+                    // ستروك 3px وعكس اللون عند الحاجة
+                    if (__strokeNeed) {
+                        try {
+                            var strokeColor = new SolidColor();
+                            if (c.rgb.red === 255 && c.rgb.green === 255 && c.rgb.blue === 255) {
+                                strokeColor.rgb.red = 0; strokeColor.rgb.green = 0; strokeColor.rgb.blue = 0;
+                            } else {
+                                strokeColor.rgb.red = 255; strokeColor.rgb.green = 255; strokeColor.rgb.blue = 255;
+                            }
+                            var fx = item.layerEffects || item.effects; // توافق
+                            var st = fx.add();
+                            st.kind = "stroke";
+                            st.enabled = true;
+                            st.mode = "normal";
+                            st.opacity = 100;
+                            st.size = 3;
+                            st.position = "outside";
+                            st.color = strokeColor;
+                        } catch (se) {}
+                    }
+
+                    // إضافة التحسينات البصرية للخط (نفس الباثس)
+                    if (!fastMode) {
+                        try {
+                            // حدود خفيفة + لون
+                            var stroke = item.effects.add();
+                            stroke.kind = "stroke";
+                            stroke.enabled = true;
+                            stroke.mode = "normal";
+                            stroke.opacity = 75;
+                            stroke.size = Math.max(1, Math.floor(newFontSize * 0.02));
+                            stroke.position = "outside";
+                            stroke.color = new SolidColor();
+                            stroke.color.rgb.red = 255;
+                            stroke.color.rgb.green = 255;
+                            stroke.color.rgb.blue = 255;
+                            
+                            // تحسين المسافات
+                            var textLength = lineText.length;
+                            if (textLength > 15) item.textItem.tracking = -20;
+                            else if (textLength <= 5) item.textItem.tracking = 20;
+                            item.textItem.leading = Math.round(newFontSize * 1.05);
+                        } catch (effectError) { 
+                            if (!ultraFastMode) L("  Warning: Could not apply visual effects: " + effectError); 
+                        }
+                    }
+                    
+                    // التأكد النهائي من أن الطبقة مرئية ومحدثة
+                    item.visible = true;
+                    item.opacity = 100;
+                    
+                    // التأكد النهائي من تحديث النص
+                    if (item.textItem.contents !== lineText) {
+                        item.textItem.contents = lineText;
+                    }
+                    
+                    totalInserted++;
+                    L("  >>> OK updated text layer " + (currentItem.index + 1) + " fontSize: " + item.textItem.size + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
+                    
+                    lastUsedFont = usedFont;
+                    lastFontSize = curFontSize;
+                } else {
+                    // إذا لم يكن path أو text، تخطى
+                    L("Unknown item type: " + itemType);
+                }
+                
+                // إذا كان text layer، انتقل للعنصر التالي
+                if (itemType === "text") {
+                    continue;
                 }
 
                 var selBounds = doc.selection.bounds;
@@ -321,6 +638,39 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
                 textLayer.textItem.height = availableHeight;
                 textLayer.textItem.position = [startLeft, startTop];
 
+                // ضبط لون النص بناءً على لون الخلفية عند مركز الفقاعة
+                try {
+                    var tlWasVisible = textLayer.visible;
+                    textLayer.visible = false; // أخفِ النص مؤقتًا حتى لا يؤثر على القراءة
+                    var centerRgb = samplePixel(doc, centerX, centerY);
+                    textLayer.visible = tlWasVisible;
+                    var centerBright = luminance(centerRgb[0], centerRgb[1], centerRgb[2]);
+                    var autoColor = new SolidColor();
+                    if (centerBright < 128) { autoColor.rgb.red = 255; autoColor.rgb.green = 255; autoColor.rgb.blue = 255; }
+                    else { autoColor.rgb.red = 0; autoColor.rgb.green = 0; autoColor.rgb.blue = 0; }
+                    textLayer.textItem.color = autoColor;
+                    // ستروك 3px وعكس اللون عند الحاجة
+                    if (__strokeNeed) {
+                        try {
+                            var strokeColor2 = new SolidColor();
+                            if (autoColor.rgb.red === 255 && autoColor.rgb.green === 255 && autoColor.rgb.blue === 255) {
+                                strokeColor2.rgb.red = 0; strokeColor2.rgb.green = 0; strokeColor2.rgb.blue = 0;
+                            } else {
+                                strokeColor2.rgb.red = 255; strokeColor2.rgb.green = 255; strokeColor2.rgb.blue = 255;
+                            }
+                            var fxe = textLayer.layerEffects || textLayer.effects;
+                            var st2 = fxe.add();
+                            st2.kind = "stroke";
+                            st2.enabled = true;
+                            st2.mode = "normal";
+                            st2.opacity = 100;
+                            st2.size = 3;
+                            st2.position = "outside";
+                            st2.color = strokeColor2;
+                        } catch (se2) {}
+                    }
+                } catch(_colErr) {}
+
                 // قياس وتحريك دقيق لتوسيط الطبقة داخل مركز الفقاعة
                 var tb = textLayer.bounds;
                 var tl = toNum(tb[0]), tt = toNum(tb[1]), tr = toNum(tb[2]), tbm = toNum(tb[3]);
@@ -373,13 +723,35 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
             // progress updates removed for speed
         }
 
-        // summaries and file logging removed to reduce size and I/O
+        // summaries and file logging
+        try {
+            var logPath = txtFile.path + "/manga_log.txt";
+            var lf = new File(logPath);
+            if (lf.open("a")) {
+                var now = new Date();
+                lf.writeln("===== Run @ " + now.toUTCString() + " | Doc: " + doc.name + " =====");
+                lf.writeln("Inserted=" + totalInserted + ", Skipped=" + totalSkipped + ", Errors=" + totalErrors);
+                if (__errs.length > 0) {
+                    lf.writeln("-- Errors --");
+                    for (var ei = 0; ei < __errs.length; ei++) lf.writeln(__errs[ei]);
+                }
+                if (__logs.length > 0) {
+                    lf.writeln("-- Logs --");
+                    for (var li = 0; li < __logs.length; li++) lf.writeln(__logs[li]);
+                }
+                lf.writeln("");
+                lf.close();
+            }
+        } catch (_lferr) {}
+
+        // استرجاع وحدات القياس الأصلية
+        try { app.preferences.rulerUnits = prevUnits; } catch (_ur) {}
 
         // عرض النتائج مع معلومات إضافية عن التحسينات
         if (totalErrors > 0) {
             alert("انتهى التشغيل مع أخطاء.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
         } else if (totalInserted === 0) {
-            alert("لم يتم إدراج أي نص.\nتأكد من وجود paths في المستند.");
+            alert("لم يتم إدراج أي نص.\nتأكد من وجود paths أو text layers في المستند.");
         } else {
             // رسالة نجاح مع معلومات عن التحسينات المطبقة
             alert("تم إدراج النصوص بنجاح! ✨\n\n" +
@@ -387,7 +759,9 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
                   "• تكيف ذكي لحجم الخط مع الفقاعة\n" +
                   "• حدود للوضوح\n" +
                   "• تحسين المسافات والموضع\n" +
-                  "• تحسينات بصرية للخط\n\n" +
+                  "• تحسينات بصرية للخط\n" +
+                  "• كشف تلقائي للون الخلفية للنص\n" +
+                  "• دعم الباثس وطبقات النص\n\n" +
                   "عدد النصوص المدرجة: " + totalInserted);
         }
     }
