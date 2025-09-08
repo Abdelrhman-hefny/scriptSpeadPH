@@ -1,7 +1,234 @@
-page 1
-[]: Spirit Labyrinth - Third Floor
 
-st: Spirit Labyrinth - Third Floor
-[]: Spirit Labyrinth - Third Floor
+page 3
+
+"": We've met much earlier than expected.
+//: Seems like a bond has been formed between two celestial beings!
+
+[]: As a reward, you will receive an Ex Guaranteed Board Ticket.
+
+:: Y-You know this is all just a joke, right...? Right..?
+//: Uh, yeah??
+
+[]: A white-grade character completely trusts the user.
+
+[]: You are in a state of 100% assimilation with a white-grade character.
+
+"": Jokes are fine, don't worry.
+
+[]: Hidden skill <Single Strike Pierce> ready to use.
+
+"": I'm just joking too.
+
+page 4
+
+"": Single Strike Pierce.
+
+:: Waaah-?! Are you crazy? How can this be considered a joke!!
+
+:: Don’t just stand there, help me!!
+
+:: Are you doing this because you want to see the whole dungeon turn to dust?!
+
+page 5
+
+"": Bulwark Cascade!
+
+"": Waaah, a mythic-level barrier magic circle
+breaking from a sword strike?!!!
+
+"": Mana, pour in even more mana!!
+
+"": Hold your shield properly! If you don't want to be vaporized!!
+
+"": They should be fine, right?
+//: I purposely held back some strength.
+
+"": Seeing them make such a fuss, it seems they appear to be fine.
+//: Then, this general will take his leave.
+
+page 6
+
+"": The shield... is....
+
+"": I thought the whole dungeon was evaporating...!
+
+"": How much is this worth...!
+
+"": No, this is crazy… Is this a bug...?
+
+[]: Please choose your reward!
+
+"": How come <Heavenly Martial Body-Iv.3>, <Single Strike Pierce> appear again as rewards?
+
+"": That's great! Since I have Heavenly Martial Body, this is a good chance to get Single Strike Pierce!
+
+"": That's true, but.......
+
+"": What if,
+
+page 7
+
+"": What would happen if you selected Heavenly Martial Body again?
+
+:: Eek... What do you mean by that, master?!
+
+"": Even getting a level 3 talent once is extremely rare,
+
+//: and getting the exact same talent twice? That's truly beating odds that shouldn't even exist.
+
+"": Right...?
+
+"": If you've beaten such extreme odds, there should be some sort of reward, don't you think?
+
+"": Maybe Heavenly Martial Body gets enhanced...
+
+"": Or its level goes up...!
+
+"": H-Hey, that definitely sounds reasonable...!
+
+"": And I did draw Choi Chung-gyeong again so easily,
+
+"": So I feel like the energy of the universe is gathering around me!
+
+"": Okay, I feel it.
+
+page 8
+
+:: This goes to Heavenly Martial Bodyyy!!!
+
+[]: <Heavenly Martial Body-Iv.3> is a complete, ultimate talent. Further enhancement is impossible.
+
+"": Huh?
+
+:: W-Wait... N-Nooooo—!!!
+//: Let me choose again, pllease—!!
+
+:: My Single Strike Pierce!!!!
+
+[]: Reward selection has been canceled. The remaining rewards have been automatically acquired.
+
+[]: Skill <Single Strike Pierce> has been acquired.
+
+:: Wow...
+//: Thank you… Universe...!
+
+:: I will never gamble like this again…!
+
+page 9
+
+[]: For the first time, an attempt to enhance <Talent> has been made.
+
+[]:: As a reward, a <special item> has been stocked in Winry's Point Shop.
+
+[]:: The ultimate form of talent
+
+"": It temporarily allows you to handle talents at the highest mastery level...?
+
+"": No,
+
+//: It's not permanent? What kind of prize is that...!
+
+:: Hey, what's with you!
+
+:: How do you know how to use the 'Concept Sever' skill?!
+
+:: C-Could it be… that you got that skill through the road...?
+
+PR/N: No Idea what road is i checked the [names] to find nun
+
+"": Concept Sever...? What is that?
+//: Are you talking about Single Strike Pierce?
+
+:: You’re using it without knowing what it even is?!
+//: We could have all died, you jerk!!
+
+"": I-I'm sorry....
+
+"": Hmph, really.
+
+"": I'll explain briefly.
+
+page 10
+
+"": 'Concept Sever',
+
+"": means a level where you can momentarily break the system of the universe.
+
+"": For example, like when you tried to blow up our hideout...
+//: You’re basically splitting space.
+
+"": Even items with options that can’t be destroyed can be destroyed.
+
+:: ...?!
+
+"": An example is the 'King of All Diseases' that we created.
+
+"": You can't even imagine how dangerous and immense the power is.
+
+"": Others, even after training for thousands of years, can't even find the clue to Concept Sever,
+
+"": and Concept Sever is a power that even gods tremble in fear of.
+
+page 11
+
+"": This is a power that can defy the laws, concepts, and systems of the universe that have been maintained for tens of thousands or even hundreds of millions of years!
+
+"": You can easily get such power as a skill,
+//: and once your rank and level go up, you can use it at will? There's no scam like this.
+
+(): Wow… If I hadn't gotten this, it would have been a big problem.
+
+(): Thank you… Oh Universe...!
+
+"": Um... Anyway, you passed this trial too, right?
+
+:: You passed before you even started, you jerk!
+
+st: Sigh...
+
+"": If you want anything, just say it. Within reason, I'll grant it.
+
+"": Then, please look at this.
+
+"": Hmm?
+
+"": Oh, this is a Wireless Realm Warp Scroll, isn't it?
+
+"": It's not something you see often… Wow, something amazing comes out every time.
+
+"": Do you know about the Wireless Realm?
+
+"": Yeah, I know about it.
+//: I once went there too.
+
+page 12
+
+:: Oh, really? What kind of place is that?!
+
+st: What's up with you?!
+
+"": It's a place where the strong people of the entire universe gather with the sole purpose of becoming stronger!
+
+"": The Wireless Realm is a place where war, violence, blood, and desire endlessly swirl.
+
+"": Wow....
+
+"": If you tear up the Warp Scroll, you can go there anytime right now, but...
+//: I'll give you just one piece of advice.
+
+"": Don't go.
+
+page 13
+
+"": If you go there in your current state, you will definitely die!
+
+:: ...?!
+
  
+
+
+
+
+
+
 

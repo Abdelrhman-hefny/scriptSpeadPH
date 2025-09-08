@@ -127,23 +127,42 @@ function applyWhiteStroke3px(targetLayer) {
 
     // getObjectKeys provided by utils.jsx
 
-    // اختيار الفريق الحالي
-    var teamNames = getObjectKeys(teams); // أسماء الفرق من JSON
-    var choiceStr = "اختر الفريق:\n";
-    for (var i = 0; i < teamNames.length; i++) {
-        // اسماء الفرق جنب بعض
-        choiceStr += (i+1) + ". " + teamNames[i] ;
-    }
+    // اختيار الفريق الحالي عبر نافذة Dropdown مع تذكّر آخر اختيار + مجلد
+    var teamNames = getObjectKeys(teams);
+    var settingsPath = Folder.myDocuments + "/waterMark/lastChoice.txt";
+    var settingsFile = new File(settingsPath);
+    var lastIdx = 0;
+    var lastFolderPath = null;
+    try {
+        if (settingsFile.exists) {
+            if (settingsFile.open('r')) {
+                var raw = settingsFile.read();
+                settingsFile.close();
+                var lines = String(raw || "").split(/\r?\n/);
+                if (lines.length > 0) {
+                    var t = parseInt(lines[0], 10); if (!isNaN(t) && t >= 0 && t < teamNames.length) lastIdx = t;
+                }
+                if (lines.length > 1 && lines[1]) {
+                    var f = new Folder(lines[1]); if (f && f.exists) lastFolderPath = f.fsName;
+                }
+            }
+        }
+    } catch (_re) {}
 
-    var sel = prompt(choiceStr, "1"); // يطلب الرقم من المستخدم
-    var idx = parseInt(sel, 10) - 1;
+    var dlg = new Window('dialog', 'اختر الفريق');
+    dlg.orientation = 'column';
+    dlg.alignChildren = ['fill', 'top'];
+    dlg.add('statictext', undefined, 'اختر الفريق:');
+    var dd = dlg.add('dropdownlist', undefined, []);
+    for (var di = 0; di < teamNames.length; di++) { dd.add('item', (di+1) + ' - ' + teamNames[di]); }
+    try { dd.selection = dd.items[lastIdx]; } catch (_se) { if (dd.items.length>0) dd.selection = dd.items[0]; }
+    var btns = dlg.add('group'); btns.alignment = 'right';
+    var okBtn = btns.add('button', undefined, 'موافق'); var cancelBtn = btns.add('button', undefined, 'إلغاء');
+    var chosenIdx = null; okBtn.onClick = function(){ if (dd.selection) chosenIdx = dd.selection.index; dlg.close(); }; cancelBtn.onClick = function(){ dlg.close(); };
+    dlg.show();
+    if (chosenIdx === null) { alert('تم الإلغاء'); return; }
 
-    if (isNaN(idx) || idx < 0 || idx >= teamNames.length) {
-        alert("اختيار غير صالح!");
-        return;
-    }
-
-    var currentTeam = teamNames[idx]; // الفريق المختار
+    var currentTeam = teamNames[chosenIdx];
     if (!teams[currentTeam]) {
         alert("الفريق المحدد غير موجود في JSON: " + currentTeam);
         return;
@@ -233,7 +252,7 @@ function applyWhiteStroke3px(targetLayer) {
     var pageCounter = 0;
 
     // ====== نلف على كل المستندات المفتوحة بالترتيب ======
-    for (var d = 0; d < app.documents.length; d++) {
+    for (var d = app.documents.length - 1; d >= 0; d--) {
         var doc = app.documents[d];
         // فرض استخدام البيكسل لتوحيد الحسابات ثم نرجع الإعداد لاحقًا
         var prevUnits = app.preferences.rulerUnits;
@@ -766,22 +785,32 @@ function applyWhiteStroke3px(targetLayer) {
         // استرجاع وحدات القياس الأصلية
         try { app.preferences.rulerUnits = prevUnits; } catch (_ur) {}
 
-        // عرض النتائج مع معلومات إضافية عن التحسينات
-        if (totalErrors > 0) {
-            alert("انتهى التشغيل مع أخطاء.\nInserted: " + totalInserted + "  Errors: " + totalErrors + "\nتوجد لوجات في نفس فولدر ملف الـTXT.");
-        } else if (totalInserted === 0) {
-            alert("لم يتم إدراج أي نص.\nتأكد من وجود paths أو text layers في المستند.");
-        } else {
-            // رسالة نجاح مع معلومات عن التحسينات المطبقة
-            alert("تم إدراج النصوص بنجاح! ✨\n\n" +
-                  "التحسينات المطبقة:\n" +
-                  "• تكيف ذكي لحجم الخط مع الفقاعة\n" +
-                  "• حدود للوضوح\n" +
-                  "• تحسين المسافات والموضع\n" +
-                  "• تحسينات بصرية للخط\n" +
-                  "• كشف تلقائي للون الخلفية للنص\n" +
-                  "• دعم الباثس وطبقات النص\n\n" +
-                  "عدد النصوص المدرجة: " + totalInserted);
-        }
+        // حفظ صامت للوثيقة وإغلاقها لضمان عدم معالجتها مرة أخرى إذا توقف البرنامج
+        try {
+            var wasSaved = false;
+            try {
+                if (!doc.saved) {
+                    try { doc.save(); wasSaved = true; } catch (_sv) { wasSaved = false; }
+                } else {
+                    wasSaved = true; // لا تغييرات غير محفوظة
+                }
+            } catch (_sd) {}
+
+            if (!wasSaved) {
+                try {
+                    var targetFile = null;
+                    try { targetFile = doc.fullName; } catch (_fn) { targetFile = null; }
+                    if (targetFile) {
+                        var psdOptions = new PhotoshopSaveOptions();
+                        psdOptions.embedColorProfile = true;
+                        psdOptions.alphaChannels = true;
+                        psdOptions.layers = true;
+                        doc.saveAs(targetFile, psdOptions, true, Extension.LOWERCASE);
+                    }
+                } catch (_sva) {}
+            }
+
+            // لا نغلق الملف، فقط حفظ صامت حسب الطلب
+        } catch (_finalize) {}
     }
 })();
