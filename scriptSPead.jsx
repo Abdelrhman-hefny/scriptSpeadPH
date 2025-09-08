@@ -45,6 +45,40 @@ function samplePixel(doc, x, y) {
     }
 }
 
+// ===== Layer Effects helper: apply 3px white Stroke (Outside) via Action Manager =====
+function applyWhiteStroke3px(targetLayer) {
+    try {
+        var prev = app.activeDocument.activeLayer;
+        try { app.activeDocument.activeLayer = targetLayer; } catch (_eal) {}
+
+        var desc = new ActionDescriptor();
+        var ref = new ActionReference();
+        ref.putEnumerated(charIDToTypeID('Lyr '), charIDToTypeID('Ordn'), charIDToTypeID('Trgt'));
+        desc.putReference(charIDToTypeID('null'), ref);
+
+        var fx = new ActionDescriptor();
+        var stroke = new ActionDescriptor();
+        stroke.putBoolean(stringIDToTypeID('enabled'), true);
+        stroke.putBoolean(stringIDToTypeID('present'), true);
+        stroke.putEnumerated(charIDToTypeID('BlnM'), charIDToTypeID('BlnM'), charIDToTypeID('Nrml'));
+        stroke.putUnitDouble(charIDToTypeID('Opct'), charIDToTypeID('#Prc'), 100);
+        stroke.putEnumerated(stringIDToTypeID('style'), stringIDToTypeID('frameStyle'), stringIDToTypeID('outsetFrame'));
+        stroke.putUnitDouble(stringIDToTypeID('size'), charIDToTypeID('#Pxl'), 3);
+        stroke.putEnumerated(stringIDToTypeID('paintType'), stringIDToTypeID('paintType'), stringIDToTypeID('solidColor'));
+        var clr = new ActionDescriptor();
+        clr.putDouble(charIDToTypeID('Rd  '), 255);
+        clr.putDouble(charIDToTypeID('Grn '), 255);
+        clr.putDouble(charIDToTypeID('Bl  '), 255);
+        stroke.putObject(charIDToTypeID('Clr '), charIDToTypeID('RGBC'), clr);
+
+        fx.putObject(stringIDToTypeID('frameFX'), stringIDToTypeID('frameFX'), stroke);
+        desc.putObject(charIDToTypeID('T   '), stringIDToTypeID('layerEffects'), fx);
+        executeAction(charIDToTypeID('setd'), desc, DialogModes.NO);
+
+        try { app.activeDocument.activeLayer = prev; } catch (_ear) {}
+    } catch (_se) {}
+}
+
 (function() {
     // تمييز الأسطر التي تتطلب ستروك 3px وعكس اللون
     function parseStrokeTag(line) {
@@ -225,7 +259,23 @@ function samplePixel(doc, x, y) {
         var pagePaths = [];
         if (paths && paths.length > 0) {
             for (var p = 0; p < paths.length; p++) {
-                try { pagePaths.push(paths[p]); } catch (e) {}
+                try {
+                    var pi = paths[p];
+                    // تجاهل Work Path بالاسم أو النوع
+                    var isWork = false; try { isWork = (pi.name === "Work Path" || pi.kind === PathKind.WORKPATH); } catch(_kw) {}
+                    if (isWork) continue;
+                    // تأكد من وجود نقاط فعلية
+                    var valid = false;
+                    try {
+                        if (pi.subPathItems && pi.subPathItems.length > 0) {
+                            for (var si = 0; si < pi.subPathItems.length; si++) {
+                                var sp = null; try { sp = pi.subPathItems[si]; } catch(_spe) { sp = null; }
+                                if (sp && sp.pathPoints && sp.pathPoints.length > 1) { valid = true; break; }
+                            }
+                        }
+                    } catch(_v) {}
+                    if (valid) pagePaths.push(pi);
+                } catch (e) {}
             }
             pagePaths.sort(function (a, b) {
                 try {
@@ -259,12 +309,12 @@ function samplePixel(doc, x, y) {
         // ======= قبل حلقة المعالجة =======
         var lastUsedFont = null;
         var lastFontSize = baseFontSize;
-        
+
         // اختيار إما الباثس أو طبقات النص (الباثس له الأولوية)
         var allItems = [];
         if (pagePaths.length > 0) {
             // إذا وجد باثس، استخدم الباثس فقط
-            for (var k = 0; k < pagePaths.length; k++) {
+        for (var k = 0; k < pagePaths.length; k++) {
                 allItems.push({type: "path", item: pagePaths[k], index: k});
             }
             L("Found " + pagePaths.length + " paths. Using paths only (text layers ignored).");
@@ -302,12 +352,15 @@ function samplePixel(doc, x, y) {
             
             // إزالة المسافات الزائدة من بداية ونهاية النص
             lineText = trimString(lineText);
-            // تحليل وسوم الستروك الخاصة
-            var __strokeNeed = false;
+            // تحليل مفاتيح الستروك: st / ST / St مع نقطتين أو بدون
+            var __strokeWhite = false;
             (function(){
                 try {
-                    var m = String(lineText).match(/^\s*(?:NA:\s*|\*\*:\s*|SFX:\s*|ST:\s*|Ot:\s*|OT:\s*|#\s*)([\s\S]*)$/);
-                    if (m) { __strokeNeed = true; lineText = trimString(m[1]); }
+                    var m = String(lineText).match(/^\s*(?:st:?\s*|ST:?\s*|St:?\s*)([\s\S]*)$/);
+                    if (m) { __strokeWhite = true; lineText = trimString(m[1]); return; }
+                    // دعْم إضافي للمفاتيح السابقة إن وُجدت
+                    var m2 = String(lineText).match(/^\s*(?:NA:\s*|\*\*:\s*|SFX:\s*|OT:?\s*|Ot:?\s*|#\s*)([\s\S]*)$/);
+                    if (m2) { lineText = trimString(m2[1]); }
                 } catch(_pt) {}
             })();
 
@@ -327,8 +380,8 @@ function samplePixel(doc, x, y) {
             } else if (itemType === "text") {
                 if (!item || item.kind !== LayerKind.TEXT) {
                     E("Invalid text layer: " + itemName);
-                    totalErrors++;
-                    continue;
+                totalErrors++;
+                continue;
                 }
             }
 
@@ -357,7 +410,7 @@ function samplePixel(doc, x, y) {
                 if (itemType === "path") {
                     // معالجة الباث
                     item.makeSelection();
-                    if (!doc.selection || !doc.selection.bounds) {
+                if (!doc.selection || !doc.selection.bounds) {
                         throw new Error("No valid selection for path: " + itemName);
                     }
                 } else if (itemType === "text") {
@@ -489,25 +542,8 @@ function samplePixel(doc, x, y) {
                         c.rgb.red = 0; c.rgb.green = 0; c.rgb.blue = 0;
                     }
                     item.textItem.color = c;
-                    // ستروك 3px وعكس اللون عند الحاجة
-                    if (__strokeNeed) {
-                        try {
-                            var strokeColor = new SolidColor();
-                            if (c.rgb.red === 255 && c.rgb.green === 255 && c.rgb.blue === 255) {
-                                strokeColor.rgb.red = 0; strokeColor.rgb.green = 0; strokeColor.rgb.blue = 0;
-                            } else {
-                                strokeColor.rgb.red = 255; strokeColor.rgb.green = 255; strokeColor.rgb.blue = 255;
-                            }
-                            var fx = item.layerEffects || item.effects; // توافق
-                            var st = fx.add();
-                            st.kind = "stroke";
-                            st.enabled = true;
-                            st.mode = "normal";
-                            st.opacity = 100;
-                            st.size = 3;
-                            st.position = "outside";
-                            st.color = strokeColor;
-                        } catch (se) {}
+                    if (__strokeWhite) {
+                        applyWhiteStroke3px(item);
                     }
 
                     // إضافة التحسينات البصرية للخط (نفس الباثس)
@@ -649,25 +685,8 @@ function samplePixel(doc, x, y) {
                     if (centerBright < 128) { autoColor.rgb.red = 255; autoColor.rgb.green = 255; autoColor.rgb.blue = 255; }
                     else { autoColor.rgb.red = 0; autoColor.rgb.green = 0; autoColor.rgb.blue = 0; }
                     textLayer.textItem.color = autoColor;
-                    // ستروك 3px وعكس اللون عند الحاجة
-                    if (__strokeNeed) {
-                        try {
-                            var strokeColor2 = new SolidColor();
-                            if (autoColor.rgb.red === 255 && autoColor.rgb.green === 255 && autoColor.rgb.blue === 255) {
-                                strokeColor2.rgb.red = 0; strokeColor2.rgb.green = 0; strokeColor2.rgb.blue = 0;
-                            } else {
-                                strokeColor2.rgb.red = 255; strokeColor2.rgb.green = 255; strokeColor2.rgb.blue = 255;
-                            }
-                            var fxe = textLayer.layerEffects || textLayer.effects;
-                            var st2 = fxe.add();
-                            st2.kind = "stroke";
-                            st2.enabled = true;
-                            st2.mode = "normal";
-                            st2.opacity = 100;
-                            st2.size = 3;
-                            st2.position = "outside";
-                            st2.color = strokeColor2;
-                        } catch (se2) {}
+                    if (__strokeWhite) {
+                        applyWhiteStroke3px(textLayer);
                     }
                 } catch(_colErr) {}
 

@@ -1,6 +1,7 @@
 page 1
 []: Spirit Labyrinth - Third Floor
-[]: Spirit Labyrinth - Third Floor
+
+st: Spirit Labyrinth - Third Floor
 []: Spirit Labyrinth - Third Floor
  
 

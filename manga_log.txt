@@ -12,3 +12,356 @@ File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
 File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
   >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
 
+===== Run @ Monday, 08 Sep 2025 06:39:18 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:41:12 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:44:23 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 06:44:43 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 06:47:11 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:47:55 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:48:44 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:50:07 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:51:35 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:53:27 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 06:53:56 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 06:55:25 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 06:57:58 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:02:49 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 07:04:47 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:05:50 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 07:06:32 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:08:00 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+Invalid or empty path: page_02_bubble2
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 07:10:53 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:11:23 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 1 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:12:40 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble3
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:14:53 GMT | Doc: 02.png =====
+Inserted=3, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 3 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=3 | PathName=page_02_bubble3
+  >>> OK inserted line index 2 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:15:52 GMT | Doc: 02.png =====
+Inserted=2, Skipped=0, Errors=0
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 1 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+===== Run @ Monday, 08 Sep 2025 07:24:40 GMT | Doc: 02.png =====
+Inserted=1, Skipped=0, Errors=1
+-- Errors --
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2 : EXCEPTION : Error: User cancelled the operation at line 711
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 0 fontSize: 33 pt textPreview: "Spirit Labyrinth - Third Floor"
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 07:27:14 GMT | Doc: 02.png =====
+Inserted=0, Skipped=0, Errors=2
+-- Errors --
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1 : EXCEPTION : Error: User cancelled the operation at line 707
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2 : EXCEPTION : Error: User cancelled the operation at line 664
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
+===== Run @ Monday, 08 Sep 2025 07:27:34 GMT | Doc: 02.png =====
+Inserted=0, Skipped=0, Errors=2
+-- Errors --
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1 : EXCEPTION : Error: User cancelled the operation at line 664
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2 : EXCEPTION : Error: User cancelled the operation at line 664
+-- Logs --
+
+--- Processing document: 02.png ---
+ Reset lineIndex to start of page 1 (line 0)
+Found 2 paths. Using paths only (text layers ignored).
+
+File=02.png | BubbleIndex=1 | PathName=page_02_bubble1
+
+File=02.png | BubbleIndex=2 | PathName=page_02_bubble2
+
