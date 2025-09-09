@@ -27,7 +27,7 @@ if "%chosenTeam%"=="" (
 )
 
 :: ===== Ask for folder path =====
-set /p folderPath=Paste the folder path to clean: 
+set /p folderPath=Paste the folder path to watch: 
 set "folderPath=%folderPath:"=%"
 
 :: ===== Temp file =====
@@ -59,39 +59,22 @@ if not exist "%pspath%" (
     exit /b
 )
 
-:: ===== Step 1: Run Panel Cleaner CLI to clean folder =====
-echo Running Panel Cleaner on "%folderPath%"...
-powershell -command "pcleaner-cli clean '%folderPath%' -c"
-if errorlevel 1 (
-    echo [ERROR] Panel Cleaner failed! Exiting...
-    pause
-    exit /b
-)
-echo Panel Cleaner finished.
-
-
-:: ===== Step 2: Wait until Cleaned folder exists =====
-echo Waiting for "%folderPath%\Cleaned\" to appear...
-:waitCleaned
+:watchLoop
 if exist "%folderPath%\Cleaned\" (
-    echo Cleaned folder found.
-) else (
-    timeout /t 1 >nul
-    goto waitCleaned
+    echo Cleaned folder found! Launching Photoshop...
+    start "" "%pspath%" "%~dp0script.jsx"
+    goto waitDelete
 )
 
+:: ===== Wait 1 ثانية قبل إعادة التحقق =====
+timeout /t 1 >nul
+goto watchLoop
 
-:: ===== Step 4: Launch Photoshop with script =====
-echo Launching Photoshop...
-start "" "%pspath%" "%~dp0script.jsx"
-
-:: ===== Step 3: Launch AutoHotkey script =====
-"C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToF2.ahk"
-
-:: ===== Step 5: Wait 30 seconds then delete temp file =====
+:waitDelete
+:: ===== Wait 30 seconds while keeping batch open =====
 echo Temporary file will exist for 30 seconds...
 timeout /t 30 >nul
-if exist "%tempFile%" del "%tempFile%"
 
-echo [✅] Done.
-pause
+:: ===== Delete temp file =====
+if exist "%tempFile%" del "%tempFile%"
+exit /b

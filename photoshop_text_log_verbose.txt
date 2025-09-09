@@ -1,0 +1,290 @@
+Photoshop Text Import - verbose log
+Date: Tue Sep 09 2025 10:58:17 GMT+0300
+TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
+Total lines read: 85
+Pages detected: 8
+Base font size: 41  minFontSize: 20
+========================================
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 01.psd ---
+ Reset lineIndex to start of page 1 (line 0)
+
+File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
+  >>> OK inserted line index 0 fontSize: 41 pt textPreview: "..."
+
+File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2
+  >>> OK inserted line index 1 fontSize: 41 pt textPreview: "Souma Sangai"
+
+File=01.psd | BubbleIndex=3 | PathName=page_01_bubble3
+  >>> OK inserted line index 2 fontSize: 41 pt textPreview: "I’ve met this guy before in a previous regression."
+
+File=01.psd | BubbleIndex=4 | PathName=page_01_bubble4
+  >>> OK inserted line index 3 fontSize: 41 pt textPreview: "I was going through endless, crazy regressions at that time,"
+
+File=01.psd | BubbleIndex=5 | PathName=page_01_bubble5
+  >>> OK inserted line index 4 fontSize: 41 pt textPreview: "And I became a murderer who brutally killed hunters."
+
+File=01.psd | BubbleIndex=6 | PathName=page_01_bubble6
+  >>> OK inserted line index 5 fontSize: 41 pt textPreview: "How’s that? You ready to surrender?"
+
+File=01.psd | BubbleIndex=7 | PathName=page_01_bubble7
+  >>> OK inserted line index 6 fontSize: 41 pt textPreview: "You can’t save this world."
+
+File=01.psd | BubbleIndex=8 | PathName=page_01_bubble8
+  >>> OK inserted line index 7 fontSize: 41 pt textPreview: "So what?"
+
+File=01.psd | BubbleIndex=9 | PathName=page_01_bubble9
+  >>> OK inserted line index 8 fontSize: 41 pt textPreview: "I already cleared it twice!"
+
+File=01.psd | BubbleIndex=10 | PathName=page_01_bubble10
+  >>> OK inserted line index 9 fontSize: 41 pt textPreview: "Abnormal Skill Activation: ”Ignition Boost”"
+
+File=01.psd | BubbleIndex=11 | PathName=page_01_bubble11
+  >>> OK inserted line index 10 fontSize: 41 pt textPreview: "Skill Activate:“Unbreakable Diamond”"
+
+File=01.psd | BubbleIndex=12 | PathName=page_01_bubble12
+  >>> OK inserted line index 11 fontSize: 41 pt textPreview: "Souma, who had two powerful avatars from the first floor, was formidable."
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 02.psd ---
+ Reset lineIndex to start of page 2 (line 12)
+
+File=02.psd | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 12 fontSize: 41 pt textPreview: "I managed to win, but…"
+
+File=02.psd | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 13 fontSize: 41 pt textPreview: "I was also fatally injured."
+
+File=02.psd | BubbleIndex=3 | PathName=page_02_bubble3
+  >>> OK inserted line index 14 fontSize: 41 pt textPreview: "If Yeon-si hadn't been there at that time, I wouldn't have healed and would've d..."
+
+File=02.psd | BubbleIndex=4 | PathName=page_02_bubble4
+  >>> OK inserted line index 15 fontSize: 41 pt textPreview: "So…"
+
+File=02.psd | BubbleIndex=5 | PathName=page_02_bubble5
+  >>> OK inserted line index 16 fontSize: 41 pt textPreview: "Fighting him on the first floor, while I was still undeveloped,"
+
+File=02.psd | BubbleIndex=6 | PathName=page_02_bubble6
+  >>> OK inserted line index 17 fontSize: 41 pt textPreview: "Was the worst."
+
+File=02.psd | BubbleIndex=7 | PathName=page_02_bubble7
+  >>> OK inserted line index 18 fontSize: 41 pt textPreview: "Gon-hyeok,"
+
+File=02.psd | BubbleIndex=8 | PathName=page_02_bubble8
+  >>> OK inserted line index 19 fontSize: 41 pt textPreview: "You will surely fall into the abyss…"
+
+File=02.psd | BubbleIndex=9 | PathName=page_02_bubble9
+  >>> OK inserted line index 20 fontSize: 41 pt textPreview: "…"
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 03.psd ---
+ Reset lineIndex to start of page 3 (line 21)
+
+File=03.psd | BubbleIndex=1 | PathName=page_03_bubble1
+  >>> OK inserted line index 21 fontSize: 41 pt textPreview: "I want you… to have me by your side."
+
+File=03.psd | BubbleIndex=2 | PathName=page_03_bubble2
+  >>> OK inserted line index 22 fontSize: 41 pt textPreview: "!"
+
+File=03.psd | BubbleIndex=3 | PathName=page_03_bubble3
+  >>> OK inserted line index 23 fontSize: 41 pt textPreview: "You’re different from those people who deceive themselves to justify their actio..."
+
+File=03.psd | BubbleIndex=4 | PathName=page_03_bubble4
+  >>> OK inserted line index 24 fontSize: 41 pt textPreview: "Just like how you’re able to say that what’s right is right,"
+
+File=03.psd | BubbleIndex=5 | PathName=page_03_bubble5
+  >>> OK inserted line index 25 fontSize: 41 pt textPreview: "I’ll become a Yasha,"
+
+File=03.psd | BubbleIndex=6 | PathName=page_03_bubble6
+  >>> OK inserted line index 26 fontSize: 41 pt textPreview: "For your motives."
+
+File=03.psd | BubbleIndex=7 | PathName=page_03_bubble7
+  >>> OK inserted line index 27 fontSize: 41 pt textPreview: "TITLE"
+
+File=03.psd | BubbleIndex=8 | PathName=page_03_bubble8
+  >>> OK inserted line index 28 fontSize: 41 pt textPreview: "Whew…"
+
+File=03.psd | BubbleIndex=9 | PathName=page_03_bubble9
+  >>> OK inserted line index 29 fontSize: 41 pt textPreview: "I somehow managed to get through it."
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 04.psd ---
+ Reset lineIndex to start of page 4 (line 31)
+
+File=04.psd | BubbleIndex=1 | PathName=page_04_bubble1
+  >>> OK inserted line index 31 fontSize: 41 pt textPreview: "Ah~ How interesting!"
+
+File=04.psd | BubbleIndex=2 | PathName=page_04_bubble2
+  >>> OK inserted line index 32 fontSize: 41 pt textPreview: "Kyahaha!"
+
+File=04.psd | BubbleIndex=3 | PathName=page_04_bubble3
+  >>> OK inserted line index 33 fontSize: 41 pt textPreview: "Lillianne…"
+
+File=04.psd | BubbleIndex=4 | PathName=page_04_bubble4
+  >>> OK inserted line index 34 fontSize: 41 pt textPreview: "You didn’t just defeat a Ranker,"
+
+File=04.psd | BubbleIndex=5 | PathName=page_04_bubble5
+  >>> OK inserted line index 35 fontSize: 41 pt textPreview: "you also threatened an angel!"
+
+File=04.psd | BubbleIndex=6 | PathName=page_04_bubble6
+  >>> OK inserted line index 36 fontSize: 41 pt textPreview: "As a special favor for you, I’ll forget what happened last time."
+
+File=04.psd | BubbleIndex=7 | PathName=page_04_bubble7
+  >>> OK inserted line index 37 fontSize: 41 pt textPreview: "What do you want this time?"
+
+File=04.psd | BubbleIndex=8 | PathName=page_04_bubble8
+  >>> OK inserted line index 38 fontSize: 20 pt textPreview: "Demon’s Achievement unlocked!"
+
+File=04.psd | BubbleIndex=9 | PathName=page_04_bubble9
+  >>> OK inserted line index 39 fontSize: 28 pt textPreview: "“Killed 10 people on the first floor” Achieved!"
+
+File=04.psd | BubbleIndex=10 | PathName=page_04_bubble10
+  >>> OK inserted line index 40 fontSize: 39 pt textPreview: "“Killed 20 people on the first floor” Achieved!"
+
+File=04.psd | BubbleIndex=11 | PathName=page_04_bubble11
+  >>> OK inserted line index 41 fontSize: 41 pt textPreview: "“Killed 30 people on the first floor” Achieved!"
+
+File=04.psd | BubbleIndex=12 | PathName=page_04_bubble12
+  >>> OK inserted line index 42 fontSize: 41 pt textPreview: "Total Rewards:"
+
+File=04.psd | BubbleIndex=13 | PathName=page_04_bubble13
+  >>> OK inserted line index 43 fontSize: 41 pt textPreview: "I knew it, rewards from demons are pretty good."
+
+File=04.psd | BubbleIndex=14 | PathName=page_04_bubble14
+  >>> OK inserted line index 44 fontSize: 41 pt textPreview: "Ta-da! This is your bonus!"
+
+File=04.psd | BubbleIndex=15 | PathName=page_04_bubble15
+  >>> OK inserted line index 45 fontSize: 41 pt textPreview: "Demon Sword Grimside (A+)"
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 05.psd ---
+ Reset lineIndex to start of page 5 (line 47)
+
+File=05.psd | BubbleIndex=1 | PathName=page_05_bubble1
+  >>> OK inserted line index 47 fontSize: 41 pt textPreview: "What can you say? Are you curious?"
+
+File=05.psd | BubbleIndex=2 | PathName=page_05_bubble2
+  >>> OK inserted line index 48 fontSize: 41 pt textPreview: "…"
+
+File=05.psd | BubbleIndex=3 | PathName=page_05_bubble3
+  >>> OK inserted line index 49 fontSize: 41 pt textPreview: "My cute little human~"
+
+File=05.psd | BubbleIndex=4 | PathName=page_05_bubble4
+  >>> OK inserted line index 50 fontSize: 41 pt textPreview: "Get off me, you old hag!"
+
+File=05.psd | BubbleIndex=5 | PathName=page_05_bubble5
+  >>> OK inserted line index 51 fontSize: 41 pt textPreview: "O-old hag?!"
+
+File=05.psd | BubbleIndex=6 | PathName=page_05_bubble6
+  >>> OK inserted line index 52 fontSize: 41 pt textPreview: "Give me something that’s not a weapon!"
+
+File=05.psd | BubbleIndex=7 | PathName=page_05_bubble7
+  >>> OK inserted line index 53 fontSize: 41 pt textPreview: "…you little…"
+
+File=05.psd | BubbleIndex=8 | PathName=page_05_bubble8
+  >>> OK inserted line index 54 fontSize: 41 pt textPreview: "You didn’t even say thanks…"
+
+File=05.psd | BubbleIndex=9 | PathName=page_05_bubble9
+  >>> OK inserted line index 55 fontSize: 41 pt textPreview: "You should think about the recipient of the gift."
+
+File=05.psd | BubbleIndex=10 | PathName=page_05_bubble10
+  >>> OK inserted line index 56 fontSize: 41 pt textPreview: "I don’t need any weapons without durability."
+
+File=05.psd | BubbleIndex=11 | PathName=page_05_bubble11
+  >>> OK inserted line index 57 fontSize: 41 pt textPreview: "But I’ll take the Vampire Princess’ Ring."
+
+File=05.psd | BubbleIndex=12 | PathName=page_05_bubble12
+  >>> OK inserted line index 58 fontSize: 41 pt textPreview: "Vampire Princess’ Ring…"
+
+File=05.psd | BubbleIndex=13 | PathName=page_05_bubble13
+  >>> OK inserted line index 59 fontSize: 41 pt textPreview: "You mean this?"
+
+File=05.psd | BubbleIndex=14 | PathName=page_05_bubble14
+  >>> OK inserted line index 60 fontSize: 41 pt textPreview: "Vampire Princess’ Ring"
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 06.psd ---
+ Reset lineIndex to start of page 6 (line 62)
+
+File=06.psd | BubbleIndex=1 | PathName=page_06_bubble1
+  >>> OK inserted line index 62 fontSize: 41 pt textPreview: "Hmm~ So you want this, huh."
+
+File=06.psd | BubbleIndex=2 | PathName=page_06_bubble2
+  >>> OK inserted line index 63 fontSize: 41 pt textPreview: "Tsk—"
+
+File=06.psd | BubbleIndex=3 | PathName=page_06_bubble3
+  >>> OK inserted line index 64 fontSize: 41 pt textPreview: "Unfortunately, I don’t call the shots when it comes to items of this class~"
+
+File=06.psd | BubbleIndex=4 | PathName=page_06_bubble4
+  >>> OK inserted line index 65 fontSize: 41 pt textPreview: "I’ll go to the third floor and kill 100 people…"
+
+File=06.psd | BubbleIndex=5 | PathName=page_06_bubble5
+  >>> OK inserted line index 66 fontSize: 41 pt textPreview: "Huh?"
+
+File=06.psd | BubbleIndex=6 | PathName=page_06_bubble6
+  >>> OK inserted line index 67 fontSize: 41 pt textPreview: "You do know that only the strongest ones"
+
+File=06.psd | BubbleIndex=7 | PathName=page_06_bubble7
+  >>> OK inserted line index 68 fontSize: 41 pt textPreview: "Get to survive in that area, right?"
+
+File=06.psd | BubbleIndex=8 | PathName=page_06_bubble8
+  >>> OK inserted line index 69 fontSize: 41 pt textPreview: "Yeah."
+
+File=06.psd | BubbleIndex=9 | PathName=page_06_bubble9
+  >>> OK inserted line index 70 fontSize: 41 pt textPreview: "Don’t you think it’s interesting?"
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 07.psd ---
+ Reset lineIndex to start of page 7 (line 71)
+
+File=07.psd | BubbleIndex=1 | PathName=page_07_bubble1
+  >>> OK inserted line index 71 fontSize: 41 pt textPreview: "So you aren’t on the angel’s side, after all?"
+
+File=07.psd | BubbleIndex=2 | PathName=page_07_bubble2
+  >>> OK inserted line index 72 fontSize: 41 pt textPreview: "Depends on how you look at it."
+
+File=07.psd | BubbleIndex=3 | PathName=page_07_bubble3
+  >>> OK inserted line index 73 fontSize: 41 pt textPreview: "Kyahaha- okay~!"
+
+File=07.psd | BubbleIndex=4 | PathName=page_07_bubble4
+  >>> OK inserted line index 74 fontSize: 41 pt textPreview: "I wouldn’t mind kissing you!"
+
+File=07.psd | BubbleIndex=5 | PathName=page_07_bubble5
+  >>> OK inserted line index 75 fontSize: 41 pt textPreview: "Ugh…"
+
+File=07.psd | BubbleIndex=6 | PathName=page_07_bubble6
+  >>> OK inserted line index 76 fontSize: 41 pt textPreview: "Ahh, quick~"
+
+File=07.psd | BubbleIndex=7 | PathName=page_07_bubble7
+  >>> OK inserted line index 77 fontSize: 41 pt textPreview: "KYAA!"
+
+File=07.psd | BubbleIndex=8 | PathName=page_07_bubble8
+  >>> OK inserted line index 78 fontSize: 41 pt textPreview: "Banned because of the user’s request."
+
+File=07.psd | BubbleIndex=9 | PathName=page_07_bubble9
+  >>> OK inserted line index 79 fontSize: 41 pt textPreview: "Again?!"
+Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
+
+--- Processing document: 08.psd ---
+ Reset lineIndex to start of page 8 (line 80)
+
+File=08.psd | BubbleIndex=1 | PathName=page_08_bubble1
+  >>> OK inserted line index 80 fontSize: 41 pt textPreview: "No—give it back!"
+
+File=08.psd | BubbleIndex=2 | PathName=page_08_bubble2
+  >>> OK inserted line index 81 fontSize: 41 pt textPreview: "I’ll take this with gratitude!"
+
+File=08.psd | BubbleIndex=3 | PathName=page_08_bubble3
+  >>> OK inserted line index 82 fontSize: 41 pt textPreview: "…you little—!"
+
+File=08.psd | BubbleIndex=4 | PathName=page_08_bubble4
+  >>> OK inserted line index 83 fontSize: 41 pt textPreview: "…shiiii—"
+
+File=08.psd | BubbleIndex=5 | PathName=page_08_bubble5
+  >>> OK inserted line index 84 fontSize: 41 pt textPreview: "As if I could kiss a 600-year-old hag…!"
+
+===== Summary =====
+Inserted: 82
+Errors: 0
+Skipped: 0

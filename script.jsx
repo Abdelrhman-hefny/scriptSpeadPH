@@ -14,43 +14,64 @@ function arrayIndexOf(arr, val) {
     return -1;
 }
 
-// ======= Teams array (for validation) =======
+// ======= Teams array =======
 var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
 
-(function () {
-    // ======= Read temp file from batch, or ask user if not found =======
+(function mainLoop () {
     var tempFile = new File(Folder.temp + "/psScriptTemp.txt");
-    var chosenTeam, originalsFolderPath;
+    var chosenTeam, originalsFolder;
 
     if (tempFile.exists) {
         tempFile.open("r");
-        var lines = tempFile.read().split("\n");
+        var lines = tempFile.read().split(/\r?\n/);
         tempFile.close();
 
-        if (lines.length < 2) {
-            alert("Temp file format incorrect.");
+        if (lines.length >= 2) {
+            chosenTeam = trimStr(lines[0]);
+            originalsFolder = new Folder(trimStr(lines[1]));
+        }
+    }
+
+    // ======= If no temp file → show UI =======
+    if (!chosenTeam || !originalsFolder || !originalsFolder.exists) {
+        var dlg = new Window("dialog", "Select Team & Folder");
+        dlg.alignChildren = "fill";
+
+        dlg.add("statictext", undefined, "Choose Team:");
+        var teamDropdown = dlg.add("dropdownlist", undefined, teams);
+        teamDropdown.selection = 0;
+
+        dlg.add("statictext", undefined, "Choose Originals Folder:");
+        var folderGroup = dlg.add("group");
+        folderGroup.orientation = "row";
+        var folderPath = folderGroup.add("edittext", undefined, "");
+        folderPath.characters = 40;
+        var browseBtn = folderGroup.add("button", undefined, "Browse");
+
+        browseBtn.onClick = function () {
+            var f = Folder.selectDialog("اختر مجلد الصور الأصلية");
+            if (f) folderPath.text = f.fsName;
+        };
+
+        var btns = dlg.add("group");
+        btns.alignment = "center";
+        btns.add("button", undefined, "OK", {name: "ok"});
+        btns.add("button", undefined, "Cancel", {name: "cancel"});
+
+        if (dlg.show() != 1) return;
+
+        chosenTeam = teamDropdown.selection.text;
+        originalsFolder = new Folder(folderPath.text);
+
+        if (!originalsFolder.exists) {
+            alert("Original folder not found:\n" + originalsFolder.fsName);
             return;
         }
-
-        chosenTeam = trimStr(lines[0]);
-        originalsFolderPath = trimStr(lines[1]);
-    } else {
-        // Run independently: Show prompts
-        chosenTeam = prompt("Enter team name (from: " + teams.join(", ") + "):", "");
-        if (!chosenTeam) return;
-
-        originalsFolderPath = prompt("Enter the full path to the originals folder:", "");
-        if (!originalsFolderPath) return;
     }
 
+    // ======= Validate chosen team =======
     if (arrayIndexOf(teams, chosenTeam) === -1) {
         alert("Team name invalid: " + chosenTeam);
-        return;
-    }
-
-    var originalsFolder = new Folder(originalsFolderPath);
-    if (!originalsFolder.exists) {
-        alert("Original folder not found:\n" + originalsFolder.fsName);
         return;
     }
 
@@ -195,10 +216,41 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
         }
 
         // Final message
-        alert("Processing complete!\nCreated " + createdPsdCount + " PSD files.\nErrors in " + errorCount + " files.");
     }
 
-    // ======= Start processing =======
-    processFolder(originalsFolder);
+// ======= Re-open processed PSD files in alphabetical order =======
+function reopenProcessedPSDs(folder) {
+    if (!folder.exists) return;
+    var psdFiles = folder.getFiles(function(f){
+        return f instanceof File && f.name.match(/\.psd$/i);
+    });
+
+    // ترتيب الملفات أبجدي
+    psdFiles.sort(function(a,b){
+        return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+    });
+
+    for (var i = 0; i < psdFiles.length; i++) {
+        try {
+            open(psdFiles[i]);
+        } catch(e) {
+            // لو فيه خطأ في الفتح، نتجاهله
+        }
+    }
+
+}
+
+// ======= Start processing =======
+processFolder(originalsFolder);
+
+// ======= Reopen PSDs after processing =======
+reopenProcessedPSDs(originalsFolder);
+
+
+    // ======= Ask if user wants another folder =======
+    var again = confirm("Do you want to select another folder?");
+    if (again) {
+        mainLoop();
+    }
 
 })();
