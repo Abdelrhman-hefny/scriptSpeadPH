@@ -1,22 +1,184 @@
 Photoshop Text Import - verbose log
-Date: Tue Sep 09 2025 11:44:23 GMT+0300
+Date: Tue Sep 09 2025 15:41:03 GMT+0300
 TXT file: C:\Users\abdoh\Downloads\testScript\manga_text.txt
-Total lines read: 2
-Pages detected: 0
-Base font size: 41  minFontSize: 20
+Total lines read: 50
+Pages detected: 9
+Base font size: 35  minFontSize: 20
 ========================================
-Warning: Could not split Work Path: ReferenceError: splitWorkPathIntoNamedPaths is not a function
 
 --- Processing document: 01.psd ---
- No valid page number in doc name, using pageCounter 1 (line 0)
+ Reset lineIndex to start of page 1 (line 0)
 
 File=01.psd | BubbleIndex=1 | PathName=page_01_bubble1
-  >>> OK inserted line index 0 fontSize: 41 pt textPreview: "[] Souma Sangai"
+  >>> OK inserted line index 0 fontSize: 34 pt textPreview: "To think I was able to master, even if it's low-rank magic..."
 
 File=01.psd | BubbleIndex=2 | PathName=page_01_bubble2
-  >>> OK inserted line index 1 fontSize: 41 pt textPreview: "[] I’ve met this guy before in a previous regression."
+  >>> OK inserted line index 1 fontSize: 26 pt textPreview: "...both "Mind Reading" and "Ability Absorption" in less than two days."
+
+File=01.psd | BubbleIndex=3 | PathName=page_01_bubble3
+  >>> OK inserted line index 2 fontSize: 34 pt textPreview: "Just as I suspected, the potential of this body is absurdly high."
+
+File=01.psd | BubbleIndex=4 | PathName=page_01_bubble4
+  >>> OK inserted line index 3 fontSize: 35 pt textPreview: "This is a dish made with ingredients that stabilize magical power."
+
+File=01.psd | BubbleIndex=5 | PathName=page_01_bubble5
+  >>> OK inserted line index 4 fontSize: 35 pt textPreview: "I have a vague recollection of this..."
+
+File=01.psd | BubbleIndex=6 | PathName=page_01_bubble6
+  >>> OK inserted line index 5 fontSize: 35 pt textPreview: "...How utterly unnecessary."
+
+--- Processing document: 02.psd ---
+ Reset lineIndex to start of page 2 (line 6)
+
+File=02.psd | BubbleIndex=1 | PathName=page_02_bubble1
+  >>> OK inserted line index 6 fontSize: 35 pt textPreview: "Lord Kai...!!"
+
+File=02.psd | BubbleIndex=2 | PathName=page_02_bubble2
+  >>> OK inserted line index 7 fontSize: 35 pt textPreview: "Your appearance...!?"
+
+File=02.psd | BubbleIndex=3 | PathName=page_02_bubble3
+  >>> OK inserted line index 8 fontSize: 35 pt textPreview: "...Forgive me for being such a worthless master."
+
+File=02.psd | BubbleIndex=4 | PathName=page_02_bubble4
+  >>> OK inserted line index 9 fontSize: 35 pt textPreview: "If you ever decide to leave this mansion..."
+
+File=02.psd | BubbleIndex=5 | PathName=page_02_bubble5
+  >>> OK inserted line index 10 fontSize: 35 pt textPreview: "I will prepare a letter of introduction for you at any time."
+
+File=02.psd | BubbleIndex=6 | PathName=page_02_bubble6
+  >>> OK inserted line index 11 fontSize: 35 pt textPreview: "You need only ask."
+
+File=02.psd | BubbleIndex=7 | PathName=page_02_bubble7
+  >>> OK inserted line index 12 fontSize: 35 pt textPreview: "......!"
+
+File=02.psd | BubbleIndex=8 | PathName=page_02_bubble8
+  >>> OK inserted line index 13 fontSize: 35 pt textPreview: "I will never leave."
+
+File=02.psd | BubbleIndex=9 | PathName=page_02_bubble9
+  >>> OK inserted line index 14 fontSize: 35 pt textPreview: "No matter what may come, I am on your side."
+
+--- Processing document: 03.psd ---
+ Reset lineIndex to start of page 3 (line 15)
+
+File=03.psd | BubbleIndex=1 | PathName=page_03_bubble1
+  >>> OK inserted line index 15 fontSize: 35 pt textPreview: "So these are Kai's memories, are they?"
+
+File=03.psd | BubbleIndex=2 | PathName=page_03_bubble2
+  >>> OK inserted line index 16 fontSize: 35 pt textPreview: "……"
+
+File=03.psd | BubbleIndex=3 | PathName=page_03_bubble3
+  >>> OK inserted line index 17 fontSize: 35 pt textPreview: "Because I neglected them for so long..."
+
+File=03.psd | BubbleIndex=4 | PathName=page_03_bubble4
+  >>> OK inserted line index 18 fontSize: 34 pt textPreview: "...they have almost completely rotted away."
+
+File=03.psd | BubbleIndex=5 | PathName=page_03_bubble5
+  >>> OK inserted line index 19 fontSize: 35 pt textPreview: "......Well then."
+
+File=03.psd | BubbleIndex=6 | PathName=page_03_bubble6
+  >>> OK inserted line index 20 fontSize: 35 pt textPreview: "Pfft."
+
+File=03.psd | BubbleIndex=7 | PathName=page_03_bubble7
+  >>> OK inserted line index 21 fontSize: 35 pt textPreview: "Now that I am full, I suppose I shall rest for a bit."
+
+--- Processing document: 04.psd ---
+ Reset lineIndex to start of page 4 (line 23)
+
+File=04.psd | BubbleIndex=1 | PathName=page_04_bubble1
+  >>> OK inserted line index 23 fontSize: 35 pt textPreview: "This is..."
+
+File=04.psd | BubbleIndex=2 | PathName=page_04_bubble2
+  >>> OK inserted line index 24 fontSize: 35 pt textPreview: "It is blood, just as I thought."
+
+File=04.psd | BubbleIndex=3 | PathName=page_04_bubble3
+  >>> OK inserted line index 25 fontSize: 35 pt textPreview: "......!"
+
+--- Processing document: 05.psd ---
+ Reset lineIndex to start of page 5 (line 26)
+
+File=05.psd | BubbleIndex=1 | PathName=page_05_bubble1
+  >>> OK inserted line index 26 fontSize: 35 pt textPreview: "Hey!"
+
+File=05.psd | BubbleIndex=2 | PathName=page_05_bubble2
+  >>> OK inserted line index 27 fontSize: 35 pt textPreview: "Butler...!"
+
+File=05.psd | BubbleIndex=3 | PathName=page_05_bubble3
+  >>> OK inserted line index 28 fontSize: 35 pt textPreview: "Your eye...!"
+
+File=05.psd | BubbleIndex=4 | PathName=page_05_bubble4
+  >>> OK inserted line index 29 fontSize: 35 pt textPreview: "...Ugh..."
+
+File=05.psd | BubbleIndex=5 | PathName=page_05_bubble5
+  >>> OK inserted line index 30 fontSize: 35 pt textPreview: "Butler, I will heal you at once..."
+
+File=05.psd | BubbleIndex=6 | PathName=page_05_bubble6
+  >>> OK inserted line index 31 fontSize: 31 pt textPreview: "Dammit...!"
+
+File=05.psd | BubbleIndex=7 | PathName=page_05_bubble7
+  >>> OK inserted line index 32 fontSize: 35 pt textPreview: "I cannot use Healing Magic in my current state..."
+
+--- Processing document: 06.psd ---
+ Reset lineIndex to start of page 6 (line 33)
+
+File=06.psd | BubbleIndex=1 | PathName=page_06_bubble1
+  >>> OK inserted line index 33 fontSize: 35 pt textPreview: "Listen to me, Butler."
+
+File=06.psd | BubbleIndex=2 | PathName=page_06_bubble2
+  >>> OK inserted line index 34 fontSize: 35 pt textPreview: "Summon a detective, and wait for a Healing Magician."
+
+File=06.psd | BubbleIndex=3 | PathName=page_06_bubble3
+  >>> OK inserted line index 35 fontSize: 35 pt textPreview: "I was able to stop the bleeding and treat the fracture using Healing Magic."
+
+File=06.psd | BubbleIndex=4 | PathName=page_06_bubble4
+  >>> OK inserted line index 36 fontSize: 35 pt textPreview: "As for the swelling, phantom pain, and bruises..."
+
+File=06.psd | BubbleIndex=5 | PathName=page_06_bubble5
+  >>> OK inserted line index 37 fontSize: 35 pt textPreview: "...they will likely take a month to fade."
+
+File=06.psd | BubbleIndex=6 | PathName=page_06_bubble6
+  >>> OK inserted line index 38 fontSize: 35 pt textPreview: "......"
+
+File=06.psd | BubbleIndex=7 | PathName=page_06_bubble7
+  >>> OK inserted line index 39 fontSize: 35 pt textPreview: "What of his right eye?"
+
+File=06.psd | BubbleIndex=8 | PathName=page_06_bubble8
+  >>> OK inserted line index 40 fontSize: 35 pt textPreview: "Unfortunately, it is doubtful his vision will ever return..."
+
+--- Processing document: 07.psd ---
+ Reset lineIndex to start of page 7 (line 41)
+
+File=07.psd | BubbleIndex=1 | PathName=page_07_bubble1
+  >>> OK inserted line index 41 fontSize: 26 pt textPreview: "...I couldn't even sense the enemy's intrusion."
+
+File=07.psd | BubbleIndex=2 | PathName=page_07_bubble2
+  >>> OK inserted line index 42 fontSize: 34 pt textPreview: "I bear responsibility for this as well..."
+
+File=07.psd | BubbleIndex=3 | PathName=page_07_bubble3
+  >>> OK inserted line index 43 fontSize: 35 pt textPreview: "...My sincerest apologies."
+
+File=07.psd | BubbleIndex=4 | PathName=page_07_bubble4
+  >>> OK inserted line index 44 fontSize: 35 pt textPreview: "To think I would trouble you, Master, over a matter like this..."
+
+File=07.psd | BubbleIndex=5 | PathName=page_07_bubble5
+  >>> OK inserted line index 45 fontSize: 35 pt textPreview: "That is of no importance."
+
+File=07.psd | BubbleIndex=6 | PathName=page_07_bubble6
+  >>> OK inserted line index 46 fontSize: 35 pt textPreview: "More importantly—"
+
+File=07.psd | BubbleIndex=7 | PathName=page_07_bubble7
+  >>> OK inserted line index 47 fontSize: 35 pt textPreview: "Tell me who the culprit is that did this to you."
+
+--- Processing document: 08.psd ---
+ Reset lineIndex to start of page 8 (line 48)
+Document '08.psd' has no path items. Skipping.
+
+--- Processing document: 09.psd ---
+ Reset lineIndex to start of page 9 (line 49)
+
+File=09.psd | BubbleIndex=1 | PathName=page_09_bubble1
+  >>> OK inserted line index 49 fontSize: 35 pt textPreview: "What is happening!?"
 
 ===== Summary =====
-Inserted: 2
+Inserted: 48
 Errors: 0
 Skipped: 0

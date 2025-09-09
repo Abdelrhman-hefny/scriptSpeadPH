@@ -1,12 +1,12 @@
 {
   "rezo": {
-    "defaultFont": "CCWildWords",
+    "defaultFont": "CCVictorySpeech-Regular",
     "baseFontSize": 30,
     "minFontSize": 20,
     "boxPaddingRatio": 0.18,
     "fontMap": {
-      "():": "CCMightyMouth",
-      "()": "CCMightyMouth",
+      "():": "CCMightyMouth-Italic",
+      "()": "CCMightyMouth-Italic",
       "\u201c\u201d:": "CCVictorySpeech-Regular",
       "\u201c\u201d": "CCVictorySpeech-Regular",
       "\"\":": "CCVictorySpeech-Regular",
@@ -23,7 +23,7 @@
       "``": "CCVictorySpeech-Regular",
       "//:": "CCVictorySpeech-Regular",
       "//": "CCVictorySpeech-Regular",
-      "NA:": "Argone_W00_Regular",  
+      "NA:": "Argone_W00_Regular",
       "<>:": "CCShoutOutGSN",
       "<>": "CCShoutOutGSN",
       "::": "CCShoutOutGSN",
