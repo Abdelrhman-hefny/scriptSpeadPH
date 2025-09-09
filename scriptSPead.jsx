@@ -5,6 +5,7 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/json2.js");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/psHelpers.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textReader.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
+$.evalFile("C:/Users/abdoh/Downloads/testScript/lib/splitSubpaths.jsx");
 
 // دالة لفتح Notepad وإنشاء ملف نصي جديد
 function openNotepad() {
@@ -356,6 +357,7 @@ function parseStrokeTag(line) {
 
         var lastUsedFont = null;
         var lastFontSize = baseFontSize;
+        var lastWasBracketTag = false;
 
         for (var k = 0; k < pagePaths.length; k++) {
             if (lineIndex >= allLines.length) {
@@ -373,6 +375,23 @@ function parseStrokeTag(line) {
             var lineText = allLines[lineIndex++];
             var strokeInfo = parseStrokeTag(lineText);
             lineText = strokeInfo.text;
+            // توريث خط الفقاعة السابقة لأسطر // أو //:
+            var inheritPrevFont = false;
+            try {
+                if (/^\/\/:?/.test(lineText)) {
+                    inheritPrevFont = true;
+                    lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
+                }
+            } catch (_ih) {}
+            // خصائص خاصة لسطور تبدأ بـ []:
+            var isBracketTag = false;
+            try {
+                // لا نحذف الوسم هنا حتى يعمل fontMap ويختار الخط الصحيح
+                var bMatch = String(lineText).match(/^\s*\[\s*\]\s*:?.*/);
+                if (bMatch) {
+                    isBracketTag = true;
+                }
+            } catch (_bt) {}
 
             if (!lineText) {
                 L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
@@ -387,17 +406,19 @@ function parseStrokeTag(line) {
             }
 
             var wantedFont = null;
-            for (var key in fontMap) {
-                var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"));
-                if (regex.test(lineText)) {
-                    wantedFont = fontMap[key];
-                    lineText = trimString(lineText.replace(regex, ""));
-                    break;
+            if (!inheritPrevFont) {
+                for (var key in fontMap) {
+                    var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"));
+                    if (regex.test(lineText)) {
+                        wantedFont = fontMap[key];
+                        lineText = trimString(lineText.replace(regex, ""));
+                        break;
+                    }
                 }
             }
 
             var usedFont, curFontSize;
-            if (/^\/\/:?/.test(lineText)) {
+            if (inheritPrevFont) {
                 usedFont = lastUsedFont || defaultFont;
                 curFontSize = lastFontSize || baseFontSize;
             } else {
@@ -471,6 +492,18 @@ function parseStrokeTag(line) {
                 textLayer.textItem.contents = lineText;
                 textLayer.textItem.justification = Justification.CENTER;
                 optimizeFontSettings(textLayer, usedFont, newFontSize);
+                // تطبيق تنسيق خاص لسطور []: أو لأسطر // التي ترث من سطر []: سابق
+                if (isBracketTag || (inheritPrevFont && lastWasBracketTag)) {
+                    try {
+                        textLayer.textItem.tracking = 0;
+                        textLayer.textItem.leading = Math.round(newFontSize * 1.00);
+                        textLayer.textItem.antiAliasMethod = AntiAlias.SMOOTH;
+                        textLayer.textItem.autoKerning = AutoKernType.OPTICAL;
+                        // طلبك: Faux Bold + ALL CAPS
+                        textLayer.textItem.fauxBold = true;
+                        try { textLayer.textItem.capitalization = TextCase.ALLCAPS; } catch (_cap) {}
+                    } catch (_bfmt) {}
+                }
                 try { textLayer.textItem.font = usedFont; } catch (fe) { E("Font not found: " + usedFont + ", using Arial"); textLayer.textItem.font = "Arial"; }
                 textLayer.textItem.size = newFontSize;
 
@@ -536,6 +569,7 @@ function parseStrokeTag(line) {
 
                 lastUsedFont = usedFont;
                 lastFontSize = newFontSize;
+                lastWasBracketTag = isBracketTag;
 
             } catch (bubbleErr) {
                 var errMsg = entryPrefix + " : EXCEPTION : " + bubbleErr.toString() + (bubbleErr.line ? " at line " + bubbleErr.line : "");
