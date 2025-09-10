@@ -66,31 +66,50 @@ app.bringToFront();
         return;
     }
 
-// حذف ملفات JPG المؤقتة
-$.writeln("حذف ملفات JPG المؤقتة...");
-for (var i = 0; i < jpgFiles.length; i++) {
-    try {
-        if (jpgFiles[i].exists) {
-            jpgFiles[i].remove();
-            $.writeln("تم حذف " + jpgFiles[i].fsName + " بنجاح");
-        } else {
-            $.writeln("الملف " + jpgFiles[i].fsName + " غير موجود");
+    // حذف ملفات JPG المؤقتة
+    $.writeln("حذف ملفات JPG المؤقتة...");
+    for (var i = 0; i < jpgFiles.length; i++) {
+        try {
+            if (jpgFiles[i].exists) {
+                jpgFiles[i].remove();
+                $.writeln("تم حذف " + jpgFiles[i].fsName + " بنجاح");
+            } else {
+                $.writeln("الملف " + jpgFiles[i].fsName + " غير موجود");
+            }
+        } catch (e) {
+            $.writeln("خطأ أثناء حذف " + jpgFiles[i].fsName + ": " + e);
         }
-    } catch (e) {
-        $.writeln("خطأ أثناء حذف " + jpgFiles[i].fsName + ": " + e);
     }
-}
 
-// فتح فولدر WebP بعد انتهاء كل العمليات
-$.writeln("فتح فولدر WebP...");
-try {
-    var webpFolder = new Folder(saveFolder.fsName); // أو ضع فولدر WebP إذا أنشأته مسبقًا
-    webpFolder.open();
-    $.writeln("تم فتح فولدر WebP بنجاح");
-} catch (e) {
-    $.writeln("خطأ أثناء فتح فولدر WebP: " + e);
-}
+    // انتظار 20 ثانية
+    // $.writeln("انتظار 20 ثانية قبل الضغط...");
+    // $.sleep(10000);
 
-// نهاية السكريبت
+    // تجربة ضغط الفولدر بعدة طرق
+    var zipFile = saveFolder.fsName + ".zip";
+    var success = false;
+
+    // الطريقة 1: باستخدام PowerShell
+    // if (!success) {
+    //     try {
+    //         var psBat = new File(Folder.temp + "/zipWithPS.bat");
+    //         psBat.open("w");
+    //         psBat.writeln('powershell -command "Compress-Archive -Path \'' + saveFolder.fsName + '\\*\' -DestinationPath \'' + zipFile + '\' -Force"');
+    //         psBat.close();
+    //         psBat.execute();
+    //         success = true;
+    //         alert("✅ تم الضغط بنجاح باستخدام PowerShell");
+    //     } catch (e) {
+    //         $.writeln("PowerShell فشل: " + e);
+    //     }
+    // }
+
+ 
+ 
+
 })();
 
+
+// شغااالل
+// شغااالل
+// شغااالل
