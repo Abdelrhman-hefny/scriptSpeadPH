@@ -103,7 +103,10 @@
       "():": "Bang-Zoom!-Italic",
       "[]:": "DomCasual-Regular",
       "[]": "Timelapse-Regular",
-      "::": "CCShoutOut"
+      "::": "CCShoutOut",
+      "OT:": "CCTallTales-Regular",
+      "OT": "CCTallTales-Regular",
+      "Ot:": "CCTallTales-Regular"
     }
   },
   "ez japan": {
@@ -112,26 +115,29 @@
     "minFontSize": 20,
     "boxPaddingRatio": 0.18,
     "fontMap": {
-      "\"\":": "Bang-Zoom!-Regular",
-      "\"\"": "Bang-Zoom!-Regular",
-      "\u201c\u201d:": "Bang-Zoom!-Regular",
-      "\u201c\u201d": "Bang-Zoom!-Regular",
-      "\u2018\u2019:": "Bang-Zoom!-Regular",
-      "\u2018\u2019": "Bang-Zoom!-Regular",
-      "\u201c\u201c:": "Bang-Zoom!-Regular",
-      "\u201c\u201c": "Bang-Zoom!-Regular",
-      "\u2018\u2018:": "Bang-Zoom!-Regular",
-      "\u2018\u2018": "Bang-Zoom!-Regular",
-      "``:": "Bang-Zoom!-Regular",
-      "``": "Bang-Zoom!-Regular",
+      "\"\":": "CCMightyMouth-Regular",
+      "\"\"": "CCMightyMouth-Regular",
+      "\u201c\u201d:": "CCMightyMouth-Regular",
+      "\u201c\u201d": "CCMightyMouth-Regular",
+      "\u2018\u2019:": "CCMightyMouth-Regular",
+      "\u2018\u2019": "CCMightyMouth-Regular",
+      "\u201c\u201c:": "CCMightyMouth-Regular",
+      "\u201c\u201c": "CCMightyMouth-Regular",
+      "\u2018\u2018:": "CCMightyMouth-Regular",
+      "\u2018\u2018": "CCMightyMouth-Regular",
+      "``:": "CCMightyMouth-Regular",
+      "``": "CCMightyMouth-Regular",
       "ST:": "VerveineCyr-Regular",
       "st:": "VerveineCyr-Regular",
       "St:": "VerveineCyr-Regular",
-      "()": "Bang-Zoom!-Italic",
-      "():": "Bang-Zoom!-Italic",
-      "::": "CCShoutOut",
+      "()": "CCMightyMouth-Italic",
+      "():": "CCMightyMouth-Italic",
+      "::": "CCShoutOut-bold",
       "[]:": "DomCasual-Regular",
-      "[]": "Timelapse-Regular"
+      "OT:": "CCTallTales-Regular",
+      "OT": "CCTallTales-Regular",
+      "Ot:": "CCTallTales-Regular",
+      "[]": "DomCasual-Regular"
     }
   },
   "quantom": {

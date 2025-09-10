@@ -45,7 +45,7 @@ app.bringToFront();
         // أمر Smart Stitch مع تسجيل المخرجات في ملف نصي
         batFile.writeln(
             'cd /d "' + saveFolder.fsName + '" && ' +
-            pythonExe + ' ' + smartStitch + ' -i "' + saveFolder.fsName + '" -sh 15000 -cw 800 -t ".webp" -lq 95 > "' + 
+            pythonExe + ' ' + smartStitch + ' -i "' + saveFolder.fsName + '" -sh 15000 -cw 800 -t ".webp" > "' + 
             Folder.temp.fsName + '\\smart_stitch_log.txt" 2>&1'
         );
         batFile.close();
@@ -66,31 +66,20 @@ app.bringToFront();
         return;
     }
 
-// حذف ملفات JPG المؤقتة
-$.writeln("حذف ملفات JPG المؤقتة...");
-for (var i = 0; i < jpgFiles.length; i++) {
-    try {
-        if (jpgFiles[i].exists) {
-            jpgFiles[i].remove();
-            $.writeln("تم حذف " + jpgFiles[i].fsName + " بنجاح");
-        } else {
-            $.writeln("الملف " + jpgFiles[i].fsName + " غير موجود");
+    // حذف ملفات JPG المؤقتة
+    $.writeln("حذف ملفات JPG المؤقتة...");
+    for (var i = 0; i < jpgFiles.length; i++) {
+        try {
+            if (jpgFiles[i].exists) {
+                jpgFiles[i].remove();
+                $.writeln("تم حذف " + jpgFiles[i].fsName + " بنجاح");
+            } else {
+                $.writeln("الملف " + jpgFiles[i].fsName + " غير موجود");
+            }
+        } catch (e) {
+            $.writeln("خطأ أثناء حذف " + jpgFiles[i].fsName + ": " + e);
         }
-    } catch (e) {
-        $.writeln("خطأ أثناء حذف " + jpgFiles[i].fsName + ": " + e);
     }
-}
 
-// فتح فولدر WebP بعد انتهاء كل العمليات
-$.writeln("فتح فولدر WebP...");
-try {
-    var webpFolder = new Folder(saveFolder.fsName); // أو ضع فولدر WebP إذا أنشأته مسبقًا
-    webpFolder.open();
-    $.writeln("تم فتح فولدر WebP بنجاح");
-} catch (e) {
-    $.writeln("خطأ أثناء فتح فولدر WebP: " + e);
-}
-
-// نهاية السكريبت
-})();
-
+    // ملاحظة للمستخدم
+ })();

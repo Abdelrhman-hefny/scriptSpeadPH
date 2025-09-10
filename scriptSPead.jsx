@@ -7,6 +7,37 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textReader.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/splitSubpaths.jsx");
 
+
+// دالة للتحقق من وجود خط وتطبيق خط بديل
+function getValidFont(fontName, fallbackFont) {
+    try {
+        // إنشاء مستند مؤقت للاختبار
+        var testDoc = app.documents.add(100, 100, 72, "Font Test", NewDocumentMode.RGB);
+        var testLayer = testDoc.artLayers.add();
+        testLayer.kind = LayerKind.TEXT;
+        testLayer.textItem.contents = "Test";
+        
+        try {
+            testLayer.textItem.font = fontName;
+            // إذا وصلنا هنا بدون خطأ، فالخط موجود
+            testDoc.close(SaveOptions.DONOTSAVECHANGES);
+            return fontName;
+        } catch (e) {
+            // الخط غير موجود، جرب الخط البديل
+            try {
+                testLayer.textItem.font = fallbackFont;
+                testDoc.close(SaveOptions.DONOTSAVECHANGES);
+                return fallbackFont;
+            } catch (e2) {
+                testDoc.close(SaveOptions.DONOTSAVECHANGES);
+                return "Arial"; // خط افتراضي
+            }
+        }
+    } catch (e) {
+        return fallbackFont || "Arial";
+    }
+}
+
 // دالة لفتح Notepad وإنشاء ملف نصي جديد
 function openNotepad() {
     try {
@@ -243,6 +274,18 @@ function parseStrokeTag(line) {
         settingsFile.close();
     } catch (_we) {}
 
+
+    // سؤال عن التوقف بعد الصفحة الأولى
+    var stopAfterFirstPage = false;
+    try {
+        var stopPrompt = confirm("هل تريد التوقف بعد الصفحة الأولى للتحقق من الخط؟\n\nنعم = التوقف بعد الصفحة الأولى\nلا = تشغيل السكريبت كاملاً");
+        if (stopPrompt) {
+            stopAfterFirstPage = true;
+        }
+    } catch (_sp) {
+        stopAfterFirstPage = false;
+    }
+
     // ========= قراءة النصوص + بداية كل صفحة ==========
     var allLines = [], pageStartIndices = [];
     try {
@@ -269,6 +312,7 @@ function parseStrokeTag(line) {
     L("Total lines read: " + allLines.length);
     L("Pages detected: " + pageStartIndices.length);
     L("Base font size: " + baseFontSize + "  minFontSize: " + minFontSize);
+    L("Stop after first page: " + (stopAfterFirstPage ? "YES" : "NO"));
     L("========================================");
 
     // جمع وترتيب المستندات بناءً على رقم الصفحة
@@ -392,6 +436,15 @@ function parseStrokeTag(line) {
                     isBracketTag = true;
                 }
             } catch (_bt) {}
+            
+            // خصائص خاصة لسطور تبدأ بـ OT: أو Ot:
+            var isOTTag = false;
+            try {
+                var otMatch = String(lineText).match(/^\s*(?:OT|Ot)\s*:?\s*.*/);
+                if (otMatch) {
+                    isOTTag = true;
+                }
+            } catch (_ot) {}
 
             if (!lineText) {
                 L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
@@ -411,7 +464,10 @@ function parseStrokeTag(line) {
                     var regex = new RegExp("^" + key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"));
                     if (regex.test(lineText)) {
                         wantedFont = fontMap[key];
-                        lineText = trimString(lineText.replace(regex, ""));
+                        // لا نحذف OT: أو Ot: من النص، نحذف باقي الأوسمة فقط
+                        if (!isOTTag) {
+                            lineText = trimString(lineText.replace(regex, ""));
+                        }
                         break;
                     }
                 }
@@ -423,8 +479,14 @@ function parseStrokeTag(line) {
                 curFontSize = lastFontSize || baseFontSize;
             } else {
                 if (!wantedFont) wantedFont = defaultFont;
-                usedFont = pickFont(wantedFont, defaultFont);
+                // استخدام الدالة الجديدة للتحقق من الخط
+                usedFont = getValidFont(wantedFont, defaultFont);
                 curFontSize = baseFontSize;
+            }
+            
+            // خاصية خاصة لفريق rezo مع خط CCShoutOutGSN - زيادة حجم الخط بـ 10 نقاط
+            if (currentTeam === "rezo" && usedFont === "CCShoutOutGSN") {
+                curFontSize = curFontSize + 10;
             }
 
             try {
@@ -450,7 +512,7 @@ function parseStrokeTag(line) {
                 var innerSide = Math.min(availableWidth, availableHeight);
 
                 var low = Math.max(minFontSize, 6);
-                var high = Math.max(low, baseFontSize);
+                var high = Math.max(low, curFontSize); // استخدام curFontSize بدلاً من baseFontSize
                 var best = low;
                 var tries = 0;
                 var testLayer = doc.artLayers.add();
@@ -480,7 +542,7 @@ function parseStrokeTag(line) {
                     }
                     tries++;
                 }
-                var newFontSize = Math.min(best, baseFontSize);
+                var newFontSize = Math.min(best, curFontSize); // استخدام curFontSize بدلاً من baseFontSize
                 try { testLayer.remove(); } catch (_rm) {}
 
                 var textLayer = doc.artLayers.add();
@@ -503,6 +565,13 @@ function parseStrokeTag(line) {
                         textLayer.textItem.fauxBold = true;
                         try { textLayer.textItem.capitalization = TextCase.ALLCAPS; } catch (_cap) {}
                     } catch (_bfmt) {}
+                }
+                
+                // تطبيق تأثير ALL CAPS على سطور OT: أو Ot:
+                if (isOTTag) {
+                    try {
+                        textLayer.textItem.capitalization = TextCase.ALLCAPS;
+                    } catch (_otcap) {}
                 }
                 try { textLayer.textItem.font = usedFont; } catch (fe) { E("Font not found: " + usedFont + ", using Arial"); textLayer.textItem.font = "Arial"; }
                 textLayer.textItem.size = newFontSize;
@@ -565,7 +634,7 @@ function parseStrokeTag(line) {
 
                 doc.selection.deselect();
                 totalInserted++;
-                L("  >>> OK inserted line index " + (lineIndex - 1) + " fontSize: " + textLayer.textItem.size + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
+                L("  >>> OK inserted line index " + (lineIndex - 1) + " fontSize: " + textLayer.textItem.size + " font: " + usedFont + " textPreview: \"" + (lineText.length > 80 ? lineText.substring(0, 80) + "..." : lineText) + "\"");
 
                 lastUsedFont = usedFont;
                 lastFontSize = newFontSize;
@@ -602,6 +671,14 @@ function parseStrokeTag(line) {
         } catch (_finalize) {}
 
         try { app.preferences.rulerUnits = prevUnits; } catch (_ur) {}
+        
+        // التوقف بعد الصفحة الأولى إذا تم اختيار هذا الخيار
+        if (stopAfterFirstPage && d === 0) {
+            L("\n===== توقف بعد الصفحة الأولى =====");
+            L("تم الانتهاء من معالجة الصفحة الأولى: " + doc.name);
+            L("يمكنك الآن التحقق من الخط وإعادة تشغيل السكريبت إذا كان مناسباً");
+            break; // إيقاف الحلقة والخروج من معالجة المستندات
+        }
     }
     try {
         // ====== Summary ======
@@ -636,7 +713,7 @@ function parseStrokeTag(line) {
             }
         } catch (e2) {}
 
-        // 1️⃣ حدد فولدر PSD الحالي
+/*         // 1️⃣ حدد فولدر PSD الحالي
         var doc = app.activeDocument;
         var psdFolder = doc.path;
 
@@ -656,7 +733,7 @@ function parseStrokeTag(line) {
 
         // 4️⃣ إغلاق Photoshop بعد تشغيل الباتش (من غير حفظ)
         app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
-
+ */
     } catch (e) {
         alert("حدث خطأ: " + e);
     }
