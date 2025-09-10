@@ -12,7 +12,7 @@ app.bringToFront();
     var saveFolder = new Folder(app.documents[0].path);
 
     // فولدر الملفات المحوَّلة [stitched]
-    var stitchedFolder = new Folder(saveFolder.parent.fsName + "\\" + saveFolder.name + " [stitched]");
+    var stitchedFolder = new Folder(saveFolder.parent.fsName + "\\" + saveFolder.name + "_JPG [stitched]");
     if (!stitchedFolder.exists) {
         alert("⚠️ فولدر التحويل غير موجود: " + stitchedFolder.fsName);
         return;

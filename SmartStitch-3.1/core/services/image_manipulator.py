@@ -1,12 +1,5 @@
 from PIL import Image as pil
 
-try:
-    resample_method = pil.Resampling.LANCZOS
-except AttributeError:
-    resample_method = pil.LANCZOS
-
-
-
 from ..utils.constants import WIDTH_ENFORCEMENT
 from .global_logger import logFunc
 
@@ -37,10 +30,7 @@ class ImageManipulator:
             img_ratio = float(img.size[1] / img.size[0])
             new_img_height = int(img_ratio * new_img_width)
             if new_img_height > 0:
-                img = img.resize((new_img_width, new_img_height), resample_method)
-
-
-
+                img = img.resize((new_img_width, new_img_height), pil.ANTIALIAS)
                 resized_imgs.append(img)
         return resized_imgs
 
