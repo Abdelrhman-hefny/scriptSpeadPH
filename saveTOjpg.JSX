@@ -11,7 +11,7 @@ if (app.documents.length === 0) {
     var currentFolderName = new Folder(docPath).name;
 
     // المجلد الأب
-    var parentFolder = new Folder(docPath).parent.fsName;
+    var parentFolder = new Folder(docPath).fsName;
 
     // إنشاء اسم المجلد الجديد _JPG
     var targetFolder = parentFolder + "\\" + currentFolderName + "_JPG";
@@ -32,5 +32,4 @@ if (app.documents.length === 0) {
         doc.saveAs(saveFile, jpgOptions, true, Extension.LOWERCASE);
     }
 
-    alert("تم حفظ كل الصور المفتوحة في:\n" + targetFolder);
 }

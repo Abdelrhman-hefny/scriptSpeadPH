@@ -11,7 +11,7 @@ if (app.documents.length === 0) {
     var currentFolderName = new Folder(docPath).name;
 
     // المجلد الأب
-    var parentFolder = new Folder(docPath).parent.fsName;
+    var parentFolder = new Folder(docPath).fsName;
 
     // إنشاء اسم المجلد الجديد _JPG
     var targetFolder = parentFolder + "\\" + currentFolderName + "_JPG";
@@ -39,14 +39,12 @@ if (app.documents.length === 0) {
     cmdFile.writeln("@echo off");
     // تشغيل SmartStitch بصلاحيات المسؤول
     cmdFile.writeln('powershell -Command "Start-Process \'' + pythonPath + '\' -ArgumentList \'' + smartStitchPath + ' -i \\\"' + targetFolder + '\\\" -sh 14000 -cw 800 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5\' -Verb RunAs"');
-    cmdFile.writeln("pause");
-    cmdFile.close();
+     cmdFile.close();
 
     // تنفيذ الملف BAT
     try {
         cmdFile.execute();
-        alert("تم حفظ الصور وتشغيل SmartStitch بصلاحيات المسؤول على المجلد:\n" + targetFolder);
-    } catch (e) {
+     } catch (e) {
         alert("حدث خطأ عند تشغيل SmartStitch:\n" + e);
     }
 }
