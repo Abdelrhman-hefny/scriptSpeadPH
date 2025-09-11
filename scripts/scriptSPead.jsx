@@ -124,128 +124,203 @@ function openNotepad() {
          return;
      }
  
-     // اختيار الفريق عبر Dropdown
-     var teamNames = getTeamNames(teams);
-     var settingsPath = Folder.myDocuments + "/waterMark/lastChoice.txt";
-     var settingsFile = new File(settingsPath);
-     var lastIdx = 0;
-     try {
-         if (settingsFile.exists) {
-             if (settingsFile.open('r')) {
-                 var raw = settingsFile.read();
-                 settingsFile.close();
-                 var lines = String(raw || "").split(/\r?\n/);
-                 if (lines.length > 0) {
-                     var t = parseInt(lines[0], 10);
-                     if (!isNaN(t) && t >= 0 && t < teamNames.length) lastIdx = t;
-                 }
-             }
-         }
-     } catch (_re) {}
- 
-     var dlg = new Window('dialog', 'اختر الفريق');
-     dlg.orientation = 'column';
-     dlg.alignChildren = ['fill', 'top'];
-     dlg.add('statictext', undefined, 'اختر الفريق:');
-     var dd = dlg.add('dropdownlist', undefined, []);
-     for (var di = 0; di < teamNames.length; di++) {
-         dd.add('item', (di + 1) + ' - ' + teamNames[di]);
-     }
-     try { dd.selection = dd.items[lastIdx]; } catch (_se) { if (dd.items.length > 0) dd.selection = dd.items[0]; }
-     var btns = dlg.add('group');
-     btns.alignment = 'right';
-     var okBtn = btns.add('button', undefined, 'موافق');
-     var cancelBtn = btns.add('button', undefined, 'إلغاء');
-     var chosenIdx = null;
-     okBtn.onClick = function() { if (dd.selection) chosenIdx = dd.selection.index; dlg.close(); };
-     cancelBtn.onClick = function() { dlg.close(); };
-     dlg.show();
-     if (chosenIdx === null) {
-         return;
-     }
- 
-     // حفظ الاختيار
-     try {
-         settingsFile.open('w');
-         settingsFile.writeln(chosenIdx);
-         settingsFile.close();
-     } catch (_we) {}
- 
-     var currentTeam = teamNames[chosenIdx];
-     if (!teams[currentTeam]) {
-         return;
-     }
- 
-     var defaultFont = teams[currentTeam].defaultFont;
-     var baseFontSize = teams[currentTeam].baseFontSize;
-     var minFontSize = teams[currentTeam].minFontSize;
-     var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
-     var fontMap = teams[currentTeam].fontMap;
-     var verticalCenterCompensationRatio = 0.12; // تعويض رأسي بنسبة 12%
- 
-    // تفعيل وضع السرعة افتراضياً
-    var fastMode = true;
-    var ultraFastMode = false;
-    
-    // سؤال عن وضع Ultra Fast Mode
+    // تحضير قائمة الفرق
+    var teamNames = getTeamNames(teams);
+    var settingsPath = Folder.myDocuments + "/waterMark/lastChoice.txt";
+    var lastTeamIdx = 0;
     try {
-        var ultraFastPrompt = confirm("هل تريد تفعيل وضع السرعة القصوى؟\n\nنعم = أسرع أداء (بدون تأثيرات إضافية)\nلا = أداء عادي مع تأثيرات كاملة");
-        if (ultraFastPrompt) {
-            ultraFastMode = true;
-            fastMode = true;
+        if (settingsFile.exists) {
+            if (settingsFile.open('r')) {
+                var raw = settingsFile.read();
+                settingsFile.close();
+                var lines = String(raw || "").split(/\r?\n/);
+                if (lines.length > 0) {
+                    var t = parseInt(lines[0], 10);
+                    if (!isNaN(t) && t >= 0 && t < teamNames.length) lastTeamIdx = t;
+                }
+            }
         }
-    } catch (_uf) {
-        ultraFastMode = false;
+    } catch (_re) {}
+
+    // ========= دايالوج الإعدادات الشامل ==========
+    var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
+    var lastSettings = {
+        teamIndex: lastTeamIdx,
+        baseFontSize: 30,
+        ultraFastMode: false,
+        fastMode: true,
+        stopAfterFirstPage: false
+    };
+    
+    // قراءة الإعدادات المحفوظة
+    try {
+        if (settingsFile.exists) {
+            settingsFile.open('r');
+            var sraw = settingsFile.read();
+            settingsFile.close();
+            var sobj = null;
+            try { sobj = JSON.parse(sraw); } catch (_je) { sobj = null; }
+            if (sobj) {
+                if (sobj.teamIndex !== undefined) lastSettings.teamIndex = parseInt(sobj.teamIndex, 10);
+                if (sobj.lastBaseFontSize) lastSettings.baseFontSize = parseInt(sobj.lastBaseFontSize, 10);
+                if (sobj.ultraFastMode !== undefined) lastSettings.ultraFastMode = sobj.ultraFastMode;
+                if (sobj.fastMode !== undefined) lastSettings.fastMode = sobj.fastMode;
+                if (sobj.stopAfterFirstPage !== undefined) lastSettings.stopAfterFirstPage = sobj.stopAfterFirstPage;
+            }
+        }
+    } catch (_re) {}
+
+    // إنشاء دايالوج الإعدادات
+    var settingsDialog = new Window('dialog', 'إعدادات السكريبت');
+    settingsDialog.orientation = 'column';
+    settingsDialog.alignChildren = ['fill', 'top'];
+    settingsDialog.spacing = 10;
+    settingsDialog.margins = 20;
+
+    // عنوان الدايالوج
+    var titleGroup = settingsDialog.add('group');
+    titleGroup.add('statictext', undefined, 'إعدادات سكريبت إدراج النصوص', {style: 'bold'});
+
+    // اختيار الفريق
+    var teamGroup = settingsDialog.add('panel', undefined, 'اختيار الفريق');
+    teamGroup.orientation = 'column';
+    teamGroup.alignChildren = ['fill', 'top'];
+    teamGroup.spacing = 5;
+    teamGroup.margins = 10;
+
+    teamGroup.add('statictext', undefined, 'اختر الفريق:');
+    var teamDropdown = teamGroup.add('dropdownlist', undefined, []);
+    for (var di = 0; di < teamNames.length; di++) {
+        teamDropdown.add('item', (di + 1) + ' - ' + teamNames[di]);
     }
- 
-     // قراءة آخر قيمة محفوظة لاستخدامها كقيمة افتراضية
-     var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
-     var lastBase = null;
-     try {
-         if (settingsFile.exists) {
-             settingsFile.open('r');
-             var sraw = settingsFile.read();
-             settingsFile.close();
-             var sobj = null;
-             try { sobj = JSON.parse(sraw); } catch (_je) { sobj = null; }
-             if (sobj && sobj.lastBaseFontSize) lastBase = parseInt(sobj.lastBaseFontSize, 10);
-         }
-     } catch (_re) {}
- 
-     // برومبت حجم الخط
-     var fsDefault = (lastBase && !isNaN(lastBase) && lastBase > 0) ? lastBase : (baseFontSize || 30);
-     try {
-         var fsPrompt = prompt("أدخل حجم الخط الأساسي (pt):", String(fsDefault));
-         if (fsPrompt !== null && fsPrompt !== undefined) {
-             var fsVal = parseInt(fsPrompt, 10);
-             if (!isNaN(fsVal) && fsVal > 0) baseFontSize = fsVal; else baseFontSize = fsDefault;
-         } else {
-             baseFontSize = fsDefault;
-         }
-     } catch (_pf) {
-         baseFontSize = fsDefault;
-     }
-     if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
- 
-     // حفظ آخر قيمة للاستخدام القادم
-     try {
-         var toSave = { lastBaseFontSize: baseFontSize };
-         settingsFile.open('w');
-         settingsFile.write(JSON.stringify(toSave));
-         settingsFile.close();
-     } catch (_we) {}
- 
- 
-     // سؤال عن التوقف بعد الصفحة الأولى
-     var stopAfterFirstPage = false;
-     try {
-         var stopPrompt = confirm("هل تريد التوقف بعد الصفحة الأولى للتحقق من الخط؟\n\nنعم = التوقف بعد الصفحة الأولى\nلا = تشغيل السكريبت كاملاً");
-         if (stopPrompt) {
-             stopAfterFirstPage = true;
-         }
-     } catch (_sp) {
-         stopAfterFirstPage = false;
-     }
+    try { 
+        teamDropdown.selection = teamDropdown.items[lastSettings.teamIndex]; 
+    } catch (_se) { 
+        if (teamDropdown.items.length > 0) teamDropdown.selection = teamDropdown.items[0]; 
+    }
+
+    // إعدادات الخط
+    var fontGroup = settingsDialog.add('panel', undefined, 'إعدادات الخط');
+    fontGroup.orientation = 'column';
+    fontGroup.alignChildren = ['fill', 'top'];
+    fontGroup.spacing = 5;
+    fontGroup.margins = 10;
+
+    var fontSizeGroup = fontGroup.add('group');
+    fontSizeGroup.add('statictext', undefined, 'حجم الخط الأساسي (pt):');
+    var fontSizeInput = fontSizeGroup.add('edittext', undefined, String(lastSettings.baseFontSize));
+    fontSizeInput.characters = 10;
+
+    // إعدادات الأداء
+    var performanceGroup = settingsDialog.add('panel', undefined, 'إعدادات الأداء');
+    performanceGroup.orientation = 'column';
+    performanceGroup.alignChildren = ['fill', 'top'];
+    performanceGroup.spacing = 5;
+    performanceGroup.margins = 10;
+
+    var ultraFastCheck = performanceGroup.add('checkbox', undefined, 'وضع السرعة القصوى (أسرع أداء بدون تأثيرات إضافية)');
+    ultraFastCheck.value = lastSettings.ultraFastMode;
+
+    var fastModeCheck = performanceGroup.add('checkbox', undefined, 'وضع السرعة العادي (أداء سريع مع تأثيرات كاملة)');
+    fastModeCheck.value = lastSettings.fastMode;
+
+    // إعدادات التشغيل
+    var runGroup = settingsDialog.add('panel', undefined, 'إعدادات التشغيل');
+    runGroup.orientation = 'column';
+    runGroup.alignChildren = ['fill', 'top'];
+    runGroup.spacing = 5;
+    runGroup.margins = 10;
+
+    var stopAfterFirstCheck = runGroup.add('checkbox', undefined, 'التوقف بعد الصفحة الأولى للتحقق من الخط');
+    stopAfterFirstCheck.value = lastSettings.stopAfterFirstPage;
+
+    // أزرار التحكم
+    var buttonGroup = settingsDialog.add('group');
+    buttonGroup.alignment = 'right';
+    var okButton = buttonGroup.add('button', undefined, 'موافق');
+    var cancelButton = buttonGroup.add('button', undefined, 'إلغاء');
+
+    // معالجة الأحداث
+    var dialogResult = null;
+    var chosenTeamIdx = null;
+    var baseFontSize = null;
+    var ultraFastMode = null;
+    var fastMode = null;
+    var stopAfterFirstPage = null;
+    
+    okButton.onClick = function() {
+        // التحقق من صحة البيانات
+        var fontSize = parseInt(fontSizeInput.text, 10);
+        if (isNaN(fontSize) || fontSize <= 0) {
+            alert("يرجى إدخال حجم خط صحيح");
+            return;
+        }
+
+        // التحقق من اختيار الفريق
+        if (!teamDropdown.selection) {
+            alert("يرجى اختيار فريق");
+            return;
+        }
+
+        // حفظ الإعدادات
+        chosenTeamIdx = teamDropdown.selection.index;
+        baseFontSize = fontSize;
+        ultraFastMode = ultraFastCheck.value;
+        fastMode = fastModeCheck.value;
+        stopAfterFirstPage = stopAfterFirstCheck.value;
+
+        // حفظ الإعدادات في الملف
+        try {
+            var toSave = {
+                teamIndex: chosenTeamIdx,
+                lastBaseFontSize: baseFontSize,
+                ultraFastMode: ultraFastMode,
+                fastMode: fastMode,
+                stopAfterFirstPage: stopAfterFirstPage
+            };
+            settingsFile.open('w');
+            settingsFile.write(JSON.stringify(toSave));
+            settingsFile.close();
+        } catch (_we) {}
+
+        // حفظ اختيار الفريق في الملف المنفصل
+        try {
+            var teamSettingsFile = new File(settingsPath);
+            teamSettingsFile.open('w');
+            teamSettingsFile.writeln(chosenTeamIdx);
+            teamSettingsFile.close();
+        } catch (_we) {}
+
+        dialogResult = true;
+        settingsDialog.close();
+    };
+
+    cancelButton.onClick = function() {
+        dialogResult = false;
+        settingsDialog.close();
+    };
+
+    // عرض الدايالوج
+    settingsDialog.show();
+
+    // التحقق من النتيجة
+    if (dialogResult !== true) {
+        return; // إلغاء العملية
+    }
+
+    // تعريف متغيرات الفريق المختار
+    var currentTeam = teamNames[chosenTeamIdx];
+    if (!teams[currentTeam]) {
+        return;
+    }
+
+    var defaultFont = teams[currentTeam].defaultFont;
+    var minFontSize = teams[currentTeam].minFontSize;
+    var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
+    var fontMap = teams[currentTeam].fontMap;
+    var verticalCenterCompensationRatio = 0.12; // تعويض رأسي بنسبة 12%
+
+    if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
  
      // ========= قراءة النصوص + بداية كل صفحة ==========
      var allLines = [], pageStartIndices = [];
@@ -382,35 +457,59 @@ function openNotepad() {
              var entryPrefix = "File=" + doc.name + " | BubbleIndex=" + (k+1) + " | PathName=" + pathName;
              if (!ultraFastMode) L("\n" + entryPrefix);
  
-             var lineText = allLines[lineIndex++];
-             var strokeInfo = parseStrokeTag(lineText);
-             lineText = strokeInfo.text;
-             // توريث خط الفقاعة السابقة لأسطر // أو //:
-             var inheritPrevFont = false;
-             try {
-                 if (/^\/\/:?/.test(lineText)) {
-                     inheritPrevFont = true;
-                     lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
-                 }
-             } catch (_ih) {}
-             // خصائص خاصة لسطور تبدأ بـ []:
-             var isBracketTag = false;
-             try {
-                 // لا نحذف الوسم هنا حتى يعمل fontMap ويختار الخط الصحيح
-                 var bMatch = String(lineText).match(/^\s*\[\s*\]\s*:?.*/);
-                 if (bMatch) {
-                     isBracketTag = true;
-                 }
-             } catch (_bt) {}
-             
-             // خصائص خاصة لسطور تبدأ بـ OT: أو Ot:
-             var isOTTag = false;
-             try {
-                 var otMatch = String(lineText).match(/^\s*(?:OT|Ot)\s*:?\s*.*/);
-                 if (otMatch) {
-                     isOTTag = true;
-                 }
-             } catch (_ot) {}
+            var lineText = allLines[lineIndex++];
+            
+            // في وضع السرعة، نحتفظ بمنطق تغيير الخطوط ولكن نبسط باقي العمليات
+            var isBracketTag = false;
+            var isOTTag = false;
+            var inheritPrevFont = false;
+            
+            if (ultraFastMode) {
+                // فحص التاجات الخاصة قبل حذفها
+                if (/^\s*\[\s*\]\s*:?/.test(lineText)) {
+                    isBracketTag = true;
+                }
+                if (/^\s*(?:OT|Ot)\s*:?\s*/.test(lineText)) {
+                    isOTTag = true;
+                }
+                if (/^\/\/:?/.test(lineText)) {
+                    inheritPrevFont = true;
+                }
+                
+                // إزالة التاجات العامة فقط (وليس مفاتيح الخطوط أو التاجات الخاصة)
+                lineText = lineText.replace(/^\s*(NA:|SFX:|\*\*:|#\s*)\s*/i, '');
+                
+                // حذف تاج // إذا كان موجوداً
+                if (inheritPrevFont) {
+                    lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
+                }
+            } else {
+                var strokeInfo = parseStrokeTag(lineText);
+                lineText = strokeInfo.text;
+                // توريث خط الفقاعة السابقة لأسطر // أو //:
+                try {
+                    if (/^\/\/:?/.test(lineText)) {
+                        inheritPrevFont = true;
+                        lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
+                    }
+                } catch (_ih) {}
+                // خصائص خاصة لسطور تبدأ بـ []:
+                try {
+                    // لا نحذف الوسم هنا حتى يعمل fontMap ويختار الخط الصحيح
+                    var bMatch = String(lineText).match(/^\s*\[\s*\]\s*:?.*/);
+                    if (bMatch) {
+                        isBracketTag = true;
+                    }
+                } catch (_bt) {}
+                
+                // خصائص خاصة لسطور تبدأ بـ OT: أو Ot:
+                try {
+                    var otMatch = String(lineText).match(/^\s*(?:OT|Ot)\s*:?\s*.*/);
+                    if (otMatch) {
+                        isOTTag = true;
+                    }
+                } catch (_ot) {}
+            }
  
              if (!lineText) {
                  L("Skipped bubble " + (k+1) + " in " + doc.name + " because no text line is available.");
@@ -426,14 +525,50 @@ function openNotepad() {
  
             // تحسين اختيار الخطوط
             var usedFont, curFontSize;
-            if (inheritPrevFont) {
-                usedFont = lastUsedFont || defaultFont;
-                curFontSize = lastFontSize || baseFontSize;
-            } else {
+            
+            if (ultraFastMode) {
+                // في وضع السرعة، نحتفظ بمنطق تغيير الخطوط بناءً على المفاتيح
                 var wantedFont = defaultFont;
                 
-                // فحص سريع للخطوط المطلوبة
-                if (!ultraFastMode) {
+                // فحص مفاتيح الخطوط وحذفها
+                for (var key in fontMap) {
+                    if (lineText.indexOf(key) === 0) {
+                        wantedFont = fontMap[key];
+                        lineText = trimString(lineText.substring(key.length));
+                        break;
+                    }
+                }
+                
+                // فحص تاج ST: إذا لم يتم العثور على مفتاح خط
+                if (wantedFont === defaultFont && /^\s*ST\s*:?\s*/.test(lineText)) {
+                    // البحث عن خط ST في fontMap
+                    for (var key in fontMap) {
+                        if (key.toLowerCase() === 'st' || key.toLowerCase() === 'st:') {
+                            wantedFont = fontMap[key];
+                            lineText = lineText.replace(/^\s*ST\s*:?\s*/, '');
+                            break;
+                        }
+                    }
+                }
+                
+                // حذف التاجات الخاصة بعد تحديد نوع الخط
+                if (isBracketTag) {
+                    lineText = lineText.replace(/^\s*\[\s*\]\s*:?\s*/, '');
+                }
+                if (isOTTag) {
+                    lineText = lineText.replace(/^\s*(?:OT|Ot)\s*:?\s*/, '');
+                }
+                
+                usedFont = wantedFont; // استخدام الخط مباشرة بدون فحص getValidFont
+                curFontSize = baseFontSize;
+            } else {
+                if (inheritPrevFont) {
+                    usedFont = lastUsedFont || defaultFont;
+                    curFontSize = lastFontSize || baseFontSize;
+                } else {
+                    var wantedFont = defaultFont;
+                    
+                    // فحص سريع للخطوط المطلوبة
                     for (var key in fontMap) {
                         if (lineText.indexOf(key) === 0) {
                             wantedFont = fontMap[key];
@@ -443,10 +578,10 @@ function openNotepad() {
                             break;
                         }
                     }
+                    
+                    usedFont = getValidFont(wantedFont, defaultFont);
+                    curFontSize = baseFontSize; // استخدام الخط الثابت
                 }
-                
-                usedFont = ultraFastMode ? wantedFont : getValidFont(wantedFont, defaultFont);
-                curFontSize = baseFontSize; // استخدام الخط الثابت
             }
              
              // خاصية خاصة لفريق rezo مع خط CCShoutOutGSN - زيادة حجم الخط بـ 10 نقاط
@@ -503,6 +638,23 @@ function openNotepad() {
                     }
                     
                     // تطبيق تأثير ALL CAPS على سطور OT: أو Ot:
+                    if (isOTTag) {
+                        textLayer.textItem.capitalization = TextCase.ALLCAPS;
+                    }
+                } else {
+                    // في وضع السرعة، تطبيق تنسيقات أساسية + تأثيرات خاصة
+                    textLayer.textItem.antiAliasMethod = AntiAlias.SMOOTH;
+                    
+                    // تطبيق تأثيرات خاصة لسطور []: في وضع السرعة
+                    if (isBracketTag) {
+                        textLayer.textItem.tracking = 0;
+                        textLayer.textItem.leading = Math.round(newFontSize * 1.00);
+                        textLayer.textItem.autoKerning = AutoKernType.OPTICAL;
+                        textLayer.textItem.fauxBold = true;
+                        textLayer.textItem.capitalization = TextCase.ALLCAPS;
+                    }
+                    
+                    // تطبيق تأثير ALL CAPS على سطور OT: في وضع السرعة
                     if (isOTTag) {
                         textLayer.textItem.capitalization = TextCase.ALLCAPS;
                     }

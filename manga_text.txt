@@ -1,11 +1,5 @@
 page 1
-Hello, world!
-st:Action text
-page 2
-Hello, world!
-st:Action textHello, world!
-st:Action textHello, world!
-st:Action textHello, world!
-st:Action textHello, world!
-st:Action textHello, world!
-st:Action text
+ST: Action textHello, world!
+St: Action textHello, world!
+st: Action textHello, world!
+st Action textHello, world!
