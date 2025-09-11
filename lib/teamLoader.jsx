@@ -15,4 +15,3 @@
     getTeamNames = function (teams) { return getObjectKeys(teams); };
 })();
 
-

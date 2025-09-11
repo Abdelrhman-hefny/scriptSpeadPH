@@ -3,7 +3,7 @@ app.bringToFront();
 
 (function() {
 
-    var url = "https://coda.io/d/Work_dhT8XA1rThZ/rezo_supN5Ws5#_luO5wc-q";
+    var url = "https://coda.io/d/Work_dhT8XA1rThZ/rezo_supN5Ws5#_luDJkH25";
     var chrome = '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"';
     var f = new File(Folder.temp + "/o.bat");
     f.open("w");
@@ -22,7 +22,7 @@ app.bringToFront();
 
     var saveFolder = new Folder(app.documents[0].path);
 
-    // فولدر الملفات المحوَّلة [stitched]
+    // فولدر الملفات المحوَّلة [stitched]
     var stitchedFolder = new Folder(saveFolder.fsName + "\\" + saveFolder.name + "_JPG [stitched]");
     if (!stitchedFolder.exists) {
         alert("⚠️ فولدر التحويل غير موجود: " + stitchedFolder.fsName);

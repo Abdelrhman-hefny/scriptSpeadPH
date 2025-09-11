@@ -1,4 +1,4 @@
-var batchFilePath = "C:/Users/abdoh/Downloads/testScript/watch_clean.bat";
+var batchFilePath = "C:/Users/abdoh/Downloads/testScript/batch/watch_clean.bat";
 if (File(batchFilePath).exists) {
     // يستخدم start /wait وينتظر انتهاء الباتش
     system.callSystem('cmd /c start /wait "" "' + batchFilePath + '"');
