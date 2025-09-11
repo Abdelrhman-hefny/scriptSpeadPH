@@ -56,6 +56,25 @@ function getValidFont(fontName, fallbackFont) {
     }
 }
 
+// دالة للبحث في المفاتيح المجمعة
+function findFontInMap(lineText, fontMap) {
+    for (var key in fontMap) {
+        // تقسيم المفتاح المجمع إلى مفاتيح منفصلة
+        var keys = key.split('|');
+        for (var i = 0; i < keys.length; i++) {
+            var singleKey = keys[i];
+            if (lineText.indexOf(singleKey) === 0) {
+                return {
+                    found: true,
+                    font: fontMap[key],
+                    key: singleKey
+                };
+            }
+        }
+    }
+    return { found: false, font: null, key: null };
+}
+
 // تحليل علامات النص لتطبيق Stroke
 function parseStrokeTag(line) {
     try {
@@ -530,13 +549,11 @@ function openNotepad() {
                 // في وضع السرعة، نحتفظ بمنطق تغيير الخطوط بناءً على المفاتيح
                 var wantedFont = defaultFont;
                 
-                // فحص مفاتيح الخطوط وحذفها
-                for (var key in fontMap) {
-                    if (lineText.indexOf(key) === 0) {
-                        wantedFont = fontMap[key];
-                        lineText = trimString(lineText.substring(key.length));
-                        break;
-                    }
+                // فحص مفاتيح الخطوط وحذفها باستخدام الدالة الجديدة
+                var fontResult = findFontInMap(lineText, fontMap);
+                if (fontResult.found) {
+                    wantedFont = fontResult.font;
+                    lineText = trimString(lineText.substring(fontResult.key.length));
                 }
                 
                 // فحص تاج ST: إذا لم يتم العثور على مفتاح خط
@@ -568,14 +585,12 @@ function openNotepad() {
                 } else {
                     var wantedFont = defaultFont;
                     
-                    // فحص سريع للخطوط المطلوبة
-                    for (var key in fontMap) {
-                        if (lineText.indexOf(key) === 0) {
-                            wantedFont = fontMap[key];
-                            if (!isOTTag) {
-                                lineText = trimString(lineText.substring(key.length));
-                            }
-                            break;
+                    // فحص سريع للخطوط المطلوبة باستخدام الدالة الجديدة
+                    var fontResult = findFontInMap(lineText, fontMap);
+                    if (fontResult.found) {
+                        wantedFont = fontResult.font;
+                        if (!isOTTag) {
+                            lineText = trimString(lineText.substring(fontResult.key.length));
                         }
                     }
                     
