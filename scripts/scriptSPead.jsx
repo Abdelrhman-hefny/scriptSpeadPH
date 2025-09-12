@@ -80,6 +80,47 @@ function findFontInMap(lineText, fontMap) {
   return { found: false, font: null, key: null };
 }
 
+// ====== بناء فهرس سريع لمفاتيح الخطوط ======
+function buildFontIndex(fontMap) {
+  var entries = [];
+  for (var k in fontMap) {
+    if (!fontMap.hasOwnProperty(k)) continue;
+    var raw = String(k);
+    var arr = raw.indexOf("|") >= 0 ? raw.split("|") : [raw];
+    for (var i = 0; i < arr.length; i++) {
+      var kk = arr[i];
+      if (!kk) continue;
+      entries.push({ key: kk, font: fontMap[k] });
+    }
+  }
+  // رتب بالمفتاح الأطول أولاً ليتجنب مطابقة جزئية قبل كاملة
+  entries.sort(function (a, b) {
+    return b.key.length - a.key.length;
+  });
+  // فهرسة بالحرف الأول لتقليل قائمة المرشحين
+  var byFirst = {};
+  for (var j = 0; j < entries.length; j++) {
+    var f = entries[j];
+    var ch = f.key.charAt(0);
+    if (!byFirst[ch]) byFirst[ch] = [];
+    byFirst[ch].push(f);
+  }
+  return { entries: entries, byFirst: byFirst };
+}
+
+function findFontInCompiledMap(lineText, compiled) {
+  if (!lineText) return { found: false, font: null, key: null };
+  var ch = String(lineText).charAt(0);
+  var list = compiled.byFirst[ch] || compiled.entries;
+  for (var i = 0; i < list.length; i++) {
+    var e = list[i];
+    if (lineText.indexOf(e.key) === 0) {
+      return { found: true, font: e.font, key: e.key };
+    }
+  }
+  return { found: false, font: null, key: null };
+}
+
 // تحليل علامات النص لتطبيق Stroke
 function parseStrokeTag(line) {
   try {
@@ -179,6 +220,7 @@ function openNotepad() {
     ultraFastMode: false,
     fastMode: true,
     stopAfterFirstPage: false,
+    openPS21: false,
   };
 
   // قراءة الإعدادات المحفوظة
@@ -203,6 +245,7 @@ function openNotepad() {
         if (sobj.fastMode !== undefined) lastSettings.fastMode = sobj.fastMode;
         if (sobj.stopAfterFirstPage !== undefined)
           lastSettings.stopAfterFirstPage = sobj.stopAfterFirstPage;
+        if (sobj.openPS21 !== undefined) lastSettings.openPS21 = sobj.openPS21;
       }
     }
   } catch (_re) {}
@@ -294,6 +337,13 @@ function openNotepad() {
   );
   stopAfterFirstCheck.value = lastSettings.stopAfterFirstPage;
 
+  var openPS21Check = runGroup.add(
+    "checkbox",
+    undefined,
+    "إغلاق فوتوشوب وفتح نسخة 21 بعد الانتهاء"
+  );
+  openPS21Check.value = lastSettings.openPS21;
+
   // أزرار التحكم
   var buttonGroup = settingsDialog.add("group");
   buttonGroup.alignment = "right";
@@ -307,6 +357,7 @@ function openNotepad() {
   var ultraFastMode = null;
   var fastMode = null;
   var stopAfterFirstPage = null;
+  var openPS21 = null;
 
   okButton.onClick = function () {
     // التحقق من صحة البيانات
@@ -328,6 +379,7 @@ function openNotepad() {
     ultraFastMode = ultraFastCheck.value;
     fastMode = fastModeCheck.value;
     stopAfterFirstPage = stopAfterFirstCheck.value;
+    openPS21 = openPS21Check.value;
 
     // حفظ الإعدادات في الملف
     try {
@@ -337,6 +389,7 @@ function openNotepad() {
         ultraFastMode: ultraFastMode,
         fastMode: fastMode,
         stopAfterFirstPage: stopAfterFirstPage,
+        openPS21: openPS21,
       };
       settingsFile.open("w");
       settingsFile.write(JSON.stringify(toSave));
@@ -378,7 +431,8 @@ function openNotepad() {
   var minFontSize = teams[currentTeam].minFontSize;
   var boxPaddingRatio = teams[currentTeam].boxPaddingRatio;
   var fontMap = teams[currentTeam].fontMap;
-  var verticalCenterCompensationRatio = 0.12; // تعويض رأسي بنسبة 12%
+  var compiledFontIndex = buildFontIndex(fontMap);
+  var verticalCenterCompensationRatio = 0.06; // تعويض رأسي أخف لتقليل الرفع للأعلى
 
   if (minFontSize && minFontSize > baseFontSize)
     minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
@@ -409,81 +463,74 @@ function openNotepad() {
     if (!ultraFastMode) log.push("ERROR: " + s);
   }
 
-  // ====== مساعد: اكتشاف ذيل الفقاعة وتحسين التوسيط ======
-  // تُعيد مركزاً محسّناً يميل قليلاً ناحية اتجاه الذيل في الأشكال الدائرية/البيضاوية
-  function getTailAwareCenter(pathItem, x1, y1, x2, y2) {
+  // ====== مركز هندسي محسّن للـ path (شبيه بطريقة إضافات التوسيط) ======
+  // الفكرة: نحسب سنتر أولي من كل نقاط الـ path، ثم نزيل 20% الأبعد (tail/زيادات)
+  // ونعيد حساب السنتر من النقاط المتبقية لتمثيل جسم الفقاعة الحقيقي.
+  function getTrimmedCentroid(pathItem, x1, y1, x2, y2) {
     try {
-      if (!pathItem || !pathItem.subPathItems || pathItem.subPathItems.length === 0)
+      if (
+        !pathItem ||
+        !pathItem.subPathItems ||
+        pathItem.subPathItems.length === 0
+      )
         return [(x1 + x2) / 2, (y1 + y2) / 2];
 
-      var sp = pathItem.subPathItems[0];
-      if (!sp || !sp.pathPoints || sp.pathPoints.length < 5)
-        return [(x1 + x2) / 2, (y1 + y2) / 2];
-
-      // قياس نسبة العرض إلى الارتفاع لتحديد إن كان الشكل مربع/مستطيل أم بيضاوي/دائري
-      var w = Math.max(1, x2 - x1);
-      var h = Math.max(1, y2 - y1);
-      var aspect = w / h;
-      // اعتبر مستطيل صِرف إذا كانت النسبة خارج هذا النطاق
-      if (aspect < 0.55 || aspect > 1.85) {
-        return [(x1 + x2) / 2, (y1 + y2) / 2];
-      }
-
-      // اجمع نقاط المسار (Anchors فقط)
       var points = [];
-      for (var i = 0; i < sp.pathPoints.length; i++) {
-        try {
-          var an = sp.pathPoints[i].anchor; // [x, y]
-          if (an && an.length === 2) points.push([an[0], an[1]]);
-        } catch (_e) {}
+      for (var si = 0; si < pathItem.subPathItems.length; si++) {
+        var sp = pathItem.subPathItems[si];
+        if (!sp || !sp.pathPoints) continue;
+        for (var pi = 0; pi < sp.pathPoints.length; pi++) {
+          try {
+            var a = sp.pathPoints[pi].anchor;
+            if (a && a.length === 2) points.push([a[0], a[1]]);
+          } catch (_e) {}
+        }
       }
-      if (points.length < 5) return [(x1 + x2) / 2, (y1 + y2) / 2];
+      if (points.length < 5) {
+        try {
+          var pb = pathItem.bounds;
+          if (pb && pb.length === 4) {
+            var px1 = toNum(pb[0]),
+              py1 = toNum(pb[1]),
+              px2 = toNum(pb[2]),
+              py2 = toNum(pb[3]);
+            return [(px1 + px2) / 2, (py1 + py2) / 2];
+          }
+        } catch (_b) {}
+        return [(x1 + x2) / 2, (y1 + y2) / 2];
+      }
 
-      // احسب مركزاً تقريبياً من متوسط النقاط
+      // سنتر أولي
       var cx = 0,
         cy = 0;
-      for (var j = 0; j < points.length; j++) {
-        cx += points[j][0];
-        cy += points[j][1];
+      for (var i = 0; i < points.length; i++) {
+        cx += points[i][0];
+        cy += points[i][1];
       }
       cx /= points.length;
       cy /= points.length;
 
-      // احسب نصف القطر المتوسط، وابحث عن أقصى انحراف = اتجاه الذيل المحتمل
-      var sumR = 0;
-      for (var k2 = 0; k2 < points.length; k2++) {
-        var dx = points[k2][0] - cx;
-        var dy = points[k2][1] - cy;
-        sumR += Math.sqrt(dx * dx + dy * dy);
+      // مسافات من السنتر الأولي
+      var distIdx = [];
+      for (var j = 0; j < points.length; j++) {
+        var dx = points[j][0] - cx;
+        var dy = points[j][1] - cy;
+        distIdx.push({ d: Math.sqrt(dx * dx + dy * dy), p: points[j] });
       }
-      var avgR = sumR / points.length;
-      var maxIdx = -1,
-        maxDist = -1;
-      for (var m = 0; m < points.length; m++) {
-        var dx2 = points[m][0] - cx;
-        var dy2 = points[m][1] - cy;
-        var dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-        if (dist > maxDist) {
-          maxDist = dist;
-          maxIdx = m;
-        }
-      }
+      distIdx.sort(function (a, b) {
+        return a.d - b.d;
+      });
 
-      // لو الزيادة عن المتوسط بسيطة، اعتبره بلا ذيل
-      if (maxDist < avgR * 1.12) {
-        return [cx, cy];
+      // احتفظ بـ 80% الأقرب (شطب الذيل/النتوءات)
+      var keepCount = Math.max(3, Math.floor(distIdx.length * 0.8));
+      var sumX = 0,
+        sumY = 0;
+      for (var k = 0; k < keepCount; k++) {
+        sumX += distIdx[k].p[0];
+        sumY += distIdx[k].p[1];
       }
-
-      // اتجه بنسبة صغيرة نحو اتجاه الذيل (5% - 12% من نصف القطر)
-      var shiftFactor = 0.1; // يمكن ضبطه لاحقاً من الإعدادات إن لزم
-      var tdx = points[maxIdx][0] - cx;
-      var tdy = points[maxIdx][1] - cy;
-      var mag = Math.max(1, Math.sqrt(tdx * tdx + tdy * tdy));
-      var nx = tdx / mag;
-      var ny = tdy / mag;
-      var shift = avgR * shiftFactor;
-      return [cx + nx * shift, cy + ny * shift];
-    } catch (_tail) {
+      return [sumX / keepCount, sumY / keepCount];
+    } catch (_err) {
       return [(x1 + x2) / 2, (y1 + y2) / 2];
     }
   }
@@ -712,7 +759,7 @@ function openNotepad() {
         var wantedFont = defaultFont;
 
         // فحص مفاتيح الخطوط وحذفها باستخدام الدالة الجديدة
-        var fontResult = findFontInMap(lineText, fontMap);
+        var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
         if (fontResult.found) {
           wantedFont = fontResult.font;
           lineText = trimString(lineText.substring(fontResult.key.length));
@@ -748,7 +795,7 @@ function openNotepad() {
           var wantedFont = defaultFont;
 
           // فحص سريع للخطوط المطلوبة باستخدام الدالة الجديدة
-          var fontResult = findFontInMap(lineText, fontMap);
+          var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
           if (fontResult.found) {
             wantedFont = fontResult.font;
             if (!isOTTag) {
@@ -782,9 +829,9 @@ function openNotepad() {
 
         var boxWidth = Math.max(10, w * (1 - boxPaddingRatio));
         var boxHeight = Math.max(10, h * (1 - boxPaddingRatio));
-        var _tmpCenter = getTailAwareCenter(pathItem, x1, y1, x2, y2);
-        var centerX = _tmpCenter[0];
-        var centerY = _tmpCenter[1];
+        // توسيط تمامًا إلى حدود التحديد (نفس سلوك TyperTools)
+        var centerX = (x1 + x2) / 2;
+        var centerY = (y1 + y2) / 2;
 
         var textLength = lineText.length;
         var padding = Math.max(
@@ -1017,34 +1064,32 @@ function openNotepad() {
       } catch (e2) {}
     }
 
-    // 1️⃣ حدد فولدر PSD الحالي
-    var doc = app.activeDocument;
-    var psdFolder = doc.path;
+    // افتح نسخة 21 فقط لو تم اختيار ذلك في الإعدادات
+    if (openPS21 === true) {
+      try {
+        var _docPS = app.activeDocument;
+        var _psdFolder = _docPS.path;
+        var _tmp = new File(
+          "C:/Users/abdoh/Downloads/testScript/psdFolderPath.txt"
+        );
+        _tmp.open("w");
+        _tmp.write(_psdFolder.fsName);
+        _tmp.close();
 
-    // 2️⃣ احفظ المسار في ملف مؤقت
-    var tempFile = new File(
-      "C:/Users/abdoh/Downloads/testScript/psdFolderPath.txt"
-    );
-    tempFile.open("w");
-    tempFile.write(psdFolder.fsName);
-    tempFile.close();
+        var _bat = new File(
+          "C:/Users/abdoh/Downloads/testScript/batch/openPSD.bat"
+        );
+        if (_bat.exists) {
+          _bat.execute();
+        } else {
+          alert("ملف الباتش غير موجود: " + _bat.fsName);
+        }
 
-    // 3️⃣ شغل ملف الباتش الثابت
-    var batchFile = new File(
-      "C:/Users/abdoh/Downloads/testScript/batch/openPSD.bat"
-    );
-    if (batchFile.exists) {
-      batchFile.execute();
-    } else {
-      alert("ملف الباتش غير موجود: " + batchFile.fsName);
-    }
-
-    // 4️⃣ إغلاق المستند فقط إذا النسخة أقل من 21
-    var psVersion = parseInt(app.version.split(".")[0]);
-    if (psVersion < 21) {
-      app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
-    } else {
-      alert("Photoshop نسخة حديثة، سيتم تركه مفتوحًا.");
+        var _ver = parseInt(app.version.split(".")[0]);
+        if (_ver < 21) {
+          app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
+        }
+      } catch (_eop) {}
     }
   } catch (e) {
     alert("حدث خطأ: " + e);
