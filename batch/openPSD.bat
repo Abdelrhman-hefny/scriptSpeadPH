@@ -18,13 +18,6 @@ start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
 echo Photoshop 2021 launched.
 
 
-
-REM 4️⃣ Wait 30 seconds before opening files
-echo Waiting 30 seconds before opening PSD files...
-timeout /t 40
-echo Done waiting.
-
-
 REM 5️⃣ Read folder path from the temporary file
 echo Reading folder path from temporary file...
 set /p folderPath=<"C:\Users\abdoh\Downloads\testScript\psdFolderPath.txt"
@@ -39,6 +32,14 @@ if not exist "%folderPath%" (
 )
 echo Folder exists.
 
+REM 4️⃣ Wait 30 seconds before opening files
+echo Waiting 30 seconds before opening PSD files...
+timeout /t 30
+echo Done waiting.
+
+
+
+
 
 REM 7️⃣ Open all PSD files in alphabetical order
 echo Opening PSD files in alphabetical order:
@@ -48,11 +49,21 @@ for /f "delims=" %%F in ('dir /b /a-d "%folderPath%\*.psd" ^| sort') do (
 )
 echo Done opening all PSD files.
 
-echo Stopping any running AutoHotkey scripts...
-taskkill /IM AutoHotkey.exe /F >nul 2>&1
-timeout /t 5
+@REM echo Stopping any running AutoHotkey scripts...
+@REM taskkill /IM AutoHotkey.exe /F >nul 2>&1
+@REM timeout /t 50
+@REM :: ===== Step 3: Launch AutoHotkey script =====
+@REM echo Checking if AutoHotkey script is already running...
 
-"C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToEnter.ahk"
+@REM :: تحقق من وجود AutoHotkey
+@REM tasklist /FI "IMAGENAME eq AutoHotkey.exe" | find /I "AutoHotkey.exe" >nul
+@REM if %errorlevel%==0 (
+@REM     echo AutoHotkey is already running, skipping launch.
+@REM ) else (
+@REM     echo AutoHotkey not running, launching script...
+@REM "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToEnter.ahk"
+@REM )
+
 
 REM 8️⃣ Delete the temporary file after opening the PSD files
 echo Deleting temporary file...

@@ -1,39 +1,44 @@
 #target photoshop
 app.bringToFront();
 
-// ===== Helper: trim function =====
-function trimStr(str) {
-    return str.replace(/^\s+|\s+$/g, "");
-}
-
-// ===== Array.indexOf polyfill for old ExtendScript =====
-function arrayIndexOf(arr, val) {
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i] === val) return i;
-    }
-    return -1;
-}
-
-// ======= Teams array =======
-var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
-
 (function mainLoop () {
-    var tempFile = new File(Folder.temp + "/psScriptTemp.txt");
+
+    // ======= Helpers =======
+    function arrayIndexOf(arr, val) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === val) return i;
+        }
+        return -1;
+    }
+
+    function trimStr(str) {
+        return str.replace(/^\s+|\s+$/g, '');
+    }
+
+    // ======= Teams array =======
+    var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
+
+    // ======= Read temp file =======
+    var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");
     var chosenTeam, originalsFolder;
 
     if (tempFile.exists) {
         tempFile.open("r");
         var lines = tempFile.read().split(/\r?\n/);
         tempFile.close();
-
-        if (lines.length >= 2) {
-            chosenTeam = trimStr(lines[0]);
-            originalsFolder = new Folder(trimStr(lines[1]));
+    
+        if (lines.length >= 3) {
+            // السطر الأول → اسم فولدر الصور الأصلية
+            originalsFolder = new Folder("C:/Users/abdoh/Downloads/" + trimStr(lines[0]));
+    
+            // السطر الثالث → الفريق
+            chosenTeam = trimStr(lines[2]);
         }
     }
+    
 
-    // ======= If no temp file → show UI =======
-    if (!chosenTeam || !originalsFolder || !originalsFolder.exists) {
+    // ======= Show dialog if missing data =======
+    if (!tempFile.exists) {
         var dlg = new Window("dialog", "Select Team & Folder");
         dlg.alignChildren = "fill";
 
@@ -60,11 +65,11 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
 
         if (dlg.show() != 1) return;
 
-        chosenTeam = teamDropdown.selection.text;
-        originalsFolder = new Folder(folderPath.text);
+        chosenTeam = teamDropdown.selection ? teamDropdown.selection.text : null;
+        originalsFolder = folderPath.text ? new Folder(folderPath.text) : null;
 
-        if (!originalsFolder.exists) {
-            alert("Original folder not found:\n" + originalsFolder.fsName);
+        if (!chosenTeam || !originalsFolder || !originalsFolder.exists) {
+            alert("Team or Originals Folder not selected. Exiting.");
             return;
         }
     }
@@ -81,7 +86,7 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
         return; 
     }
 
-    // ======= Find files =======
+    // ======= Find files helper =======
     function findByRegex(folder, regex) {
         var items = folder.getFiles(function(f) { return f instanceof File; });
         for (var i = 0; i < items.length; i++) {
@@ -157,7 +162,7 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
 
     // ======= Process folder =======
     function processFolder(originalsFolder) {
-        if (originalsFolder == null) return;
+        if (!originalsFolder) return;
 
         var cleanedFolder = new Folder(originalsFolder + "/Cleaned");
         if (!cleanedFolder.exists) {
@@ -168,9 +173,6 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
         var files = originalsFolder.getFiles(function(f){
             return f instanceof File && f.name.match(/\.(jpe?g|png|psd)$/i);
         });
-
-        var createdPsdCount = 0;
-        var errorCount = 0;
 
         for (var i = 0; i < files.length; i++) {
             var originalFile = files[i];
@@ -203,54 +205,40 @@ var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
                     docOriginal.saveAs(saveFile, psdOptions, true, Extension.LOWERCASE);
 
                     docOriginal.close(SaveOptions.DONOTSAVECHANGES);
-                    createdPsdCount++;
                 } catch (e) {
-                    errorCount++;
                     if (app.documents.length > 0) {
                         try { app.activeDocument.close(SaveOptions.DONOTSAVECHANGES); } catch(ignore) {}
                     }
                 }
-            } else {
-                errorCount++;
             }
         }
-
-        // Final message
     }
 
-// ======= Re-open processed PSD files in alphabetical order =======
-function reopenProcessedPSDs(folder) {
-    if (!folder.exists) return;
-    var psdFiles = folder.getFiles(function(f){
-        return f instanceof File && f.name.match(/\.psd$/i);
-    });
+    // ======= Reopen processed PSDs =======
+    function reopenProcessedPSDs(folder) {
+        if (!folder.exists) return;
+        var psdFiles = folder.getFiles(function(f){
+            return f instanceof File && f.name.match(/\.psd$/i);
+        });
 
-    // ترتيب الملفات أبجدي
-    psdFiles.sort(function(a,b){
-        return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
-    });
+        psdFiles.sort(function(a,b){
+            return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+        });
 
-    for (var i = 0; i < psdFiles.length; i++) {
-        try {
-            open(psdFiles[i]);
-        } catch(e) {
-            // لو فيه خطأ في الفتح، نتجاهله
+        for (var i = 0; i < psdFiles.length; i++) {
+            try { open(psdFiles[i]); } catch(e) {}
         }
     }
 
-}
+    // ======= Start processing =======
+    processFolder(originalsFolder);
+    reopenProcessedPSDs(originalsFolder);
 
-// ======= Start processing =======
-processFolder(originalsFolder);
+    // ======= Delete temp file =======
+    try { if (tempFile.exists) tempFile.remove(); } catch(e) {}
 
-// ======= Reopen PSDs after processing =======
-reopenProcessedPSDs(originalsFolder);
-
-
-    // ======= Ask if user wants another folder =======
+    // ======= Ask for another folder =======
     var again = confirm("Do you want to select another folder?");
-    if (again) {
-        mainLoop();
-    }
+    if (again) mainLoop();
 
 })();

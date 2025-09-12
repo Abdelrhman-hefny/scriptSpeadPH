@@ -1,5 +1,7 @@
 page 1
-ST: Action textHello, world!
-St: Action textHello, world!
-st: Action textHello, world!
-st Action textHello, world!
+
+(): At that time, I saw something I couldn’t believe
+:: Julis! Behind you!
+"": Eighth Layer
+<> ROOOAAAAAAAARRR
+ 

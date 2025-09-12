@@ -1,62 +1,105 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: ===== قراءة أول 4 أسطر من الملف =====
+set "filePath=C:\Users\abdoh\Downloads\testScript\temp-title.txt"
+set "lineNum=0"
+
+for /f "usebackq delims=" %%A in ("%filePath%") do (
+    set /a lineNum+=1
+    if !lineNum! leq 4 (
+        set "line!lineNum!=%%A"
+    ) else (
+        goto :doneReading
+    )
+)
+:doneReading
+
+echo Line 1: %line1%
+echo Line 2: %line2%
+echo Line 3: %line3%
+echo Line 4: %line4%
+
+
+:trimEnd
+if "%line1:~-1%"==" " (
+    set "line1=%line1:~0,-1%"
+    goto trimEnd
+)
+
+echo echo Line 4: %line1%
+
 :: ===== Teams array =====
-set "teams=arura ez ken magus mei quantom rezo seren"
+if "%line4%"=="" (
+    set "teams=arura ez ken magus mei quantom rezo seren"
+    set "teamChoice="
 
-:askTeam
-echo Select the team:
-set i=1
-for %%t in (%teams%) do (
-    echo [!i!] %%t
-    set /a i+=1
-)
-set /p teamChoice=Enter number of the team: 
+    :askTeam
+    echo Select the team:
+    set i=1
+    for %%t in (%teams%) do (
+        echo [!i!] %%t
+        set /a i+=1
+    )
 
-:: Get chosen team name
-set i=1
-set "chosenTeam="
-for %%t in (%teams%) do (
-    if "!i!"=="%teamChoice%" set "chosenTeam=%%t"
-    set /a i+=1
-)
+    set /p teamChoice=Enter number of the team: 
 
-if "%chosenTeam%"=="" (
-    echo Invalid choice. Try again.
-    goto askTeam
+    :: Get chosen team name
+    set i=1
+    set "chosenTeam="
+    for %%t in (%teams%) do (
+        if "!i!"=="%teamChoice%" set "chosenTeam=%%t"
+        set /a i+=1
+    )
+
+    if "!chosenTeam!"=="" (
+        echo Invalid choice. Try again.
+        goto askTeam
+    )
+) else (
+    set "teamChoice=%line3%"
 )
 
 :: ===== Ask for folder path =====
-set /p folderPath=Paste the folder path to clean: 
-set "folderPath=%folderPath:"=%"
-
-:: ===== Temp file =====
-set "tempFile=%TEMP%\psScriptTemp.txt"
-(
-    echo %chosenTeam%
-    echo %folderPath%
-) > "%tempFile%"
+set "folderPath=" 
+ 
+if "%line2%"=="" (
+    set /p folderPath=Paste the folder path to clean: 
+    set "folderPath=%folderPath:"=%"
+    :: ===== Temp file =====
+    set "tempFile=%TEMP%\psScriptTemp.txt"
+    (
+        echo %chosenTeam%
+        echo %folderPath%
+    ) > "%tempFile%"
+) else (
+    set "folderPath=C:\Users\abdoh\Downloads\%line1%"
+)
 
 :: ===== Photoshop path selection =====
 :askPsVer
-echo Choose Photoshop version:
-echo [1] Photoshop CC 2015
-echo [2] Photoshop 2021
-set /p psver=Enter 1 or 2: 
+if "%line4%"=="" (
+    echo Choose Photoshop version:
+    echo [1] Photoshop CC 2015
+    echo [2] Photoshop 2021
+    set /p psver=Enter 1 or 2: 
 
-if "%psver%"=="1" (
-    set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2015\Photoshop.exe"
-) else if "%psver%"=="2" (
-    set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
+    if "%psver%"=="1" (
+        set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2015\Photoshop.exe"
+    ) else if "%psver%"=="2" (
+        set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
+    ) else (
+        echo Invalid choice. Try again.
+        goto askPsVer
+    )
+
+    if not exist "%pspath%" (
+        echo Photoshop not found at %pspath%. Please check the path.
+        pause
+        exit /b
+    )
 ) else (
-    echo Invalid choice. Try again.
-    goto askPsVer
-)
-
-if not exist "%pspath%" (
-    echo Photoshop not found at %pspath%. Please check the path.
-    pause
-    exit /b
+    set "pspath=%line4%"
 )
 
 :: ===== Step 1: Run Panel Cleaner CLI to clean folder =====
@@ -69,7 +112,6 @@ if errorlevel 1 (
 )
 echo Panel Cleaner finished.
 
-
 :: ===== Step 2: Wait until Cleaned folder exists =====
 echo Waiting for "%folderPath%\Cleaned\" to appear...
 :waitCleaned
@@ -80,17 +122,23 @@ if exist "%folderPath%\Cleaned\" (
     goto waitCleaned
 )
 
+:: ===== Step 3: Launch AutoHotkey script =====
+echo Stopping any running AutoHotkey scripts...
+taskkill /IM AutoHotkey.exe /F >nul 2>&1
+"C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToF2.ahk"
 
+:trimEnd
+if "%pspath%:~-1%"==" " (
+    set "line1=%line1:~0,-1%"
+    goto trimEnd
+)
 :: ===== Step 4: Launch Photoshop with script =====
 echo Launching Photoshop...
-start "" "%pspath%" "%~dp0script.jsx"
-
-:: ===== Step 3: Launch AutoHotkey script =====
-"C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToF2.ahk"
+start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
 :: ===== Step 5: Wait 30 seconds then delete temp file =====
 echo Temporary file will exist for 30 seconds...
-timeout /t 30 >nul
+timeout /t 40 >nul
 if exist "%tempFile%" del "%tempFile%"
 
 echo [✅] Done.
