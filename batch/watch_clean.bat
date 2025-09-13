@@ -101,45 +101,35 @@ if "%line4%"=="" (
 ) else (
     set "pspath=%line4%"
 )
-
-:: ===== Step 1: Run Panel Cleaner CLI to clean folder =====
-echo Running Panel Cleaner on "%folderPath%"...
-powershell -command "pcleaner-cli clean '%folderPath%' -c"
-if errorlevel 1 (
-    echo [ERROR] Panel Cleaner failed! Exiting...
-    pause
-    exit /b
-)
-echo Panel Cleaner finished.
-
-:: ===== Step 2: Wait until Cleaned folder exists =====
-echo Waiting for "%folderPath%\Cleaned\" to appear...
-:waitCleaned
+:: ===== Step 1: Check if Cleaned folder already exists =====
 if exist "%folderPath%\Cleaned\" (
-    echo Cleaned folder found.
+    echo [INFO] Cleaned folder already exists, skipping Panel Cleaner.
+      
 ) else (
-    timeout /t 1 >nul
-    goto waitCleaned
+    echo Running Panel Cleaner on "%folderPath%"...
+    powershell -command "pcleaner-cli clean '%folderPath%' -c"
+    if errorlevel 1 (
+        echo [ERROR] Panel Cleaner failed! Exiting...
+        pause
+       
+    )
+    echo Panel Cleaner finished.
+
+    :: ===== Step 2: Wait until Cleaned folder exists =====
+    echo Waiting for "%folderPath%\Cleaned\" to appear...
+    :waitCleaned
+    if exist "%folderPath%\Cleaned\" (
+        echo Cleaned folder found.
+    ) else (
+        timeout /t 1 >nul
+        goto waitCleaned
+    )
 )
 
-:: ===== Step 3: Launch AutoHotkey script =====
-echo Stopping any running AutoHotkey scripts...
-taskkill /IM AutoHotkey.exe /F >nul 2>&1
-"C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToF2.ahk"
 
-:trimEnd
-if "%pspath%:~-1%"==" " (
-    set "line1=%line1:~0,-1%"
-    goto trimEnd
-)
+ 
 :: ===== Step 4: Launch Photoshop with script =====
 echo Launching Photoshop...
 start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
-:: ===== Step 5: Wait 30 seconds then delete temp file =====
-echo Temporary file will exist for 30 seconds...
-timeout /t 40 >nul
-if exist "%tempFile%" del "%tempFile%"
-
-echo [✅] Done.
-pause
+ 

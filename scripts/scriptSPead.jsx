@@ -61,24 +61,7 @@ function getValidFont(fontName, fallbackFont) {
   }
 }
 
-// دالة للبحث في المفاتيح المجمعة
-function findFontInMap(lineText, fontMap) {
-  for (var key in fontMap) {
-    // تقسيم المفتاح المجمع إلى مفاتيح منفصلة
-    var keys = key.split("|");
-    for (var i = 0; i < keys.length; i++) {
-      var singleKey = keys[i];
-      if (lineText.indexOf(singleKey) === 0) {
-        return {
-          found: true,
-          font: fontMap[key],
-          key: singleKey,
-        };
-      }
-    }
-  }
-  return { found: false, font: null, key: null };
-}
+// (محذوف) findFontInMap: تم استبدال البحث بفهرس سريع buildFontIndex
 
 // ====== بناء فهرس سريع لمفاتيح الخطوط ======
 function buildFontIndex(fontMap) {
@@ -463,77 +446,7 @@ function openNotepad() {
     if (!ultraFastMode) log.push("ERROR: " + s);
   }
 
-  // ====== مركز هندسي محسّن للـ path (شبيه بطريقة إضافات التوسيط) ======
-  // الفكرة: نحسب سنتر أولي من كل نقاط الـ path، ثم نزيل 20% الأبعد (tail/زيادات)
-  // ونعيد حساب السنتر من النقاط المتبقية لتمثيل جسم الفقاعة الحقيقي.
-  function getTrimmedCentroid(pathItem, x1, y1, x2, y2) {
-    try {
-      if (
-        !pathItem ||
-        !pathItem.subPathItems ||
-        pathItem.subPathItems.length === 0
-      )
-        return [(x1 + x2) / 2, (y1 + y2) / 2];
-
-      var points = [];
-      for (var si = 0; si < pathItem.subPathItems.length; si++) {
-        var sp = pathItem.subPathItems[si];
-        if (!sp || !sp.pathPoints) continue;
-        for (var pi = 0; pi < sp.pathPoints.length; pi++) {
-          try {
-            var a = sp.pathPoints[pi].anchor;
-            if (a && a.length === 2) points.push([a[0], a[1]]);
-          } catch (_e) {}
-        }
-      }
-      if (points.length < 5) {
-        try {
-          var pb = pathItem.bounds;
-          if (pb && pb.length === 4) {
-            var px1 = toNum(pb[0]),
-              py1 = toNum(pb[1]),
-              px2 = toNum(pb[2]),
-              py2 = toNum(pb[3]);
-            return [(px1 + px2) / 2, (py1 + py2) / 2];
-          }
-        } catch (_b) {}
-        return [(x1 + x2) / 2, (y1 + y2) / 2];
-      }
-
-      // سنتر أولي
-      var cx = 0,
-        cy = 0;
-      for (var i = 0; i < points.length; i++) {
-        cx += points[i][0];
-        cy += points[i][1];
-      }
-      cx /= points.length;
-      cy /= points.length;
-
-      // مسافات من السنتر الأولي
-      var distIdx = [];
-      for (var j = 0; j < points.length; j++) {
-        var dx = points[j][0] - cx;
-        var dy = points[j][1] - cy;
-        distIdx.push({ d: Math.sqrt(dx * dx + dy * dy), p: points[j] });
-      }
-      distIdx.sort(function (a, b) {
-        return a.d - b.d;
-      });
-
-      // احتفظ بـ 80% الأقرب (شطب الذيل/النتوءات)
-      var keepCount = Math.max(3, Math.floor(distIdx.length * 0.8));
-      var sumX = 0,
-        sumY = 0;
-      for (var k = 0; k < keepCount; k++) {
-        sumX += distIdx[k].p[0];
-        sumY += distIdx[k].p[1];
-      }
-      return [sumX / keepCount, sumY / keepCount];
-    } catch (_err) {
-      return [(x1 + x2) / 2, (y1 + y2) / 2];
-    }
-  }
+  // (محذوف) getTrimmedCentroid: لم يعد مستخدمًا بعد التوسيط عبر selection bounds
 
   L("Photoshop Text Import - verbose log");
   L("Date: " + new Date().toString());

@@ -1,7 +1,272 @@
 page 1
 
-(): At that time, I saw something I couldn’t believe
-:: Julis! Behind you!
-"": Eighth Layer
-<> ROOOAAAAAAAARRR
+"": Eh?! That’s strange...
+
+"": Isn’t that a phoenix? It’s bright red, just like the one I saw in a picture book!
+
+"": Ah... ahaha...
+
+(): Even Victory’s calling it a phoenix!
+
+// Well, children do have vivid imaginations.
+
+"": Anyway, it’s a new friend, so you two better get along!
+
+st: Wah
+
+"": So cute♡
+
+st: I want to pet it too!
+
+st: More importantly...
+
+"": Your Highness, you’re really amazing!
+
+// Didn’t even a cat cozy up to you the other day?
+
+"": A true talent, even animals adore you!!
+
+"": Ah... well...
+
+(): Looks like Rosa introduced her cats to these children as well.
+
+st: She must care for them quite a lot
+
+"": But Joy and Pippi... the names are totally different.
+
+"": !
+
+"": Joy and Pippi! They’re both adorable!
+
+page 2
+
+"": That’s true, but...
+
+"": W-Wait. Did you just say Joy?
+
+"": Didn’t you introduce him the other day too?
+
+(): Joy... could it be that Joy I know...?
+
+[]: The treacherous minister who adored Rosa as much as the Hestia siblings did.
+
+[]: Joy Terraiev, priest of Terra, god of the earth!
+
+[]: In my past life, after receiving a divine oracle, Rosa met him...
+
+// He was always by her side, like a shadow.
+
+[]: Back then, and even now, I never knew what kind of person he truly was...
+
+[]: Thinking back, Rosa seemed to change after she started spending time with him.
+
+(): Of course, it’s only a coincidence that the name is the same, but...
+
+(): That cat... it wasn’t any ordinary cat.
+
+page 3
+
+(): All the more reason to stay cautious!
+
+"": Now that I think about it... nothing bad happened when you met Joy, right?
+
+"": Eh?
+
+"": Actually... Joy was a stray cat.
+
+// I just wondered if he frightened you.
+
+"": I was scared!
+
+"": I wanted to pet Joy, but Joy wouldn’t let me!
+
+OT: Not fair, not fair!
+
+"": Victory, your voice is too loud...
+
+"": True... but she's right, Joy only warms up to the Princess.
+
+"": Cats are fickle creatures...
+
+"": That’s true, but...
+
+"": This may sound a little odd...
+
+page 4
+
+"": …But sometimes I feel like Joy is more of a human than a cat.
+
+"": Just like a shy child!
+
+"": Ah, no, I didn’t mean it as an offense,,,
+
+"": It’s fine, I asked, so feel free to tell me.
+
+// Why do you think that?
+
+st: Wah...
+
+"": Um... first of all, he can tell people apart.
+
+"": And it’s like he has thoughts of his own...
+
+"": Whenever a bird flew, he would always look up at the sky.
+
+"": But he didn’t look hungry... more like he was searching for something.
+
+(): Searching...?
+
+page 5
+
+(): Don’t tell me he was planning it all along... was he targeting Pippi?
+
+(): Waiting for an opening, attacking again and again...?
+
+(): If Gray’s story is true, no matter what he really is, this is weird...!
+
+"": I see... thank you for telling me, Gray.
+
+(): That cat roaming the palace is dangerous.
+
+"": Listen... I have a request for you.
+
+"": Anything, Princess!
+
+"": The truth is... lately, Joy has been messing up the garden.
+
+"": So I’ve decided to keep some distance.
+
+// If you see me not playing with him, don’t be surprised.
+
+st: Hmph
+
+"": Breaking the garden is bad! Joy’s a bad kitty!
+
+"": Victory! How could you say that about Her Highness’s friend...
+
+"": It’s fine. Wrong is wrong.
+
+(): That much explanation should be enough for these children.
+
+page 6
+
+OT: As for that cat, I need to keep investigating and stay on guard...!
+
  
+
+[]: A few days later, in the royal garden.
+
+(): After that, no new information about the cat came in.
+
+(): But that doesn’t mean I have time to waste.
+
+OT: My goal in this life is to win my family over to my side!
+
+(): But still...
+
+"": Icarus, what are you doing here?
+
+page 7
+
+"": His Majesty has ordered me to protect you, Princess.
+
+[]: With him hovering over me, I can’t relax or concentrate...!
+
+(): Sigh... anyway, I’ll just try not to worry about it.
+
+(): I already decided I’d guide Icarus onto a better path this time!
+
+"": Oh, Icarus, could you help me with something?
+
+"": What would you have me do?
+
+"": I want to make a bouquet for Daddy.
+
+"": Shall I call the gardener?
+
+st: Tch
+
+(): That’s not what I meant, idiot!
+
+st: I meant let’s make it together!
+
+"": ...?
+
+"": Understood. Let us go at once.
+
+"": Huh... wait! I can walk on my own!!
+page 8
+(): Honestly... it’s going to take some time to get along with Icarus.
+
+(): Hmm...
+
+(): There really are so many beautiful flowers here.
+
+st: You know the garden’s layout well, Icarus
+
+"": !
+
+"": Good day, Princess Rostel. How may I be of service?
+
+"": Good morning! So you’re the gardener here!
+
+"": I’m glad to meet... huh?
+
+page 9
+
+"": What happened to your arm? Did you get hurt?
+
+"": Ah… it’s nothing. Just a little accident at work...
+
+ 
+
+"": No way... don’t tell me that...
+
+"": My cat did it?
+
+"": Eh?! N-No, Princess!
+
+// It really was just work!
+
+(): Hm? Why’s he lying...? There’s no need for that.
+
+st: Ah!
+
+(): He's hiding it because Rosa treasures that cat!
+
+page 10
+
+"": It’s fine, tell me the truth.
+
+// Just because it’s a friend doesn’t mean I’ll defend every wrong.
+
+"": Princess...
+
+"": The truth is... that cat is very hostile toward people.
+
+// Several maids besides me have been hurt.
+
+(): I knew it! Just as I suspected...
+
+"": He's not an issue unless you run into it, but...
+
+// There’s a small hole in the garden where it often appears.
+
+"": A hole...?
+
+(): So that’s how... it always seemed strange where it came from...
+
+(): Turns out there was an entrance.
+
+(): Alright... I’ve decided!
+
+"": In that case...
+
+"": If we block that hole, no one will get hurt, right?
+
+(): From now on, he's not getting through!
+
+page 11
+
+OT: To be continued
+

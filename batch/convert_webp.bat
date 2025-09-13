@@ -10,4 +10,4 @@ set "SMARTSTITCH=C:\Users\abdoh\Downloads\testScript\SmartStitch-3.1\SmartStitch
 
 "%PYTHON%" "%SMARTSTITCH%" -i "%INPUT_FOLDER%" -sh 14000 -cw 800 -t ".webp" -lq 95 -dt pixel -s 90 -ip 5 -sl 5
 
-pause
+ 

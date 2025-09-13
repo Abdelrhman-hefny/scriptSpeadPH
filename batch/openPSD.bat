@@ -41,28 +41,36 @@ echo Done waiting.
 
 
 
-REM 7️⃣ Open all PSD files in alphabetical order
-echo Opening PSD files in alphabetical order:
-for /f "delims=" %%F in ('dir /b /a-d "%folderPath%\*.psd" ^| sort') do (
+REM 7️⃣ Open all PSD files in numeric order
+echo Opening PSD files in numeric order:
+for /f "usebackq delims=" %%F in (`powershell -command ^
+  "Get-ChildItem -Path '%folderPath%' -Filter *.psd | Sort-Object {[int]($_.BaseName)} | ForEach-Object { $_.Name }"`) do (
     echo Opening file: %%F
     "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "%folderPath%\%%F"
 )
 echo Done opening all PSD files.
 
-@REM echo Stopping any running AutoHotkey scripts...
-@REM taskkill /IM AutoHotkey.exe /F >nul 2>&1
-@REM timeout /t 50
-@REM :: ===== Step 3: Launch AutoHotkey script =====
-@REM echo Checking if AutoHotkey script is already running...
+ 
+REM ✅ Read team name from line 3 in temp-title.txt
+setlocal enabledelayedexpansion
+set "lineNum=0"
+for /f "usebackq delims=" %%A in ("C:\Users\abdoh\Downloads\testScript\temp-title.txt") do (
+    set /a lineNum+=1
+    if !lineNum! equ 3 set "teamName=%%A"
+)
 
-@REM :: تحقق من وجود AutoHotkey
-@REM tasklist /FI "IMAGENAME eq AutoHotkey.exe" | find /I "AutoHotkey.exe" >nul
-@REM if %errorlevel%==0 (
-@REM     echo AutoHotkey is already running, skipping launch.
-@REM ) else (
-@REM     echo AutoHotkey not running, launching script...
-@REM "C:\Program Files\AutoHotkey\v2\AutoHotkey.exe" "C:\Users\abdoh\Documents\AutoHotkey\capToEnter.ahk"
-@REM )
+echo Team name: %teamName%
+
+if /i "%teamName%"=="rezo" (
+    echo Team is REZO, opening watermark PSD...
+    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\rezo\00.psd"
+) 
+ if /i "%teamName%"=="ez " (
+    echo Team is EZ SCAN, opening watermark PSD...
+    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\ez\000.jpg"
+) 
+endlocal
+
 
 
 REM 8️⃣ Delete the temporary file after opening the PSD files

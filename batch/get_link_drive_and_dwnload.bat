@@ -85,4 +85,4 @@ echo %pspath% >> "%savePath%"
 :: ===== Run Python script =====
 python "C:\Users\abdoh\Downloads\testScript\python\download_and_unzip.py"
 
-pause
+ 

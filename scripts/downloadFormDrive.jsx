@@ -20,7 +20,6 @@ app.bringToFront();
     tempBat.writeln('"' + pythonPath + '" "' + scriptPath + '" "' + folderURL + '"');
     tempBat.writeln("echo.");
     tempBat.writeln("echo [انتهى التشغيل - اضغط أي زر للإغلاق]");
-    tempBat.writeln("pause");
     tempBat.close();
 
     // تشغيل الملف BAT

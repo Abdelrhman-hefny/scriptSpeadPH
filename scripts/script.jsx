@@ -228,12 +228,28 @@ app.bringToFront();
         for (var i = 0; i < psdFiles.length; i++) {
             try { open(psdFiles[i]); } catch(e) {}
         }
+        // افتح ملف إضافي لو الفريق rezo
+if (chosenTeam.toLowerCase() === "rezo") {
+    try { 
+        open(new File("C:/Users/abdoh/Documents/waterMark/rezo/00.psd")); 
+    } catch(e) {}
+        // افتح ملف إضافي لو الفريق rezo
+
+}
+else if (chosenTeam.toLowerCase() === "ez") {
+    try { 
+        open(new File("C:/Users/abdoh/Documents/waterMark/ez/00.psd")); 
+    } catch(e) {}
+}
     }
 
     // ======= Start processing =======
     processFolder(originalsFolder);
     reopenProcessedPSDs(originalsFolder);
 
+
+
+    
     // ======= Delete temp file =======
     try { if (tempFile.exists) tempFile.remove(); } catch(e) {}
 
