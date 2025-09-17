@@ -9,6 +9,9 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/splitSubpaths.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/fileUtils.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/colorUtils.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textFX.jsx");
+$.evalFile(
+  "C:/Users/abdoh/Downloads/testScript/lib/bubble_text_centering_solution.jsx"
+);
 
 // استخدام الدوال المنظمة من ملفات lib/
 
@@ -176,6 +179,7 @@ function openNotepad() {
   } catch (e) {
     return;
   }
+  var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
 
   // تحضير قائمة الفرق
   var teamNames = getTeamNames(teams);
@@ -196,7 +200,6 @@ function openNotepad() {
   } catch (_re) {}
 
   // ========= دايالوج الإعدادات الشامل ==========
-  var settingsFile = new File(txtFile.path + "/ps_text_settings.json");
   var lastSettings = {
     teamIndex: lastTeamIdx,
     baseFontSize: 30,
@@ -848,17 +851,93 @@ function openNotepad() {
           textLayer.textItem.color = defaultColor;
         }
 
-        var tb = textLayer.bounds;
-        var tl = toNum(tb[0]),
-          tt = toNum(tb[1]),
-          tr = toNum(tb[2]),
-          tbm = toNum(tb[3]);
-        var cX = (tl + tr) / 2;
-        var cY = (tt + tbm) / 2;
-        var dxx = centerX - cX;
-        var dyy = centerY - cY - newFontSize * verticalCenterCompensationRatio;
-        if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1)
-          textLayer.translate(dxx, dyy);
+        // تطبيق التوسيط المحسن باستخدام دالة TyperTools
+        // أولاً: التأكد من وجود selection على الباث
+        try {
+          pathItem.makeSelection();
+          if (doc.selection && doc.selection.bounds) {
+            // استدعاء دالة التوسيط المحسنة من bubble_text_centering_solution.jsx
+            var centeringResult = centerTextInBubbleWithTail();
+
+            if (centeringResult) {
+              if (!ultraFastMode) {
+                L(
+                  "  >>> Text centered using TyperTools method with tail consideration"
+                );
+              }
+            } else {
+              // في حالة فشل التوسيط، نطبق التوسيط التقليدي كبديل
+              var tb = textLayer.bounds;
+              var tl = toNum(tb[0]),
+                tt = toNum(tb[1]),
+                tr = toNum(tb[2]),
+                tbm = toNum(tb[3]);
+              var cX = (tl + tr) / 2;
+              var cY = (tt + tbm) / 2;
+              var dxx = centerX - cX;
+              var dyy =
+                centerY - cY - newFontSize * verticalCenterCompensationRatio;
+
+              if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) {
+                textLayer.translate(dxx, dyy);
+                if (!ultraFastMode) {
+                  L(
+                    "  >>> Fallback centering applied: dx=" +
+                      Math.round(dxx) +
+                      " dy=" +
+                      Math.round(dyy)
+                  );
+                }
+              }
+            }
+          } else {
+            // في حالة عدم وجود selection، نطبق التوسيط التقليدي
+            var tb = textLayer.bounds;
+            var tl = toNum(tb[0]),
+              tt = toNum(tb[1]),
+              tr = toNum(tb[2]),
+              tbm = toNum(tb[3]);
+            var cX = (tl + tr) / 2;
+            var cY = (tt + tbm) / 2;
+            var dxx = centerX - cX;
+            var dyy =
+              centerY - cY - newFontSize * verticalCenterCompensationRatio;
+
+            if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) {
+              textLayer.translate(dxx, dyy);
+              if (!ultraFastMode) {
+                L(
+                  "  >>> Traditional centering applied (no selection): dx=" +
+                    Math.round(dxx) +
+                    " dy=" +
+                    Math.round(dyy)
+                );
+              }
+            }
+          }
+        } catch (centeringError) {
+          // في حالة حدوث خطأ، نطبق التوسيط التقليدي
+          var tb = textLayer.bounds;
+          var tl = toNum(tb[0]),
+            tt = toNum(tb[1]),
+            tr = toNum(tb[2]),
+            tbm = toNum(tb[3]);
+          var cX = (tl + tr) / 2;
+          var cY = (tt + tbm) / 2;
+          var dxx = centerX - cX;
+          var dyy =
+            centerY - cY - newFontSize * verticalCenterCompensationRatio;
+
+          if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) {
+            textLayer.translate(dxx, dyy);
+            if (!ultraFastMode) {
+              L(
+                "  >>> Error in centering, fallback applied: " +
+                  centeringError.message
+              );
+            }
+          }
+        }
 
         // تطبيق تأثيرات إضافية فقط في الوضع العادي
         if (!fastMode && !ultraFastMode) {
