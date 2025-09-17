@@ -6,7 +6,7 @@ setlocal enabledelayedexpansion
 set /p folder_url=Enter Google Drive folder URL or local folder path: 
 
 :: ===== Get chosen team name =====
-set "teams=arura ez ken magus mei quantom rezo seren"
+set "teams=rezo ez seren magus nyx arura ken mei quantom  "
 
 :askTeam
 echo Select the team:

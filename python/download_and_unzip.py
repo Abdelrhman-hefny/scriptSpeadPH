@@ -39,7 +39,7 @@ if os.path.exists(my_text_temp_url):
             subprocess.run(
                 ["powershell", "-Command", f"pcleaner-cli clean '{local_folder}' -c"],
                 check=True
-            )
+            ) 
             while not os.path.exists(cleaned_folder):
                 time.sleep(1)
             print("✅ Cleaning done, Cleaned folder created.")

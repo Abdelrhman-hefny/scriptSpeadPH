@@ -16,7 +16,7 @@ app.bringToFront();
     }
 
     // ======= Teams array =======
-    var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren"];
+    var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren","nyx"];
 
     // ======= Read temp file =======
     var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");
@@ -239,6 +239,16 @@ if (chosenTeam.toLowerCase() === "rezo") {
 else if (chosenTeam.toLowerCase() === "ez") {
     try { 
         open(new File("C:/Users/abdoh/Documents/waterMark/ez/00.psd")); 
+    } catch(e) {}
+}
+else if (chosenTeam.toLowerCase() === "nyx") {
+    try { 
+        open(new File("C:/Users/abdoh/Documents/waterMark/nyx/00.png")); 
+    } catch(e) {}
+}
+else if (chosenTeam.toLowerCase() === "seren") {
+    try { 
+        open(new File("C:/Users/abdoh/Documents/waterMark/seren/00.psd")); 
     } catch(e) {}
 }
     }

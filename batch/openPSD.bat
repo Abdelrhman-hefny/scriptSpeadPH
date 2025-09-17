@@ -69,6 +69,14 @@ if /i "%teamName%"=="rezo" (
     echo Team is EZ SCAN, opening watermark PSD...
     start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\ez\000.jpg"
 ) 
+ if /i "%teamName%"=="nyx " (
+    echo Team is EZ SCAN, opening watermark PSD...
+    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\nyx\00.png"
+) 
+ if /i "%teamName%"=="seren " (
+    echo Team is EZ SCAN, opening watermark PSD...
+    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\seren\00.psd"
+) 
 endlocal
 
 

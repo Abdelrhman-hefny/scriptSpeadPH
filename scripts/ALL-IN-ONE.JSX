@@ -8,7 +8,7 @@ if (app.documents.length === 0) {
     return;
 }
 var url = "https://coda.io/d/Work_dhT8XA1rThZ/rezo_supN5Ws5#_luDJkH25";
-var chrome = '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"';
+ var chrome = '"C:\\Users\\abdoh\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"';
 var f = new File(Folder.temp + "/o.bat");
 f.open("w");
 f.writeln('@echo off');

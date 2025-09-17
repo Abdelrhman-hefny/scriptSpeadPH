@@ -1,272 +1,191 @@
-page 1
-
-"": Eh?! That’s strange...
-
-"": Isn’t that a phoenix? It’s bright red, just like the one I saw in a picture book!
-
-"": Ah... ahaha...
-
-(): Even Victory’s calling it a phoenix!
-
-// Well, children do have vivid imaginations.
-
-"": Anyway, it’s a new friend, so you two better get along!
-
-st: Wah
-
-"": So cute♡
-
-st: I want to pet it too!
-
-st: More importantly...
-
-"": Your Highness, you’re really amazing!
-
-// Didn’t even a cat cozy up to you the other day?
-
-"": A true talent, even animals adore you!!
-
-"": Ah... well...
-
-(): Looks like Rosa introduced her cats to these children as well.
-
-st: She must care for them quite a lot
-
-"": But Joy and Pippi... the names are totally different.
-
-"": !
-
-"": Joy and Pippi! They’re both adorable!
-
-page 2
-
-"": That’s true, but...
-
-"": W-Wait. Did you just say Joy?
-
-"": Didn’t you introduce him the other day too?
-
-(): Joy... could it be that Joy I know...?
-
-[]: The treacherous minister who adored Rosa as much as the Hestia siblings did.
-
-[]: Joy Terraiev, priest of Terra, god of the earth!
-
-[]: In my past life, after receiving a divine oracle, Rosa met him...
-
-// He was always by her side, like a shadow.
-
-[]: Back then, and even now, I never knew what kind of person he truly was...
-
-[]: Thinking back, Rosa seemed to change after she started spending time with him.
-
-(): Of course, it’s only a coincidence that the name is the same, but...
-
-(): That cat... it wasn’t any ordinary cat.
-
-page 3
-
-(): All the more reason to stay cautious!
-
-"": Now that I think about it... nothing bad happened when you met Joy, right?
-
-"": Eh?
-
-"": Actually... Joy was a stray cat.
-
-// I just wondered if he frightened you.
-
-"": I was scared!
-
-"": I wanted to pet Joy, but Joy wouldn’t let me!
-
-OT: Not fair, not fair!
-
-"": Victory, your voice is too loud...
-
-"": True... but she's right, Joy only warms up to the Princess.
-
-"": Cats are fickle creatures...
-
-"": That’s true, but...
-
-"": This may sound a little odd...
-
-page 4
-
-"": …But sometimes I feel like Joy is more of a human than a cat.
-
-"": Just like a shy child!
-
-"": Ah, no, I didn’t mean it as an offense,,,
-
-"": It’s fine, I asked, so feel free to tell me.
-
-// Why do you think that?
-
-st: Wah...
-
-"": Um... first of all, he can tell people apart.
-
-"": And it’s like he has thoughts of his own...
-
-"": Whenever a bird flew, he would always look up at the sky.
-
-"": But he didn’t look hungry... more like he was searching for something.
-
-(): Searching...?
-
-page 5
-
-(): Don’t tell me he was planning it all along... was he targeting Pippi?
-
-(): Waiting for an opening, attacking again and again...?
-
-(): If Gray’s story is true, no matter what he really is, this is weird...!
-
-"": I see... thank you for telling me, Gray.
-
-(): That cat roaming the palace is dangerous.
-
-"": Listen... I have a request for you.
-
-"": Anything, Princess!
-
-"": The truth is... lately, Joy has been messing up the garden.
-
-"": So I’ve decided to keep some distance.
-
-// If you see me not playing with him, don’t be surprised.
-
-st: Hmph
-
-"": Breaking the garden is bad! Joy’s a bad kitty!
-
-"": Victory! How could you say that about Her Highness’s friend...
-
-"": It’s fine. Wrong is wrong.
-
-(): That much explanation should be enough for these children.
-
-page 6
-
-OT: As for that cat, I need to keep investigating and stay on guard...!
-
- 
-
-[]: A few days later, in the royal garden.
-
-(): After that, no new information about the cat came in.
-
-(): But that doesn’t mean I have time to waste.
-
-OT: My goal in this life is to win my family over to my side!
-
-(): But still...
-
-"": Icarus, what are you doing here?
-
-page 7
-
-"": His Majesty has ordered me to protect you, Princess.
-
-[]: With him hovering over me, I can’t relax or concentrate...!
-
-(): Sigh... anyway, I’ll just try not to worry about it.
-
-(): I already decided I’d guide Icarus onto a better path this time!
-
-"": Oh, Icarus, could you help me with something?
-
-"": What would you have me do?
-
-"": I want to make a bouquet for Daddy.
-
-"": Shall I call the gardener?
-
-st: Tch
-
-(): That’s not what I meant, idiot!
-
-st: I meant let’s make it together!
-
-"": ...?
-
-"": Understood. Let us go at once.
-
-"": Huh... wait! I can walk on my own!!
-page 8
-(): Honestly... it’s going to take some time to get along with Icarus.
-
-(): Hmm...
-
-(): There really are so many beautiful flowers here.
-
-st: You know the garden’s layout well, Icarus
-
-"": !
-
-"": Good day, Princess Rostel. How may I be of service?
-
-"": Good morning! So you’re the gardener here!
-
-"": I’m glad to meet... huh?
-
-page 9
-
-"": What happened to your arm? Did you get hurt?
-
-"": Ah… it’s nothing. Just a little accident at work...
-
- 
-
-"": No way... don’t tell me that...
-
-"": My cat did it?
-
-"": Eh?! N-No, Princess!
-
-// It really was just work!
-
-(): Hm? Why’s he lying...? There’s no need for that.
-
-st: Ah!
-
-(): He's hiding it because Rosa treasures that cat!
-
 page 10
 
-"": It’s fine, tell me the truth.
+[]: Main Force of the Martial Alliance
 
-// Just because it’s a friend doesn’t mean I’ll defend every wrong.
+<> Gyaaah…!
 
-"": Princess...
+<> Hrk…!
 
-"": The truth is... that cat is very hostile toward people.
+<> Urgh…!
 
-// Several maids besides me have been hurt.
+<> Argh…!
 
-(): I knew it! Just as I suspected...
+"": Acting alliance leader, the ambushing warriors had quickly fled.
 
-"": He's not an issue unless you run into it, but...
+"": Some damage was done to the Sabo and the warriors of the Third Dragon Unit, but…
 
-// There’s a small hole in the garden where it often appears.
+<> Acting alliance leader!
 
-"": A hole...?
+"": ?
 
-(): So that’s how... it always seemed strange where it came from...
+"": Pant, pant.
 
-(): Turns out there was an entrance.
+<> Where on earth did you go?!
 
-(): Alright... I’ve decided!
+"": No, no… let us not do this…
 
-"": In that case...
-
-"": If we block that hole, no one will get hurt, right?
-
-(): From now on, he's not getting through!
+<> Was it truly such an important matter that you abandoned the main force?!
 
 page 11
 
-OT: To be continued
+<> Could it be that you went to rescue the Wind Dragon Unit instead of us?
+
+<> With the Great Righteousness War at hand,
+//: did you abandon our Third Dragon Unit just to worry about a single squad?
+
+(): Third Dragon Unit Leader. Frankly, it would have been better if these men had died.
+
+(): The warriors brought from each sect — hastily assembled —  
+//: have no unified opinion, so they are easier to control.
+
+(): But if these hardened veterans from the Martial Alliance’s center begin to rise up,
+//: the entire main force and the subordinates may change their minds as well.
+
+<> In that case, we will immediately withdraw and regroup...
+
+<> Shut up!!
+
+"": No... i-it's just... suddenly...
+
+"": ?
+
+"": What is the matter, Venerable Bohwa?
+
+<> Amitabha...
+
+<> Are the leaders of the Four Dragon Units, 
+//: sworn to defend the Martial Alliance, already speaking of retreat?!
+
+page 12
+
+<> Quickly get up and rally the warriors!
+
+"": …?!
+
+(): “Venerable Bohwa”… unexpected.
+//: I thought he would be the first to protest.
+
+(): Unlike Hyeonyang, who backed me from the start,
+
+(): if Shaolin’s supreme master, who had maintained neutrality, takes my side...
+
+(): the atmosphere will be settled in an instant.
+
+Sfx: clack clack
+
+Sfx: clack clack
+
+(): However...
+
+(): Venerable Bohwa... Shaolin...
+
+(): Why are they taking my side?
+
+page 13
+
+[] : For a thousand years countless sects of the martial world have risen and declined.
+
+[] : Yet I state with certainty: the seat at the summit has never once changed.
+
+[] : Pagoda Forest, Shaolin Temple, Mount Song, Henan.
+
+(): Om ibe ibe iya maha shiriye sabaha. (Buddhist chant.)
+
+(): Om ibe ibe iya maha shiriye sabaha. (Buddhist chant.)
+
+[]: Surrounded by stone pagodas enshrining the relics of great monks,  
+//: this place truly symbolizes Shaolin’s history and tradition.
+
+Sfx: thud
+
+Sfx: thud
+
+"": Amitabha. At this rate the demon might awaken.
+//: Benefactor, where has the Great Master gone?
+
+[] : One of the Ten Absolutes — the newly risen master, Shaolin’s foremost expert.
+
+<> He has arrived!
+
+"": Oh — indeed, the only one who can restrain that demon is...
+
+page 14
+
+"": Benefactor Yang.
+
+"": He will not let even a moment pass without vigil.
+
+Sfx: step
+
+"": Then I shall enter.
+
+Sfx: whoosh
+
+Sfx: ah ah ah
+
+"": Did I not say, brother?
+//: I must return to the Alliance.
+
+[] : Sword Sovereign Yang Tae-hong.
+
+"": If you wish to return, then go.
+
+"": Of course,
+
+"": but then Shaolin will be erased.
+
+Sfx: crack
+
+page 15
+
+Sfx: ah
+
+Sfx: ah
+
+Sfx: ah
+
+<> Brother!
+
+"": You said the Celestial Palace would plunge the martial world into chaos,
+
+"": yet all you do is threaten Shaolin to force it to lend strength to the new Acting Alliance Leader?
+
+"": The Celestial Palace is not ours to claim. It belongs to that child.
+
+"": Come to think of it, the order of the Central Plains has endured far too long under the name of the Three Sovereigns.
+//: Is that not so?
+
+"": Just have one more drink with me.
+
+"": After all, soon enough
+//: we must return to our rightful places.
+
+"": You as Alliance Lord Yang Tae-hong, and I as Cult Leader Ma Tae-pyeong...
+
+"": When will that be?
+
+"": When my son shatters the order of the Three Sovereigns.
+
+page 16
+
+"": Hah...
+
+"": Hah...
+
+"": Say that again.
+
+Sfx: whoom
+
+<> Guhk…!
+
+Sfx: crack
+
+<> Haaarg...!
+
+"": That fake Demonic Cult leader...
+
+"": thinks he can defeat me?
+
+ 
+
 

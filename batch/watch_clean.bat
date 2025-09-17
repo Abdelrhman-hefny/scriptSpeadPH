@@ -31,7 +31,7 @@ echo echo Line 4: %line1%
 
 :: ===== Teams array =====
 if "%line4%"=="" (
-    set "teams=arura ez ken magus mei quantom rezo seren"
+    set "teams=rezo ez seren magus nyx arura ken mei quantom"
     set "teamChoice="
 
     :askTeam
