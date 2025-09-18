@@ -119,6 +119,8 @@ function parseStrokeTag(line) {
 }
 
 // دالة جديدة لإدارة المسارات بشكل ذكي
+// عداد عام للباثات ليضمن تسلسلًا خطيًا ثابتًا عبر كل الصفحات أثناء التشغيل
+var lastBubbleIndex = 0;
 function getSmartPathsForPage(doc) {
   var paths = doc.pathItems;
   if (!paths || paths.length === 0) {
@@ -140,17 +142,22 @@ function getSmartPathsForPage(doc) {
     if (pi.subPathItems && pi.subPathItems.length > 0) {
       var sp = pi.subPathItems[0];
       if (sp && sp.pathPoints && sp.pathPoints.length > 1) {
+        // منح المسار رقمًا تسلسليًا ثابتًا أثناء هذا التشغيل
+        lastBubbleIndex++;
+        try {
+          pi._smartIndex = lastBubbleIndex;
+        } catch (_e) {
+          // تجاهل أخطاء التعيين إذا حدثت
+        }
         pagePaths.push(pi);
       }
     }
   }
 
-  // ترتيب المسارات بطريقة محسنة
+  // ترتيب المسارات حسب الرقم التسلسلي الممنوح بدلًا من اسم المسار
   pagePaths.sort(function (a, b) {
-    var ma = a.name.match(/bubble[_\s-]?(\d+)/i);
-    var mb = b.name.match(/bubble[_\s-]?(\d+)/i);
-    var na = ma ? parseInt(ma[1], 10) : 999999;
-    var nb = mb ? parseInt(mb[1], 10) : 999999;
+    var na = (typeof a._smartIndex === "number") ? a._smartIndex : 999999;
+    var nb = (typeof b._smartIndex === "number") ? b._smartIndex : 999999;
     return na - nb;
   });
 
@@ -426,7 +433,7 @@ function openNotepad() {
   var stopAfterFirstCheck = runGroup.add(
     "checkbox",
     undefined,
-    "التوقف بعد الصفحة الأولى للتحقق من الخط"
+    "التوقف بعد الصفحة الحالية للتحقق من الخط"
   );
   stopAfterFirstCheck.value = lastSettings.stopAfterFirstPage;
 
@@ -576,6 +583,31 @@ function openNotepad() {
     return pageA - pageB;
   });
 
+  // ابدأ من المستند/الصفحة الحالية بدلاً من البداية
+  try {
+    var activeDoc = app.activeDocument;
+    if (activeDoc) {
+      var activeName = activeDoc.name;
+      var activePageNum = getPageNumberFromDocName(activeName);
+      var startIdx = 0;
+      for (var si = 0; si < documentsArray.length; si++) {
+        var dn = documentsArray[si].name;
+        if (dn === activeName) {
+          startIdx = si;
+          break;
+        }
+        var pn = getPageNumberFromDocName(dn);
+        if (activePageNum !== null && pn === activePageNum) {
+          startIdx = si;
+          break;
+        }
+      }
+      if (startIdx > 0) {
+        documentsArray = documentsArray.slice(startIdx);
+      }
+    }
+  } catch (_ad) {}
+
   var totalInserted = 0;
   var totalSkipped = 0;
   var totalErrors = 0;
@@ -595,6 +627,11 @@ function openNotepad() {
       E("Couldn't activate document index " + d + ": " + e);
       continue;
     }
+
+    // إعادة تعيين عداد الفقاعات لكل صفحة/مستند لضمان تسلسل محلي داخل الصفحة
+    try {
+      lastBubbleIndex = 0;
+    } catch (_ri) {}
 
     // تقسيم Work Path إذا وجد
     try {
@@ -648,11 +685,13 @@ function openNotepad() {
         pathName = pathItem.name;
       } catch (e) {}
 
+      var smartIdx = (function(){ try { return pathItem._smartIndex; } catch(_e){ return undefined; } })();
       var entryPrefix =
         "File=" +
         doc.name +
         " | BubbleIndex=" +
         (match.pathIndex + 1) +
+        (smartIdx !== undefined ? (" | SmartIndex=" + smartIdx) : "") +
         " | PathName=" +
         pathName +
         " | LineIndex=" +
@@ -1091,9 +1130,9 @@ function openNotepad() {
 
     // التوقف بعد الصفحة الأولى إذا تم اختيار هذا الخيار
     if (stopAfterFirstPage && d === 0) {
-      L("\n===== توقف بعد الصفحة الأولى =====");
-      L("تم الانتهاء من معالجة الصفحة الأولى: " + doc.name);
-      L("يمكنك الآن التحقق من الخط وإعادة تشغيل السكريبت إذا كان مناسباً");
+      L("\n===== توقف بعد الصفحة الحالية =====");
+      L("تم الانتهاء من معالجة الصفحة الحالية: " + doc.name);
+      L("يمكنك الآن التحقق من النتائج وإعادة تشغيل السكريبت إذا كان مناسباً");
       break; // إيقاف الحلقة والخروج من معالجة المستندات
     }
   }

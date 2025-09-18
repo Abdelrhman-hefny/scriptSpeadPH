@@ -1,485 +1,275 @@
 page 1
 
-[]: Southern manor of the Alliance
+[]: The only daughter of House Halbern.
 
-"": These filthy orthodox bastards, 
-//: how long do you intend to keep this busy man waiting?
+[]: Arellin Sigria Halbern.
 
-"": Yabultak, calm yourself.
+[]: The Arellin we knew,
 
-"": Move your head. Bald bastard, shiny-headed bastard, 
-//: flashing light off your forehead bastard.
+[]: was always the quiet child sitting in the corner of our playgroup.
 
-ST: Hehe.
+[]: At first, everyone treated Arellin according to her status as a duke’s daughter...
 
-"": Hey, Seo Hopil, you bastard. 
-//: Wipe that frown off your face. Is the world collapsing?
+"": They say no one even knows who her mother is?
 
-Sfx: Sob sob
+"": I heard even Duke Halbern treats her like she doesn’t exist....
 
-"": My sect… my sect was annihilated! Ugh..!
+"": Even the maids of the ducal estate look down on her, apparently.
 
-"": And what do you expect me to do about it? You are ruining my appetite.
-//:  In life, sects may be destroyed.
+[]: Hearing those rumors, the children
 
-"": Yabultak, close your mouth and sit.
+# gradually ignored her, or pretended not to see her.
 
-"": Yes!
-
-Sfx: Step
-
-Sfx: Glance
-
-"": Setting that aside, Yeha, 
-//: which of the Four Dragon Units would you like to join?
-
-"": I do not know.
-
-"": Normally, the champion would apply to the Azure Dragon Unit, 
-//: which is in the rear, safest, and maintains the Alliance’s order…
-
-
-
+[]: One would expect her to be angry at the children’s disregard and belittling attitude, but—
 
 page 2
 
-"": I have no interest, but if one has skill, he should step forward. 
-//: Why retreat? Strange.
+[]: Even with such treatment,
 
-"": As expected of you… no, you’re remarkable.
+# She always smiled.
 
-"": Azure Dragon, Flame Dragon, Flying Dragon, all fine…
+# Foolishly.
 
-"": But avoid Wind Dragon.
+# So of course, we thought today, too,
 
-"": Rescuing hostages, infiltrating enemy lines… Wind Dragon only faces death.
+# would be no different...
 
-"": In the past ten years, the Azure Dragon Leader changed once, 
-//: while the Wind Dragon Leader died twice.
-
-"": Moreover, even the few members left were all slain by the Demonic Alliance’s attack.
-
-"": The Wind Dragon’s sword is tireless—rescuing the weak and destroying the wicked.
-
-ST: !
-
-"": Thus, the Wind Dragon Unit is burdened with endless work.
-
-Sfx: Step
-
-Sfx: Step
-
-"": Because the martial world holds far too much that must be set right.
-
-
-
+"": Why is everyone quiet?
 
 page 3
 
-"": The Wind Dragon Unit is the hardest of the Four Dragons.
+"": Answer me.
 
-"": In recent years, weakened further by the Acting Lord’s suppression, 
-//: they must endure harsher training and more perilous missions.
+# This is...
 
-"": One may die.
+# not the Arellin we knew.
 
-"": Avoiding it is only natural. 
-//: It wouldn’t even matter if no one applied.
-
-"": However…
-
-"": I know well that I am not alone.
-
-"": Will you not join me in Wind Dragon?
-
-(): Ah…
-
-(): If the goal were to simply gather members, 
-//: it would have been easy to lie and offer the easy path.
-
-"": But if you must strain yourself to enter the Alliance, do not apply to Wind Dragon.
-
-(): Instead, I declare openly, to share even death together, the meaning of Daedo Moomoon (大道無門).
-
-#: *Daedo Moomoon (大道無門): There is no set path or method to reach great enlightenment or truth.
-
-
-
+"": Why’s no one talking?
 
 page 4
 
-(): From the very beginning, that was the feeling I sensed. Though the atmosphere differs greatly…
+"": Lady.
 
-"": …It is not right.
+"": Y-Yes...!
 
-"": I shall change it.
+"": Name.
 
-(): A strangely familiar feeling.
+"": I-I’m Nadeli.
 
-"": I will.
+"": Your father’s title.
 
-"": I will join Wind Dragon.
+"": A viscount.
 
-Sfx: Sparkle
+"": Lady Nadeli, do you know?
 
-Sfx: Sparkle
+"": This is just a friendly gathering, but....
 
-(): That is admirable.
+"": At an ordinary social party, you wouldn’t even be allowed to speak to me.
 
-"": Unlike the other Dragon Units, which have only just begun to replenish warriors,
+"": I appreciate your advice. However—
 
-"": With the support of those who achieved excellent results in the Martial Tournament,
+"": I never gave you permission to advise me.
 
-"": The Wind Dragon Unit, already prepared,
+"": Advice from someone without power is nothing but a nuisance...
 
-"": Shall stand at the vanguard of the Alliance.
+"": Do you know what it means to commit a sin with words?
 
+"" Sob...
 
-
+"" Sob, hic…
 
 page 5
 
-(): Tch.
+"" Mooooom! Aaahhh!
 
-"": Tell us the word.
+"" Mooooom! Aaahhh!
 
-(): Wind Dragon! Those bastards moved first! 
-//: They swept up all the promising warriors from the tournament.
+"": ....
 
-(): A chance to leave a deep impression on the Acting Lord…!!
+() Just kids like this...
 
-(): While everyone was panicking after Jegal Mundung’s fall, 
-//: he alone prepared for what came next…
+() Why did I ever want to be friends with them so badly?
 
-"": Very well. First,
-
-"": I demote Wind Dragon from a full unit to a squad, excluding them from the Four Dragon Units.
-
-Sfx: Boom
-
-
-
+""<> Excuse me. Might I bring out some more tea and refreshments…
 
 page 6
 
-"": !!
+"" Sob... hic...
 
-"": Jegal Mundung sent all the existing Wind Dragon members away as couriers. //: Even the few remaining were annihilated, stopping the Demonic Alliance’s raid.
+"": Did something happen?
 
-Sfx: Sweep
+"": No...
 
-"": So you gathered new members, it seems…
+"": I was simply letting Lady Nadeli in on a truth a bit early.
 
-"": One… two… three… including the leader, eight?
+"": That in this world, nothing gets solved just by crying.
 
-"": The minimum requirement to maintain a unit is two squads of five—ten in total.
+"": ...Pardon?
 
-"": Even at minimum, you are two short. //:Surely you can handle such arithmetic?
+"": I enjoyed the tea party.
 
-"": That is…
+"": Then, I’ll be taking my leave first.
 
-"": With many new members, training will be difficult. 
-//: Henceforth, recruitment is forbidden.
+() …So much for making friends.
 
-"": I cannot accept that.
-
-Sfx: Leap up
-
-"": Did I ask for your opinion?
-
-
-
+() I just go home.
 
 page 7
 
-"": The vanguard will be taken by the Azure Dragon Unit. I cannot entrust it to a mere squad.
+"": The Sky Tower is coming....
 
-(): Haha, Wind Dragon, of course…
+[]: The sacred ground of mages, the Sky Tower.
 
-(): Wind Dragon is…
+[]: The central stronghold of the Mage Tower, and the homeland of all magicians.
 
-"": Today’s meeting ends here.
+[]: No one knew if it existed in the skies, in the cosmos...
 
-Sfx: Step
+[]: or if it truly existed at all.
 
-"": Acting Lord!
+() For the Sky Tower...
 
-Sfx: Step
-
-(): You should stay out of this.
-
-[]: Secret chamber of the Martial Alliance
-
-<> Kekeke! That cunning brat, I hear he gathers those who should be cast aside, //:and turns them into his allies!
-
-<> And for him to visit at such a busy time… //: is it that he seeks help?
-
-
-
+() to formally declare its intent to visit the Albrecht Empire.
 
 page 8
 
-(): It is Tang Joha, one of the Ten Absolutes. There is little I can offer.
+() It must be because of the Charit incident.
 
-(): However…
+() First, I’ll have to request a meeting with the Tower Master.
 
-"": Master, please return to Sichuan first.
+"": Lord Mehen.
 
-"": That is why I have come.
+"": I’ve organized the documents for the subjugation support requests.
 
-<> Fool…! Kuhak!! 
-//: Gaaaah!!!
+"": These monster hunts really don’t seem to end lately.
 
-<> With the Demonic Alliance before us, where do you think you are sending me?! To win, even this old man must…
+"": Maybe the monsters came out for a spring picnic.
 
-"": We shall win without Master.
+"": It’s already summer.
 
-"": And this disciple will not be content with that alone.
+"": Well, late spring at least.
 
-"": What do you mean?
+"": By the way, this is the first reinforcement request from the northern fortress.
 
-"": I will annihilate the Demonic Alliance.
+"": It seems the situation is growing more serious by the day.
 
+"": ...It really does.
 
+"": ...Leaving behind his house and children to bury himself in the North,
 
+"": just what does His Grace think he’s doing....
+
+() Maybe I should’ve waited for a lighter mood before bringing up news of the Duke.
 
 page 9
 
-"": If I defeat the Demonic Lord, they will retreat to Yunnan.
+"": And what’s this about the Crown Prince’s special commission?
 
-Sfx: Shanshi
+"": It’s a covert request currently being handled mainly by the 1st Order of Knights.
 
-Sfx: Sichuan
+"": The reward is good, so I hear the knights are highly motivated.
 
-"": Please deal with them as they flee. //:There is no one but you, Master of the Ten Absolutes, to entrust this role.
+** So that guy made a profit off this special commission.
 
-"": That man once forced even the Ten Absolutes to kneel. 
-//: Do you understand what that means?
+"": A covert request?
 
-"": Yes, I do.
+** Woohoo!!
 
-"": But I shall prevail.
+() Looks like Pession is up to some odd scheme again, hardly befitting a crown prince.
 
-"": Good. Then I will go to Sichuan, as you ask.
+** Not interested.
 
-Sfx: Creak
+"": Ah, and there’s another bit of news....
 
-"": But remember this.
+"": The Imperial Office said that at today’s gathering, there was a small disturbance among the young ladies.
 
-"": I too will not be satisfied with mere victory.
+** Apparently, our young lady made the other girl cry.
 
-"": Yes, yes, this time we shall drive the Demonic Alliance out of the Central Plains once and for all—
+"": ...!
 
-<> Fool! That is not it!
+"": So the young lady does quarrel sometimes.
 
-<> Victory or destruction may come later.
+"": And even made her opponent cry.
 
-
-
+"": They’re children, after all. It’s natural to grow through a few fights.
 
 page 10
 
-<> What this old man desires is…
+"": And it’s better to hit than to get hit.
 
-"": For you to return alive and unharmed. Only then will I be satisfied.
+"": That may be so.
 
-"": …
+"": If Arellin takes after Valer...
 
-"": …
+"": Should we discipline her firmly in advance to prevent trouble?
 
-"": You have returned.
+"": If she takes after His Grace the Duke, wouldn’t disciplining be useless?
 
-"": Yes. As you said, the Demonic Alliance remains in Kunlun.
+"": ....
 
-"": And the warriors requested for reinforcement?
+"": Isn’t it better to keep things peaceful?
 
-"": Three days? Perhaps four? That should be enough to gather them.
+"": Still, if she needs to be scolded, she must be scolded….
 
-"": …Good. Then set out once more.
+"" Mooooom!
 
-"": …
+() Oh no, of all times, right when we’re talking about scolding....
 
 page 11
-<> Do you think I'm an idiot?!
 
-"": Zhuge Wen-deng has a backer.
+"": Arell.
 
-"": Huh?
+"": Did you enjoy your dinner?
 
-"": Zhuge Wen-deng grew the merchant guild by distributing drugs.
+"": Yeah, it was good.
 
-"": But no matter which record I searched, I could not find who made the drugs.
+"": Mom, are you busy?
 
-"": It looks like the Zhuge Family is involved.
+"": No, not at all.
 
-"": The Final Righteousness War is at hand; we should focus on the Sado Clan. //:Isn’t Zhuge Wen-deng’s backer something for later?
-
-"": We will move separately.
-
-"": I take the Sado Clan,
-
-"": you take care of Zhuge Wen-deng’s backer.
-
-"": You’re looking a bit sharper; I’m not used to it.
-
-"": Gak, were you always this clever?
-
-"": But I have a keen nose for smells.
+() I worried for nothing…
 
 page 12
 
-"": Gak, you... you demoted Wind Dragon to a squad,
-//: and sent Elder Tang Joha back to Sichuan, did you not?
+"" Sob, hic...
 
-"": Seeing as you even sent me outward...
+"": Ah, stop crying!!
 
-"": It seems you want to remove all trustworthy people from the Final Righteousness War.
+"": Because of you, we can’t even go back to the mansion!
 
-"": You, surely…
+"" But, Lesliii.
 
-"": For the sake of righteousness.
+"" D-do I have to go to Halbern and apologize?
 
-"": Damn it.
+"": What apology! It was just a tea party. Not even a proper tea party.
 
-Sfx: step
+"" S-still.
 
-Sfx: step
+"": Who yells at someone just because they said a wrong word?
 
-"": How pathetic. Pathetic weakling.
+"": This is all because they weren’t taught manners!
 
-"": You are exactly the Gak I know.
-
-[]: Three days later
+"" But, hic, if I, later, get angry because they ignored me…
 
 page 13
 
-Sfx: dong
+"": What are you going to do if she gets angry?
 
-Sfx: dong
+"": She doesn’t get any attention at home anyway!
 
-"": We shall eradicate the Sado Clan.
+"": Who would even listen to her?
 
-Sfx: clack clack
+"": And yet...
 
-Sfx: clack clack
+"": she just mocks me like I’m not even worth dealing with....
 
-<> Commence the attack!
+"": I won’t let it slide…!
 
-"": That kid is the Acting Leader?
+<> I’ll trample her down no matter what!
 
-"": And he’s ordering troops as soon as he returns.
-//: Do the elders already know of this?
+** L-Lesli, are you okay?
 
-"": I don’t know, he gives no time to rest.
+"": Lady Lesli.
 
-page 14
+"": I just thought of a good idea…
 
-"": Pfah!
-
-Sfx: clack clack
-
-Sfx: clack clack
-
-[] : Azure Dragon Leader, Cheonghyeo Jin-in
-
-"": The Murim Alliance has truly reached its limit.
-//: It is unjust that the military lord was locked in the prison, yet this greenhorn who has never known real war...
-
-"": Oh my, the gossip~
-
-Sfx: clack clack
-
-[] : Flying Dragon Leader, Ho-ran
-
-"": That Sichuan Branch Chief defended Sichuan in Guizhou from the Sado Clan Lord —
-
-<> Flying Dragon’s intelligence is all talk now. What right have you to open your mouth?
-//: If Flying Dragon’s intelligence had done its duty, would the Alliance’s gate have been ravaged by the Sado Clan?
-
-<> What did you say? Ha, really. What has Azure Dragon done in all this time?
-
-"": Wind Dragon is nowhere to be seen.
-
-"": I always disliked how they strutted like they alone walked the path of righteousness....
-
-[] : Flame Dragon Leader, Hwang Bogo
-
-Sfx: dong-dong
-
-Sfx: dong
-
-Sfx: nod
-
-Sfx: tada
-
-page 15
-
-Sfx: thud
-
-"": You summoned us, Acting Leader. From now on the Azure Dragon will guard you safely.
-
-"": Flying Dragon Leader Ho-ran, I respectfully answer the call.
-
-"": Flame Dragon Leader Hwang Bogo here. I will fight with my life.
-
-(): Old faces I haven’t seen in a while.
-
-(): Ho-ran, Hwang Bogo, and Cheonghyeo.
-
-(): They joined the Murim Alliance around the same time as I did.
-
-(): When I became leader, they knelt and congratulated while rubbing their palms together.
-
-(): Behind my back they nattered about me — that was their pleasure.
-
-(): Those who rub their palms at authority then turn and spit are trash
-//: who survived by watching Zhuge Wen-deng’s mood.
-
-page 16
-
-(): The fact that such men became unit leaders is a sign the Murim Alliance was rotten.
-
-(): But I do not intend to kill them now.
-
-"": I only called you to pay respects, yet you all are willing to risk your lives.
-
-<> Thank you. Follow me. I will give you the chance to take the vanguard.
-
-Sfx: ta
-
-(): Pierce, stab... at least say something before we go.
-
-(): From now on these men will be the first to risk their lives in the coming battle with the Sado Clan.
-
-(): Even if they survive, they will be so traumatized they'll leave the field themselves.
-
-(): This is the first step.
-
-Sfx: clack clack
-
-Sfx: clack clack
-
-page 17
-
-(): Intelligence reports that Sado Clan warriors are lying in ambush in the gorge.
-
-(): When you roll and struggle to survive, the resolve to fight is immediate.
-//: Now, struggle with all you have.
-
-<> ?!
-
-Sfx: eeeek
-
-Sfx: thud thud thud
-
-<> Th-this is…!
-
-page 18
-
-(): Damn, I was complacent. I tried to trap the wind in my hand.
-
-(): Expecting them to stay put was naive.
-
-(): Nanggung Ye-na.
-
-
+"": How about listening to it?

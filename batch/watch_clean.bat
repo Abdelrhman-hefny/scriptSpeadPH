@@ -106,8 +106,8 @@ if exist "%folderPath%\cleaned\" (
     echo [INFO] cleaned folder already exists, skipping Panel Cleaner.
       
 ) else (
-    echo Running Panel Cleaner on "%folderPath%"...
-    powershell -command "pcleaner clean '%folderPath%'"
+    echo Running Panel Cleaner on "%folderPath%" with text extraction...
+    powershell -command "pcleaner-cli clean '%folderPath%' --extract-text --cache-masks"
     if errorlevel 1 (
         echo [ERROR] Panel Cleaner failed! Exiting...
         pause

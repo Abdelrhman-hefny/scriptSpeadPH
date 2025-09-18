@@ -1,4 +1,5 @@
 import os
+import sys
 import gdown
 import logging
 import subprocess
@@ -18,6 +19,61 @@ my_text_temp_url = lines[1].strip() if len(lines) >= 2 else ""
 # رابط باتش
 bat_file = r"C:\Users\abdoh\Downloads\testScript\batch\watch_clean.bat"
 
+
+def run_panel_cleaner(target_folder: str) -> None:
+    """Run Panel Cleaner with text extraction and ensure masks; then run OCR to a file."""
+    cleaned_folder = os.path.join(target_folder, "cleaned")
+    print("🧹 Running Panel Cleaner...")
+    logging.info("Running Panel Cleaner with text extraction...")
+    try:
+        subprocess.run(
+            [
+                "powershell",
+                "-Command",
+                f"pcleaner-cli clean '{target_folder}' --extract-text --cache-masks",
+            ],
+            check=True,
+        )
+        # Wait for cleaned folder
+        while not os.path.exists(cleaned_folder):
+            time.sleep(1)
+        print("✅ Cleaning done, cleaned folder created.")
+        logging.info("Panel Cleaner finished successfully.")
+    except Exception as e:
+        logging.error(f"Panel Cleaner failed: {e}")
+        print(f"[ERROR] Panel Cleaner failed: {e}")
+        return
+
+    # Ensure mask files are in cleaned folder
+    print("📁 Ensuring mask files are available in cleaned folder...")
+    try:
+        subprocess.run(
+            [
+                sys.executable,
+                os.path.join(os.path.dirname(__file__), "extract_masks_from_cleaned.py"),
+                target_folder,
+            ],
+            check=True,
+        )
+        print("✅ Mask files ensured successfully.")
+    except Exception as e:
+        print(f"[ERROR] Failed to ensure mask files: {e}")
+
+    # Run OCR to text file for convenience (does not affect cleaning)
+    # try:
+    #     ocr_out = os.path.join(cleaned_folder, "ocr.txt")
+    #     print("🔎 Running OCR to:", ocr_out)
+    #     subprocess.run(
+    #         [
+    #             "powershell",
+    #             "-Command",
+    #             f"pcleaner-cli ocr '{target_folder}' '",
+    #         ],
+    #         check=True,
+    #     )
+    # except Exception as e:
+    #     print(f"[WARN] OCR step failed or not configured: {e}")
+
 print("Start downloading files...")
 
 if os.path.exists(my_text_temp_url):
@@ -26,27 +82,7 @@ if os.path.exists(my_text_temp_url):
     logging.info(f"Local folder detected: {local_folder}")
     print(f"Local folder detected: {local_folder}")
 
-    cleaned_folder = os.path.join(local_folder, "Cleaned")
-
-    if os.path.exists(cleaned_folder):
-        print("✅ Cleaned folder already exists, skipping cleaning.")
-        logging.info("Cleaned folder already exists, skipping cleaning.")
-    else:
-        print("🧹 Cleaned folder not found, running Panel Cleaner...")
-        logging.info("Running Panel Cleaner...")
-
-        try:
-            subprocess.run(
-                ["powershell", "-Command", f"pcleaner clean '{local_folder}' -c"],
-                check=True
-            ) 
-            while not os.path.exists(cleaned_folder):
-                time.sleep(1)
-            print("✅ Cleaning done, Cleaned folder created.")
-            logging.info("Panel Cleaner finished successfully.")
-        except Exception as e:
-            logging.error(f"Panel Cleaner failed: {e}")
-            print(f"[ERROR] Panel Cleaner failed: {e}")
+    run_panel_cleaner(local_folder)
 
 else:
     # ===== Google Drive URL detected =====
@@ -72,15 +108,7 @@ else:
         gdown.download_folder(my_text_temp_url, output=downloads_folder, quiet=False, use_cookies=False)
         logging.info("All files downloaded successfully")
         print("All files downloaded successfully")
-
-        print("🧹 Running Panel Cleaner on downloaded folder...")
-        subprocess.run(
-            ["powershell", "-Command", f"pcleaner clean '{downloads_folder}' -c"],
-            check=True
-        )
-        while not os.path.exists(os.path.join(downloads_folder, "Cleaned")):
-            time.sleep(1)
-        print("✅ Cleaning done, Cleaned folder created.")
+        run_panel_cleaner(downloads_folder)
 
     except Exception as e:
         logging.error(f"Error during download: {e}")
