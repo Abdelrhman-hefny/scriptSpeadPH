@@ -1,0 +1,34 @@
+opencv-python
+Pillow
+torch
+torchvision
+tqdm
+numpy
+scipy
+pyclipper
+shapely
+natsort
+docopt-ng
+ConfigUpdater
+transformers
+manga_ocr
+loguru
+prettytable
+colorama
+requests
+xdg
+PySide6
+tifffile
+attrs
+psutil
+dictdiffer
+humanfriendly
+simple_lama_inpainting
+pytesseract
+psd-tools
+strenum; python_version < "3.11"
+dbus-python; platform_system == "Linux"
+pywin32; platform_system == "Windows"
+win10toast; platform_system == "Windows"
+pyuac; platform_system == "Windows"
+PyYAML  # Only used for building the icon cache, not used at runtime, therefore excluded from the wheel.

@@ -164,9 +164,9 @@ app.bringToFront();
     function processFolder(originalsFolder) {
         if (!originalsFolder) return;
 
-        var cleanedFolder = new Folder(originalsFolder + "/Cleaned");
+        var cleanedFolder = new Folder(originalsFolder + "/cleaned");
         if (!cleanedFolder.exists) {
-            alert("Cleaned folder not found:\n" + originalsFolder.fsName);
+            alert("cleaned folder not found:\n" + originalsFolder.fsName);
             return;
         }
 
@@ -254,14 +254,72 @@ else if (chosenTeam.toLowerCase() === "seren") {
     }
 
     // ======= Start processing =======
+
+
+
+
+
+
+    var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\extract_bubbles_from_mask.py";
+    var param = trimStr(lines[1]);  
+    
+    // أمر التشغيل
+    var cmd = 'python "' + pythonScript + '" "' + param + '"';
+    
+    // نكتب أمر التشغيل في ملف bat مؤقت
+    var runFile = new File(Folder.temp + "/runPython.bat");
+    runFile.open("w");
+    runFile.writeln("@echo off");
+    runFile.writeln(cmd);
+    runFile.close();
+    runFile.execute();
+    
+
+
+
+
+
+
+
+
+
+
+    // ======= Start processing =======
     processFolder(originalsFolder);
     reopenProcessedPSDs(originalsFolder);
 
+// ======= Run BAT file =======
+try {
+    var batFile = new File("C:\\Users\\abdoh\\Downloads\\testScript\\batch\\run_detext-bb-by-json.bat");
+    if (batFile.exists) {
+        // شغل الباتش مباشرة
+        batFile.execute();
+    } else {
+        alert("BAT file not found: " + batFile.fsName);
+    }
+} catch (e) {
+    alert("Error running BAT file: " + e);
+}
 
+// ======= Go to first document (first page) =======
+if (app.documents.length > 0) {
+    app.activeDocument = app.documents[0];
+}
 
     
     // ======= Delete temp file =======
-    try { if (tempFile.exists) tempFile.remove(); } catch(e) {}
+    // try { if (tempFile.exists) tempFile.remove(); } catch(e) {}
+
+
+
+
+
+
+
+
+
+
+
 
     // ======= Ask for another folder =======
     var again = confirm("Do you want to select another folder?");

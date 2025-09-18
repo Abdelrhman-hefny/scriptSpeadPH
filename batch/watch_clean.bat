@@ -101,13 +101,13 @@ if "%line4%"=="" (
 ) else (
     set "pspath=%line4%"
 )
-:: ===== Step 1: Check if Cleaned folder already exists =====
-if exist "%folderPath%\Cleaned\" (
-    echo [INFO] Cleaned folder already exists, skipping Panel Cleaner.
+:: ===== Step 1: Check if cleaned folder already exists =====
+if exist "%folderPath%\cleaned\" (
+    echo [INFO] cleaned folder already exists, skipping Panel Cleaner.
       
 ) else (
     echo Running Panel Cleaner on "%folderPath%"...
-    powershell -command "pcleaner-cli clean '%folderPath%' -c"
+    powershell -command "pcleaner clean '%folderPath%'"
     if errorlevel 1 (
         echo [ERROR] Panel Cleaner failed! Exiting...
         pause
@@ -115,11 +115,11 @@ if exist "%folderPath%\Cleaned\" (
     )
     echo Panel Cleaner finished.
 
-    :: ===== Step 2: Wait until Cleaned folder exists =====
-    echo Waiting for "%folderPath%\Cleaned\" to appear...
+    :: ===== Step 2: Wait until cleaned folder exists =====
+    echo Waiting for "%folderPath%\cleaned\" to appear...
     :waitCleaned
-    if exist "%folderPath%\Cleaned\" (
-        echo Cleaned folder found.
+    if exist "%folderPath%\cleaned\" (
+        echo cleaned folder found.
     ) else (
         timeout /t 1 >nul
         goto waitCleaned
@@ -127,9 +127,29 @@ if exist "%folderPath%\Cleaned\" (
 )
 
 
+
  
+:: ===== Step 3: Comprehensive mask finding and copying =====
+echo Finding and copying mask files to cleaned folder...
+python "C:\Users\abdoh\Downloads\testScript_auto_path\python\comprehensive_mask_finder.py" "%folderPath%"
+if errorlevel 1 (
+    echo [ERROR] Failed to find/copy mask files! Check the script.
+    pause
+) else (
+    echo Mask files found and copied successfully.
+)
+
 :: ===== Step 4: Launch Photoshop with script =====
 echo Launching Photoshop...
 start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
- 
+:: ===== Step 5: Extract bubble coordinates from masks =====
+:: لازم يكون عندك Python متضاف في PATH
+python "C:\Users\abdoh\Downloads\testScript_auto_path\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
+
+if errorlevel 1 (
+    echo [ERROR] Bubble extractor failed! Check the script.
+    pause
+) else (
+    echo Bubble extractor finished successfully.
+)

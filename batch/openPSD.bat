@@ -83,7 +83,7 @@ endlocal
 
 REM 8️⃣ Delete the temporary file after opening the PSD files
 echo Deleting temporary file...
-del "C:\Users\abdoh\Downloads\testScript\psdFolderPath.txt"
+@REM del "C:\Users\abdoh\Downloads\testScript\psdFolderPath.txt"
 echo Temporary file deleted.
 
 

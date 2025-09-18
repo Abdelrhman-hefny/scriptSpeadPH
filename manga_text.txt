@@ -1,11 +1,485 @@
+page 1
+
+[]: Southern manor of the Alliance
+
+"": These filthy orthodox bastards, 
+//: how long do you intend to keep this busy man waiting?
+
+"": Yabultak, calm yourself.
+
+"": Move your head. Bald bastard, shiny-headed bastard, 
+//: flashing light off your forehead bastard.
+
+ST: Hehe.
+
+"": Hey, Seo Hopil, you bastard. 
+//: Wipe that frown off your face. Is the world collapsing?
+
+Sfx: Sob sob
+
+"": My sect… my sect was annihilated! Ugh..!
+
+"": And what do you expect me to do about it? You are ruining my appetite.
+//:  In life, sects may be destroyed.
+
+"": Yabultak, close your mouth and sit.
+
+"": Yes!
+
+Sfx: Step
+
+Sfx: Glance
+
+"": Setting that aside, Yeha, 
+//: which of the Four Dragon Units would you like to join?
+
+"": I do not know.
+
+"": Normally, the champion would apply to the Azure Dragon Unit, 
+//: which is in the rear, safest, and maintains the Alliance’s order…
+
+
+
+
+page 2
+
+"": I have no interest, but if one has skill, he should step forward. 
+//: Why retreat? Strange.
+
+"": As expected of you… no, you’re remarkable.
+
+"": Azure Dragon, Flame Dragon, Flying Dragon, all fine…
+
+"": But avoid Wind Dragon.
+
+"": Rescuing hostages, infiltrating enemy lines… Wind Dragon only faces death.
+
+"": In the past ten years, the Azure Dragon Leader changed once, 
+//: while the Wind Dragon Leader died twice.
+
+"": Moreover, even the few members left were all slain by the Demonic Alliance’s attack.
+
+"": The Wind Dragon’s sword is tireless—rescuing the weak and destroying the wicked.
+
+ST: !
+
+"": Thus, the Wind Dragon Unit is burdened with endless work.
+
+Sfx: Step
+
+Sfx: Step
+
+"": Because the martial world holds far too much that must be set right.
+
+
+
+
+page 3
+
+"": The Wind Dragon Unit is the hardest of the Four Dragons.
+
+"": In recent years, weakened further by the Acting Lord’s suppression, 
+//: they must endure harsher training and more perilous missions.
+
+"": One may die.
+
+"": Avoiding it is only natural. 
+//: It wouldn’t even matter if no one applied.
+
+"": However…
+
+"": I know well that I am not alone.
+
+"": Will you not join me in Wind Dragon?
+
+(): Ah…
+
+(): If the goal were to simply gather members, 
+//: it would have been easy to lie and offer the easy path.
+
+"": But if you must strain yourself to enter the Alliance, do not apply to Wind Dragon.
+
+(): Instead, I declare openly, to share even death together, the meaning of Daedo Moomoon (大道無門).
+
+#: *Daedo Moomoon (大道無門): There is no set path or method to reach great enlightenment or truth.
+
+
+
+
+page 4
+
+(): From the very beginning, that was the feeling I sensed. Though the atmosphere differs greatly…
+
+"": …It is not right.
+
+"": I shall change it.
+
+(): A strangely familiar feeling.
+
+"": I will.
+
+"": I will join Wind Dragon.
+
+Sfx: Sparkle
+
+Sfx: Sparkle
+
+(): That is admirable.
+
+"": Unlike the other Dragon Units, which have only just begun to replenish warriors,
+
+"": With the support of those who achieved excellent results in the Martial Tournament,
+
+"": The Wind Dragon Unit, already prepared,
+
+"": Shall stand at the vanguard of the Alliance.
+
+
+
+
+page 5
+
+(): Tch.
+
+"": Tell us the word.
+
+(): Wind Dragon! Those bastards moved first! 
+//: They swept up all the promising warriors from the tournament.
+
+(): A chance to leave a deep impression on the Acting Lord…!!
+
+(): While everyone was panicking after Jegal Mundung’s fall, 
+//: he alone prepared for what came next…
+
+"": Very well. First,
+
+"": I demote Wind Dragon from a full unit to a squad, excluding them from the Four Dragon Units.
+
+Sfx: Boom
+
+
+
+
+page 6
+
+"": !!
+
+"": Jegal Mundung sent all the existing Wind Dragon members away as couriers. //: Even the few remaining were annihilated, stopping the Demonic Alliance’s raid.
+
+Sfx: Sweep
+
+"": So you gathered new members, it seems…
+
+"": One… two… three… including the leader, eight?
+
+"": The minimum requirement to maintain a unit is two squads of five—ten in total.
+
+"": Even at minimum, you are two short. //:Surely you can handle such arithmetic?
+
+"": That is…
+
+"": With many new members, training will be difficult. 
+//: Henceforth, recruitment is forbidden.
+
+"": I cannot accept that.
+
+Sfx: Leap up
+
+"": Did I ask for your opinion?
+
+
+
+
 page 7
 
-"": Fine, do as you wish.
+"": The vanguard will be taken by the Azure Dragon Unit. I cannot entrust it to a mere squad.
 
-"": Yes, Acting Alliance leader.
+(): Haha, Wind Dragon, of course…
 
-"": Do nOT be reckless.
+(): Wind Dragon is…
 
-"": Must die.
+"": Today’s meeting ends here.
+
+Sfx: Step
+
+"": Acting Lord!
+
+Sfx: Step
+
+(): You should stay out of this.
+
+[]: Secret chamber of the Martial Alliance
+
+<> Kekeke! That cunning brat, I hear he gathers those who should be cast aside, //:and turns them into his allies!
+
+<> And for him to visit at such a busy time… //: is it that he seeks help?
+
+
+
+
+page 8
+
+(): It is Tang Joha, one of the Ten Absolutes. There is little I can offer.
+
+(): However…
+
+"": Master, please return to Sichuan first.
+
+"": That is why I have come.
+
+<> Fool…! Kuhak!! 
+//: Gaaaah!!!
+
+<> With the Demonic Alliance before us, where do you think you are sending me?! To win, even this old man must…
+
+"": We shall win without Master.
+
+"": And this disciple will not be content with that alone.
+
+"": What do you mean?
+
+"": I will annihilate the Demonic Alliance.
+
+
+
+
+page 9
+
+"": If I defeat the Demonic Lord, they will retreat to Yunnan.
+
+Sfx: Shanshi
+
+Sfx: Sichuan
+
+"": Please deal with them as they flee. //:There is no one but you, Master of the Ten Absolutes, to entrust this role.
+
+"": That man once forced even the Ten Absolutes to kneel. 
+//: Do you understand what that means?
+
+"": Yes, I do.
+
+"": But I shall prevail.
+
+"": Good. Then I will go to Sichuan, as you ask.
+
+Sfx: Creak
+
+"": But remember this.
+
+"": I too will not be satisfied with mere victory.
+
+"": Yes, yes, this time we shall drive the Demonic Alliance out of the Central Plains once and for all—
+
+<> Fool! That is not it!
+
+<> Victory or destruction may come later.
+
+
+
+
+page 10
+
+<> What this old man desires is…
+
+"": For you to return alive and unharmed. Only then will I be satisfied.
+
+"": …
+
+"": …
+
+"": You have returned.
+
+"": Yes. As you said, the Demonic Alliance remains in Kunlun.
+
+"": And the warriors requested for reinforcement?
+
+"": Three days? Perhaps four? That should be enough to gather them.
+
+"": …Good. Then set out once more.
+
+"": …
+
+page 11
+<> Do you think I'm an idiot?!
+
+"": Zhuge Wen-deng has a backer.
+
+"": Huh?
+
+"": Zhuge Wen-deng grew the merchant guild by distributing drugs.
+
+"": But no matter which record I searched, I could not find who made the drugs.
+
+"": It looks like the Zhuge Family is involved.
+
+"": The Final Righteousness War is at hand; we should focus on the Sado Clan. //:Isn’t Zhuge Wen-deng’s backer something for later?
+
+"": We will move separately.
+
+"": I take the Sado Clan,
+
+"": you take care of Zhuge Wen-deng’s backer.
+
+"": You’re looking a bit sharper; I’m not used to it.
+
+"": Gak, were you always this clever?
+
+"": But I have a keen nose for smells.
+
+page 12
+
+"": Gak, you... you demoted Wind Dragon to a squad,
+//: and sent Elder Tang Joha back to Sichuan, did you not?
+
+"": Seeing as you even sent me outward...
+
+"": It seems you want to remove all trustworthy people from the Final Righteousness War.
+
+"": You, surely…
+
+"": For the sake of righteousness.
+
+"": Damn it.
+
+Sfx: step
+
+Sfx: step
+
+"": How pathetic. Pathetic weakling.
+
+"": You are exactly the Gak I know.
+
+[]: Three days later
+
+page 13
+
+Sfx: dong
+
+Sfx: dong
+
+"": We shall eradicate the Sado Clan.
+
+Sfx: clack clack
+
+Sfx: clack clack
+
+<> Commence the attack!
+
+"": That kid is the Acting Leader?
+
+"": And he’s ordering troops as soon as he returns.
+//: Do the elders already know of this?
+
+"": I don’t know, he gives no time to rest.
+
+page 14
+
+"": Pfah!
+
+Sfx: clack clack
+
+Sfx: clack clack
+
+[] : Azure Dragon Leader, Cheonghyeo Jin-in
+
+"": The Murim Alliance has truly reached its limit.
+//: It is unjust that the military lord was locked in the prison, yet this greenhorn who has never known real war...
+
+"": Oh my, the gossip~
+
+Sfx: clack clack
+
+[] : Flying Dragon Leader, Ho-ran
+
+"": That Sichuan Branch Chief defended Sichuan in Guizhou from the Sado Clan Lord —
+
+<> Flying Dragon’s intelligence is all talk now. What right have you to open your mouth?
+//: If Flying Dragon’s intelligence had done its duty, would the Alliance’s gate have been ravaged by the Sado Clan?
+
+<> What did you say? Ha, really. What has Azure Dragon done in all this time?
+
+"": Wind Dragon is nowhere to be seen.
+
+"": I always disliked how they strutted like they alone walked the path of righteousness....
+
+[] : Flame Dragon Leader, Hwang Bogo
+
+Sfx: dong-dong
+
+Sfx: dong
+
+Sfx: nod
+
+Sfx: tada
+
+page 15
+
+Sfx: thud
+
+"": You summoned us, Acting Leader. From now on the Azure Dragon will guard you safely.
+
+"": Flying Dragon Leader Ho-ran, I respectfully answer the call.
+
+"": Flame Dragon Leader Hwang Bogo here. I will fight with my life.
+
+(): Old faces I haven’t seen in a while.
+
+(): Ho-ran, Hwang Bogo, and Cheonghyeo.
+
+(): They joined the Murim Alliance around the same time as I did.
+
+(): When I became leader, they knelt and congratulated while rubbing their palms together.
+
+(): Behind my back they nattered about me — that was their pleasure.
+
+(): Those who rub their palms at authority then turn and spit are trash
+//: who survived by watching Zhuge Wen-deng’s mood.
+
+page 16
+
+(): The fact that such men became unit leaders is a sign the Murim Alliance was rotten.
+
+(): But I do not intend to kill them now.
+
+"": I only called you to pay respects, yet you all are willing to risk your lives.
+
+<> Thank you. Follow me. I will give you the chance to take the vanguard.
+
+Sfx: ta
+
+(): Pierce, stab... at least say something before we go.
+
+(): From now on these men will be the first to risk their lives in the coming battle with the Sado Clan.
+
+(): Even if they survive, they will be so traumatized they'll leave the field themselves.
+
+(): This is the first step.
+
+Sfx: clack clack
+
+Sfx: clack clack
+
+page 17
+
+(): Intelligence reports that Sado Clan warriors are lying in ambush in the gorge.
+
+(): When you roll and struggle to survive, the resolve to fight is immediate.
+//: Now, struggle with all you have.
+
+<> ?!
+
+Sfx: eeeek
+
+Sfx: thud thud thud
+
+<> Th-this is…!
+
+page 18
+
+(): Damn, I was complacent. I tried to trap the wind in my hand.
+
+(): Expecting them to stay put was naive.
+
+(): Nanggung Ye-na.
 
 

@@ -37,7 +37,7 @@ if os.path.exists(my_text_temp_url):
 
         try:
             subprocess.run(
-                ["powershell", "-Command", f"pcleaner-cli clean '{local_folder}' -c"],
+                ["powershell", "-Command", f"pcleaner clean '{local_folder}' -c"],
                 check=True
             ) 
             while not os.path.exists(cleaned_folder):
@@ -75,7 +75,7 @@ else:
 
         print("🧹 Running Panel Cleaner on downloaded folder...")
         subprocess.run(
-            ["powershell", "-Command", f"pcleaner-cli clean '{downloads_folder}' -c"],
+            ["powershell", "-Command", f"pcleaner clean '{downloads_folder}' -c"],
             check=True
         )
         while not os.path.exists(os.path.join(downloads_folder, "Cleaned")):

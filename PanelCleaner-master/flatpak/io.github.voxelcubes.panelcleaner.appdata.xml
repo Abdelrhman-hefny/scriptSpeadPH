@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>io.github.voxelcubes.panelcleaner</id>
+  <launchable type="desktop-id">io.github.voxelcubes.panelcleaner.desktop</launchable>
+  <name>Panel Cleaner</name>
+  <summary>Let AI clean manga panels for you</summary>
+  <summary xml:lang="de">Lass KI Manga Seiten für dich reinigen</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer_name>VoxelCubes</developer_name>
+  <url type="homepage">https://github.com/VoxelCubes/PanelCleaner</url>
+  <url type="translate">https://github.com/VoxelCubes/PanelCleaner/blob/master/translations/TRANSLATING.md</url>
+  <url type="bugtracker">https://github.com/VoxelCubes/PanelCleaner/issues</url>
+  <url type="vcs-browser">https://github.com/VoxelCubes/PanelCleaner</url>
+  <description>
+    <p>This tool uses machine learning to find text and then generates masks to cover it up with the 
+    highest accuracy possible.</p>
+    <p>It is designed to clean easy bubbles, no in-painting or out-of-bubble text removal is (currently) done.</p>
+    <p>This is intended to save a lot of monotonous work for people who have to clean a lot of panels, 
+    while making sure it doesn't paint over anything that it wasn't supposed to.</p>
+    <p xml:lang="de">Dieses Werkzeug verwendet maschinelles Lernen, um Text zu finden und dann Masken zu generieren, 
+    um diesen mit höchstmöglicher Genauigkeit abzudecken.</p>
+    <p xml:lang="de">Es ist darauf ausgelegt, einfache Sprechblasen zu säubern, (zur Zeit) ohne In-Painting oder Entfernung 
+        von Text außerhalb der Blasen.</p>
+    <p xml:lang="de">Dies soll viel monotoner Arbeit für Menschen ersparen, die viele Seiten säubern müssen,
+        während sichergestellt wird, dass es nichts übermalt, was es nicht sollte.</p>
+  </description>
+  <screenshots>
+    <!-- Replace the URL below with a screenshot of your application -->
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/VoxelCubes/PanelCleaner/master/flatpak/Screenshot_1.png</image>
+      <caption>Fine-tune cleaning for your images</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/VoxelCubes/PanelCleaner/master/flatpak/Screenshot_2.png</image>
+      <caption>Process many images at a time</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/VoxelCubes/PanelCleaner/master/flatpak/Screenshot_review.png</image>
+      <caption>Review your profile settings</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/VoxelCubes/PanelCleaner/master/flatpak/Screenshot_ocr.png</image>
+      <caption>Review and edit the OCR output interactively</caption>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="2.11.5" date="2025-01-08">
+      <description>
+          <p>Changelog</p>
+          <ul>
+              <li>Flatpak: Fixed dark icons not loading.</li>
+              <li>Flatpak: Using Qt BaseApp to support breeze application theme.</li>
+              <li>Switched to a fine-tuned inpainting model by dreMaz, handling dithering patterns significantly better. The old model can still be used if desired.</li>
+              <li>Post-run actions added for the GUI, enabling automation like automatic shutdown or custom commands.</li>
+              <li>Automatic splitting of long image strips and merging them after cleaning (#123).</li>
+              <li>Added inpainting fade radius (#121).</li>
+              <li>Auto-correct invalid ranges in profiles.</li>
+              <li>Show actual standard deviation of failed masks instead of the maximum value.</li>
+              <li>Bulk PSD export now uses the largest image dimensions rather than the first image's dimensions.</li>
+              <li>Clarified when sizes are pixel counts in the GUI.</li>
+              <li>Indicate and validate when the OCR blacklist regex pattern is invalid.</li>
+              <li>Workaround added for a crash in psd-tools version 1.10.3.</li>
+              <li>Fixed an inpainting analytics crash when nothing was inpainted.</li>
+              <li>Resolved an issue where the "Apply Profile" button was sometimes disabled.</li>
+              <li>Removed dependence on python-magic.</li>
+              <li>Various fixes and optimizations.</li>
+          </ul>
+      </description>
+    </release>
+    <release version="2.9.2" date="2024-10-10">
+      <description>
+        <p>Changelog</p>
+        <ul>
+          <li>Output layers can now be exported together as a Photoshop PSD file (they also work in other programs that support psd, like GIMP!). Thank you @al3ks1s!</li>
+          <li>Italian language support! Thank you @fujicrow!</li>
+          <li>Allow overriding what language was detected, to force the use of Tesseract with any language you have installed.</li>
+          <li>Masks may now be any solid color, not just grayscale (without needing to resort to inpainting).</li>
+          <li>Image export parallelized in GUI mode, making it several times faster.</li>
+          <li>You can now load previous .txt or .csv OCR outputs and re-edit them in the GUI.</li>
+          <li>Window layout and sizes are now saved between sessions.</li>
+          <li>The main window stays interactive while reviewing cleaning output.</li>
+          <li>When system or graphics memory is low, a warning banner shows up. If left unchecked, the program will likely be terminated by the operating system.</li>
+          <li>The image cache is now cleaned upon closing the program, not just opening.</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.6.1" date="2024-03-16">
+      <description>
+        <p>Changelog</p>
+        <ul>
+          <li>Add a light background to image previews to visualize actual boundaries of transparent images.</li>
+          <li>Add a new option in the image previews to copy the image path to the clipboard, so that you can simply paste it into other applications without needing to export it first.</li>
+          <li>Update image thumbnails in image details tabs after every step, rather than waiting until all steps are done.</li>
+          <li>Only show number of errors in log viewer if there were errors.</li>
+          <li>[Flatpak] Fix: CUDA libraries causing additional 4GB install size.</li>
+          <li>Fix: inpainting outputs not written to output.</li>
+          <li>Fix: denoising and inpainting failing to scale masks correctly when using a sub 100% processing size.</li>
+          <li>Fix: thumbnails not updating in details tabs when running processing.</li>
+          <li>Fix: glitchy button text when regenerating an output in the details tab.</li>
+          <li>Fix: bundled themes have poor contrast between enabled and disabled buttons.</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.4.0" date="2024-03-04">
+      <description>
+        <p>Changelog</p>
+        <ul>
+          <li>Experimental: support inpainting to clean boxes that couldn't be cleaned otherwise.
+              Note: inpainting is disabled by default, enable manually in the profile.</li>
+          <li>Make the threshold for merging boxes configurable</li>
+          <li>Changed masker analytics to show actual mask thicknesses, not the index</li>
+          <li>Warn users that opening two sessions at once will corrupt the cache</li>
+          <li>Make which output is selected in the details view clearer</li>
+          <li>Fix: File table headers not spaced correctly</li>
+          <li>Fix: Resetting a profile option shifts focus to the next option</li>
+          <li>[Windows] Fix: magic not found upon pip installation</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.3.0" date="2024-02-18">
+      <description>
+        <p>Changelog</p>
+        <ul>
+          <li>Added a new details output: Fitment Quality. This will let you see what the standard deviation of the chosen mask is, if any.</li>
+          <li>Analytics output won't be cleared automatically anymore, instead it can be done manually.</li>
+          <li>Analytics output can now be edited by the user, so you can add your own notes while comparing effects of profile changes.</li>
+          <li>Vastly improved error reporting, now enabling all users to easily see and include session logs (with username redacted for privacy).</li>
+          <li>Added a new profile field to include notes about that profile.</li>
+          <li>Clarified some profile settings.</li>
+          <li>Support the XDG_CONFIG_HOME and XDG_CACHE_HOME environment variables on non-Linux platforms too. This will let you change where cache and config files are stored.</li>
+          <li>Fix: Analytics mislabeling the largest mask as the box mask, if there was no box mask chosen.</li>
+          <li>Fix: Flathub changelog not showing up</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.2.0" date="2024-01-30">
+      <description>
+        <p>Changelog</p>
+        <ul>
+          <li>[Flatpak] Fix: RuntimeError: Couldn't load custom C++ ops. 
+            (Thank you to zefr0x and masiv1001 for bringing this to my attention!)</li>
+          <li>Support translating the app</li>
+          <li>Added language: German</li>
+          <li>Fix: Cannot parse download progress from huggingface for OCR</li>
+          <li>Fix: Image details view using wrong render mode on first load</li>
+          <li>Fix: Overlapping boxes causing duplicate OCR text</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.1.4" date="2024-01-09"/>
+  </releases>
+  <content_rating type="oars-1.1" />
+  <categories>
+    <category>Utility</category>
+    <category>Graphics</category>
+  </categories>
+  <provides>
+    <binary>pcleaner-gui</binary>
+  </provides>
+  <languages>
+    <lang percentage="100">en</lang>
+    <lang percentage="100">de</lang>
+    <lang percentage="93">it</lang>
+    <lang percentage="76">es</lang>
+    <lang percentage="76">bg</lang>
+  </languages>
+  <keywords>
+<!--    <keyword translate="no"></keyword>-->
+    <keyword>Cleaning</keyword>
+    <keyword>Manga</keyword>
+    <keyword>AI</keyword>
+    <keyword>Machine Learning</keyword>
+    <keyword xml:lang="de">Reinigung</keyword>
+    <keyword xml:lang="de">KI</keyword>
+    <keyword xml:lang="de">Maschinelles Lernen</keyword>
+  </keywords>
+</component>
