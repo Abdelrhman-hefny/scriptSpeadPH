@@ -134,7 +134,7 @@ echo Finding and copying mask files to cleaned folder...
 python "C:\Users\abdoh\Downloads\testScript_auto_path\python\comprehensive_mask_finder.py" "%folderPath%"
 if errorlevel 1 (
     echo [ERROR] Failed to find/copy mask files! Check the script.
-    pause
+
 ) else (
     echo Mask files found and copied successfully.
 )
@@ -149,7 +149,7 @@ python "C:\Users\abdoh\Downloads\testScript_auto_path\extract_bubbles_from_mask.
 
 if errorlevel 1 (
     echo [ERROR] Bubble extractor failed! Check the script.
-    pause
+
 ) else (
     echo Bubble extractor finished successfully.
 )

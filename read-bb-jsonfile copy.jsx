@@ -1,9 +1,29 @@
 #target photoshop
+#include "C:/Users/abdoh/Downloads/testScript/config/json2.js"
+
+
+
+
+// === Function to delete all paths in a document ===
+function deleteAllPaths(doc) {
+    app.activeDocument = doc;
+    var count = doc.pathItems.length;
+    for (var i = count - 1; i >= 0; i--) {
+        try {
+            doc.pathItems[i].remove();
+        } catch (e) {
+            $.writeln("❌ Failed to remove path " + i + ": " + e);
+        }
+    }
+    $.writeln("🗑️ All paths deleted in document: " + doc.name);
+}
+
+
 
 // ==== Read folder name from temp-title.txt ====
 var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");
 tempFile.open("r");
-var folderName = tempFile.readln().replace(/\s+$/, ""); // remove trailing spaces/newlines
+var folderName = tempFile.readln().replace(/\s+$/, "");
 tempFile.close();
 
 // ==== JSON file path ====
@@ -11,7 +31,7 @@ var jsonFile = new File("C:/Users/abdoh/Downloads/" + folderName + "/cleaned/all
 
 // ==== Open and read JSON ====
 if (!jsonFile.exists || !jsonFile.open("r")) {
-    alert("JSON file not found!"+jsonFile);
+    alert("JSON file not found!\n" + jsonFile);
     exit();
 }
 var jsonString = jsonFile.read();
@@ -20,242 +40,126 @@ jsonFile.close();
 // remove BOM if present
 jsonString = jsonString.replace(/^\uFEFF/, '');
 
-
-// Parse JSON (try JSON.parse, fallback to eval)
 var bubblesData;
-if (typeof JSON !== "undefined" && JSON.parse) {
-    try {
-        bubblesData = JSON.parse(jsonString);
-    } catch (e) {
-        // fallback to eval
-        try {
-            bubblesData = eval('(' + jsonString + ')');
-        } catch (e2) {
-            alert("Error parsing JSON: " + e + "\nFallback eval failed: " + e2);
-            exit();
+try {
+    bubblesData = JSON.parse(jsonString);
+} catch (e) {
+    alert("Error parsing JSON: " + e + jsonFile);
+    exit();
+}
+
+// === Convex Hull ===
+function convexHull(points) {
+    points.sort(function(a, b) {
+        return a[0] === b[0] ? a[1] - b[1] : a[0] - b[0];
+    });
+    function cross(o, a, b) {
+        return (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+    }
+    var lower = [];
+    for (var i = 0; i < points.length; i++) {
+        while (lower.length >= 2 && cross(lower[lower.length-2], lower[lower.length-1], points[i]) <= 0) {
+            lower.pop();
         }
+        lower.push(points[i]);
     }
-} else {
-    try {
-        bubblesData = eval('(' + jsonString + ')');
-    } catch (e) {
-        alert("Error parsing JSON with eval: " + e);
-        exit();
-    }
-}
-
-if (!bubblesData) {
-    alert("No data found in JSON.");
-    exit();
-}
-
-// Get active document
-if (!app.documents.length) {
-    alert("No open document");
-    exit();
-}
-var doc = app.activeDocument;
-var filename = doc.name.replace(/\.[^\.]+$/, ""); // without extension
-
-// Find key in JSON that matches document
-var key = filename;
-if (!bubblesData[key]) {
-    // try common alternatives
-    var alt = filename + "_mask";
-    if (bubblesData[alt]) key = alt;
-    else {
-        alt = filename + "_clean";
-        if (bubblesData[alt]) key = alt;
-        else {
-            // try strip suffixes
-            var stripped = filename.replace(/_mask$/, "").replace(/_clean$/, "");
-            if (bubblesData[stripped]) key = stripped;
-            else {
-                // if only one key in object, use it
-                var keys = [];
-                for (var k in bubblesData) {
-                    if (bubblesData.hasOwnProperty(k)) keys.push(k);
-                }
-                if (keys.length === 1) key = keys[0];
-                else {
-                    // try to find a key that contains the filename
-                    for (var i = 0; i < keys.length; i++) {
-                        if (keys[i].indexOf(filename) !== -1) {
-                            key = keys[i];
-                            break;
-                        }
-                    }
-                }
-            }
+    var upper = [];
+    for (var i = points.length-1; i >= 0; i--) {
+        while (upper.length >= 2 && cross(upper[upper.length-2], upper[upper.length-1], points[i]) <= 0) {
+            upper.pop();
         }
+        upper.push(points[i]);
     }
+    upper.pop();
+    lower.pop();
+    return lower.concat(upper);
 }
 
-var bubbles = bubblesData[key];
-if (!bubbles || bubbles.length === 0) {
-    alert("No bubbles found for: " + filename + " (tried key: " + key + ")");
-    exit();
+// === Create Hull Path with Expansion ===
+function createHullPath(doc, pts, pathName, expandBy) {
+    var hull = convexHull(pts);
+    if (hull.length < 3) return null;
+
+    var cx = 0, cy = 0;
+    for (var i = 0; i < hull.length; i++) {
+        cx += hull[i][0];
+        cy += hull[i][1];
+    }
+    cx /= hull.length;
+    cy /= hull.length;
+
+    var subPathArray = [];
+    for (var j = 0; j < hull.length; j++) {
+        var x = hull[j][0];
+        var y = hull[j][1];
+
+        var dx = x - cx;
+        var dy = y - cy;
+        var len = Math.sqrt(dx*dx + dy*dy);
+
+        if (len > 0) {
+            x = cx + dx * ((len + expandBy) / len);
+            y = cy + dy * ((len + expandBy) / len);
+        }
+
+        var p = new PathPointInfo();
+        p.kind = PointKind.CORNERPOINT;
+        p.anchor = [x, y];
+        p.leftDirection = [x, y];
+        p.rightDirection = [x, y];
+        subPathArray.push(p);
+    }
+
+    var subPathInfo = new SubPathInfo();
+    subPathInfo.closed = true;
+    subPathInfo.operation = ShapeOperation.SHAPEXOR;
+    subPathInfo.entireSubPath = subPathArray;
+
+    return doc.pathItems.add(pathName, [subPathInfo]);
 }
-var pathCounter = 1; // counter across all docs
+
+// === Main Loop over all open PSDs ===
 for (var d = 0; d < app.documents.length; d++) {
-  var doc = app.documents[d];
-  app.activeDocument = doc;
-  var filename = doc.name.replace(/\.[^\.]+$/, "");
-  // 🗑️ امسح أي باثات قديمة
-for (var p = doc.pathItems.length - 1; p >= 0; p--) {
-    doc.pathItems[p].remove();
-}
+    var doc = app.documents[d];
+    app.activeDocument = doc; // اجعل الملف الحالي Active
+    // 🗑️ امسح كل الباثات القديمة في الملف الحالي
+    deleteAllPaths(doc);
 
-  // Find key for this document
-  var key = filename;
-  if (!bubblesData[key]) {
-      var alt = filename + "_mask";
-      if (bubblesData[alt]) key = alt;
-      else {
-          alt = filename + "_clean";
-          if (bubblesData[alt]) key = alt;
-          else {
-              var stripped = filename.replace(/_mask$/, "").replace(/_clean$/, "");
-              if (bubblesData[stripped]) key = stripped;
-              else {
-                  var keys = [];
-                  for (var k in bubblesData) if (bubblesData.hasOwnProperty(k)) keys.push(k);
-                  if (keys.length === 1) key = keys[0];
-                  else {
-                      for (var i = 0; i < keys.length; i++) {
-                          if (keys[i].indexOf(filename) !== -1) {
-                              key = keys[i];
-                              break;
-                          }
-                      }
-                  }
-              }
-          }
-      }
-  }
 
-// دالة بسيطة لتشغيل الأكشن بعد التحديد
-function runFillAction(doc, pathName) {
-    try {
-        // تحويل الباث إلى تحديد
-        var pathItem = doc.pathItems.getByName(pathName);
-        if (!pathItem) {
-            $.writeln("Path not found: " + pathName);
-            return false;
-        }
-        
-        // تحميل الباث كـ Selection
-        pathItem.makeSelection();
-        
-        if (!doc.selection || !doc.selection.bounds) {
-            $.writeln("No valid selection for path: " + pathName);
-            return false;
-        }
-        
-        // تشغيل الأكشن المخصص
-        try {
-            app.doAction("FILL", "FILL_ACTION_NEWSIT");
-            $.writeln("✅ Used ACTION for fill: " + pathName);
-        } catch (e) {
-            $.writeln("❌ Action failed: " + e);
-        }   
-        
-        // إلغاء التحديد
-        doc.selection.deselect();
-        return true;
-        
-    } catch (e) {
-        $.writeln("💥 Error in runFillAction: " + e);
-        try {
-            doc.selection.deselect();
-        } catch (e2) {}
-        return false;
+    var filename = doc.name.replace(/\.[^\.]+$/, "");
+
+    // ممكن يكون عندك suffix زي _mask
+    var key = filename + "_mask";
+    if (!bubblesData[key]) {
+        $.writeln("⚠️ No bubbles for " + key);
+        continue;
     }
-}
 
-  var bubbles = bubblesData[key];
-  if (!bubbles || bubbles.length === 0) continue;
+    var bubbles = bubblesData[key];
+    if (!bubbles || bubbles.length === 0) {
+        $.writeln("⚠️ No bubbles in JSON for: " + filename);
+        continue;
+    }
 
-    // رسم الباثات كما هو موجود في الكود
-    for (var i = bubbles.length - 1; i >= 0; i--) {
+    $.writeln("=== Processing " + doc.name + " with " + bubbles.length + " bubbles ===");
+
+    for (var i = 0; i < bubbles.length; i++) {
         var bubble = bubbles[i];
         var pts = bubble.points;
         if (!pts || pts.length === 0) continue;
 
-        // --- compute bounding box
-var xCoords = [], yCoords = [];
-for (var j = 0; j < pts.length; j++) {
-    var xy = pts[j];
-    var x = Number(xy[0]);
-    var y = Number(xy[1]);
-    if (isNaN(x) || isNaN(y)) continue;
-    xCoords.push(x);
-    yCoords.push(y);
-}
-if (xCoords.length === 0) continue;
-
-var minX = Math.min.apply(null, xCoords);
-var maxX = Math.max.apply(null, xCoords);
-var minY = Math.min.apply(null, yCoords);
-var maxY = Math.max.apply(null, yCoords);
-
-var centerX = (minX + maxX) / 2;
-var centerY = (minY + maxY) / 2;
-var radiusX = (maxX - minX) * 0.7; // 80% من العرض الكامل
-var radiusY = (maxY - minY) * 0.8; // 80% من الارتفاع الكامل
-
-
-// create circular path (32 points)
-var numPoints = 32;
-var subPathArray = [];
-for (var k = 0; k < numPoints; k++) {
-    var theta = (k / numPoints) * 2 * Math.PI;
-    var px = centerX + radiusX * Math.cos(theta);
-    var py = centerY + radiusY * Math.sin(theta);
-    var p = new PathPointInfo();
-    p.kind = PointKind.CORNERPOINT;
-    p.anchor = [px, py];
-    p.leftDirection = [px, py];
-    p.rightDirection = [px, py];
-    subPathArray.push(p);
-}
-
-
-        if (subPathArray.length === 0) continue;
-
-        var subPathInfo = new SubPathInfo();
-        subPathInfo.closed = true;
-        subPathInfo.operation = ShapeOperation.SHAPEXOR;
-        subPathInfo.entireSubPath = subPathArray;
-
-// نفترض أن لدينا متغير pathCounter لكل فقاعه
-// و pageNumber يمثل رقم الصفحة أو المستند الحالي
-var doc = app.activeDocument;  
-var fileName = doc.name;  
-
-// Remove extension (png, jpg, jpeg, psd)
-var baseName = fileName.replace(/\.(png|jpg|jpeg|psd)$/i, "");  
-
-// Try to parse number from the name
-var pageNumber = baseName;  
-
-var bubbleNumber = bubbles.length - i; // بما أن الباثات معكوسة
-var pathName = "page_" + pageNumber + "_bubble" + bubbleNumber;
-        pathCounter++;
-
+        var pathName = "bubble_" + (i + 1);
         try {
-            // إنشاء الباث
-            doc.pathItems.add(pathName, [subPathInfo]);
-            
-            // تشغيل الأكشن بعد التحديد
-            runFillAction(doc, pathName);
-            
+            createHullPath(doc, pts, pathName, 25); // توسعة 25px
+            $.writeln("✅ Path created: " + pathName);
         } catch (e) {
-            $.writeln("Failed to add path: " + e);
+            $.writeln("❌ Failed on bubble " + (i+1) + ": " + e);
         }
     }
+
+    $.writeln("=== Done with " + doc.name + " ===\n");
 }
-
-
+// === Run another JSX script at the end ===
+$.evalFile(new File("C:\\Users\\abdoh\\Downloads\\testScript\\fill_bubbles_first.jsx"));
 
  

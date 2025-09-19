@@ -1,275 +1,125 @@
 page 1
-
-[]: The only daughter of House Halbern.
-
-[]: Arellin Sigria Halbern.
-
-[]: The Arellin we knew,
-
-[]: was always the quiet child sitting in the corner of our playgroup.
-
-[]: At first, everyone treated Arellin according to her status as a duke’s daughter...
-
-"": They say no one even knows who her mother is?
-
-"": I heard even Duke Halbern treats her like she doesn’t exist....
-
-"": Even the maids of the ducal estate look down on her, apparently.
-
-[]: Hearing those rumors, the children
-
-# gradually ignored her, or pretended not to see her.
-
-[]: One would expect her to be angry at the children’s disregard and belittling attitude, but—
+"": Error, Error
+"": Please check for broken body parts
+"": Error, Error
+"": Please check for broken—
+"": Ugh…
+"": I am arresting you for illegal modification of AINIMAL for criminal use—
+// Enough evidence is already there.
+"": Jerry,
+"": Who’s the next target for illegal modification?
+"": It will now display.
 
 page 2
-
-[]: Even with such treatment,
-
-# She always smiled.
-
-# Foolishly.
-
-# So of course, we thought today, too,
-
-# would be no different...
-
-"": Why is everyone quiet?
+"": Chilli Pepper…
+"": The evolved AINIMAL,
+// huh.
+<> ?!
+"": Chili Pepper?
+"": I’m having chills…
+"": …Isn’t it because they’re here?
+"": How rude, there’s no way I’m letting out cold air in the hospital, you know?
+"": How beautiful…
+// You are truly an “Angel in White”...!
+"": How about spewing some flames out your mouth if you’re feeling cold?
+"": I will never forget you, the angel that is you!
+"": Mr. Shirogane…!
+"": Well then, the next surgery will be on Tuesday.
 
 page 3
-
-"": Answer me.
-
-# This is...
-
-# not the Arellin we knew.
-
-"": Why’s no one talking?
+"": It has been arranged by this beautiful angel in white for me!
+"": Huh?
+<> Why are you deciding it by yourself?!
+// We haven’t even gathered funds for the surgery cost!
+"": Oh, you don’t need to worry about financial stuff.
+// I already paid for the surgery.
+<> Wha-
+"": Your grandfather is now safe. (is this grandpa or uncle)
+"": I want to fight you seriously—
+// So consider this a selfish wish of mine, and just take it.
+<> …!
+"": Well then, adie!
+OT: Mr. Shirogane is so cool…
+"": …When the surgery ends, Grandpa will also be transferred to the general ward.
+"": Then, for now, we just need to earn for our medical and living expenses.
+"": Well, that’s true, but—
+// It’s like we’re playing into his hands, or something…
+"": Hm?
+"": Speak of the devil, he’s calling…
 
 page 4
-
-"": Lady.
-
-"": Y-Yes...!
-
-"": Name.
-
-"": I-I’m Nadeli.
-
-"": Your father’s title.
-
-"": A viscount.
-
-"": Lady Nadeli, do you know?
-
-"": This is just a friendly gathering, but....
-
-"": At an ordinary social party, you wouldn’t even be allowed to speak to me.
-
-"": I appreciate your advice. However—
-
-"": I never gave you permission to advise me.
-
-"": Advice from someone without power is nothing but a nuisance...
-
-"": Do you know what it means to commit a sin with words?
-
-"" Sob...
-
-"" Sob, hic…
+"": Sorry for disturbing your meal!
+"": What’s up, comrades, are you guys getting enough rest?!
+<> If you just didn’t call then we’d get enough!
+"": Well, you’re a very kind person after all, so I thought that you might be worried about the money.
+"": Welp, it’s a piece of cake for me. Don’t mind it.
+"": You liar.
+"": You were even crying worried about if you did something out of line.
+"": Wha- You little!
+// Kiba-
+"": I can’t show off to them if they knew about that!
+"": A-anyways!
+"": The only thing I want is for him to get well and fight you for real!
+"": So I’m thinking of giving you some advice.
+"": Advice?
+"": The Synchro Drive you activated at the end of the match—
+"": From what I saw, it seemed like you were just copying our elegant movements.
 
 page 5
-
-"" Mooooom! Aaahhh!
-
-"" Mooooom! Aaahhh!
-
-"": ....
-
-() Just kids like this...
-
-() Why did I ever want to be friends with them so badly?
-
-""<> Excuse me. Might I bring out some more tea and refreshments…
+"": But normally, you should prepare a more elegant pose in advance!
+St: Just look at this level of perfection!
+<> That’s just your hobby, right?
+"": It’s not about just posing randomly.
+// Joint attacks can dramatically increase your mobility by linking your movements.
+"": And to be able to use that, you need to have a Tune Score—
+// The link density for the both of you.
+"": Your score is still low, so your power leap is still small.
+"": Then what should I do to increase that Tune Score?
+"": It depends on the person, but—
+"": Me and Kiba improved it by cuddling and sleeping together.
+<> Wha…?!
+"": If your score increases, you’ll have more techniques you can use, and your chances of winning will increase!
+"": But, 
+"": I don’t recommend always using joint attacks.
+"": Why? It’s strong, isn’t it?
+"": It comes with its own risks.
+"": I and Kiba can do it once a day, or twice a day at maximum output.
+// If we go past that—
 
 page 6
-
-"" Sob... hic...
-
-"": Did something happen?
-
-"": No...
-
-"": I was simply letting Lady Nadeli in on a truth a bit early.
-
-"": That in this world, nothing gets solved just by crying.
-
-"": ...Pardon?
-
-"": I enjoyed the tea party.
-
-"": Then, I’ll be taking my leave first.
-
-() …So much for making friends.
-
-() I just go home.
+"": We’ll overheat and we won’t be able to move.
+// This is what we call “Heat Lock”.
+"": By the way, we took 2 days to recover from that.
+"": That long…?
+"": … But if you can use it well, you’ll have an advantage.
+"": …
+"": So you want me to be ready to use it before our match?
+"": That’s Right!
+// I’m wrapping it up here for now, I wish you guys all the best!
+"": Ah- wait…
+// Shirogane, Kiba, um… About Grandpa’s hospital bills…
+"": You really saved us.
+"": T-thank..
 
 page 7
-
-"": The Sky Tower is coming....
-
-[]: The sacred ground of mages, the Sky Tower.
-
-[]: The central stronghold of the Mage Tower, and the homeland of all magicians.
-
-[]: No one knew if it existed in the skies, in the cosmos...
-
-[]: or if it truly existed at all.
-
-() For the Sky Tower...
-
-() to formally declare its intent to visit the Albrecht Empire.
+"": …He hung up.
+// That maaaaaaaaaaannnn!!
+St: Saying thanks to me violates my policy.
+St: You’re just so stubborn…
+"": Well then,
+"": We need to cuddle and sleep together for our tune score to go up, right…
+"": K-Kaito…?
+<> It’s for grandpa!
+<> Kyaaaa!!
+<> Come on! Don’t run away!
+<> Are you for real?! Return to your senses, Kaito!
+<> Even I would rather cuddle a woman!
+<> ?!
+<> Wha… What’s with you?!
+"": Search Individual
+"": Chili Pepper, confirmed.
 
 page 8
+"": Acknowledged.
+"": Securing the target.
 
-() It must be because of the Charit incident.
-
-() First, I’ll have to request a meeting with the Tower Master.
-
-"": Lord Mehen.
-
-"": I’ve organized the documents for the subjugation support requests.
-
-"": These monster hunts really don’t seem to end lately.
-
-"": Maybe the monsters came out for a spring picnic.
-
-"": It’s already summer.
-
-"": Well, late spring at least.
-
-"": By the way, this is the first reinforcement request from the northern fortress.
-
-"": It seems the situation is growing more serious by the day.
-
-"": ...It really does.
-
-"": ...Leaving behind his house and children to bury himself in the North,
-
-"": just what does His Grace think he’s doing....
-
-() Maybe I should’ve waited for a lighter mood before bringing up news of the Duke.
-
-page 9
-
-"": And what’s this about the Crown Prince’s special commission?
-
-"": It’s a covert request currently being handled mainly by the 1st Order of Knights.
-
-"": The reward is good, so I hear the knights are highly motivated.
-
-** So that guy made a profit off this special commission.
-
-"": A covert request?
-
-** Woohoo!!
-
-() Looks like Pession is up to some odd scheme again, hardly befitting a crown prince.
-
-** Not interested.
-
-"": Ah, and there’s another bit of news....
-
-"": The Imperial Office said that at today’s gathering, there was a small disturbance among the young ladies.
-
-** Apparently, our young lady made the other girl cry.
-
-"": ...!
-
-"": So the young lady does quarrel sometimes.
-
-"": And even made her opponent cry.
-
-"": They’re children, after all. It’s natural to grow through a few fights.
-
-page 10
-
-"": And it’s better to hit than to get hit.
-
-"": That may be so.
-
-"": If Arellin takes after Valer...
-
-"": Should we discipline her firmly in advance to prevent trouble?
-
-"": If she takes after His Grace the Duke, wouldn’t disciplining be useless?
-
-"": ....
-
-"": Isn’t it better to keep things peaceful?
-
-"": Still, if she needs to be scolded, she must be scolded….
-
-"" Mooooom!
-
-() Oh no, of all times, right when we’re talking about scolding....
-
-page 11
-
-"": Arell.
-
-"": Did you enjoy your dinner?
-
-"": Yeah, it was good.
-
-"": Mom, are you busy?
-
-"": No, not at all.
-
-() I worried for nothing…
-
-page 12
-
-"" Sob, hic...
-
-"": Ah, stop crying!!
-
-"": Because of you, we can’t even go back to the mansion!
-
-"" But, Lesliii.
-
-"" D-do I have to go to Halbern and apologize?
-
-"": What apology! It was just a tea party. Not even a proper tea party.
-
-"" S-still.
-
-"": Who yells at someone just because they said a wrong word?
-
-"": This is all because they weren’t taught manners!
-
-"" But, hic, if I, later, get angry because they ignored me…
-
-page 13
-
-"": What are you going to do if she gets angry?
-
-"": She doesn’t get any attention at home anyway!
-
-"": Who would even listen to her?
-
-"": And yet...
-
-"": she just mocks me like I’m not even worth dealing with....
-
-"": I won’t let it slide…!
-
-<> I’ll trample her down no matter what!
-
-** L-Lesli, are you okay?
-
-"": Lady Lesli.
-
-"": I just thought of a good idea…
-
-"": How about listening to it?
