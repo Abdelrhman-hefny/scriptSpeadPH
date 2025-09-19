@@ -1,125 +1,62 @@
 page 1
-"": Error, Error
-"": Please check for broken body parts
-"": Error, Error
-"": Please check for broken—
-"": Ugh…
-"": I am arresting you for illegal modification of AINIMAL for criminal use—
-// Enough evidence is already there.
-"": Jerry,
-"": Who’s the next target for illegal modification?
-"": It will now display.
+
+"" I knew it, you’re a wise man.
+
+"" Looks like the legends are all true.
+
+"" What legends?
+
+"" As for legends and such, I can slowly tell you later… but this thing, I still suggest you use it right now.
+
+$: [Equipment Name: Summoning Card - E - Shadow Legion]
+[Legendary Equipment]
+[Exclusive Equipment]
+[Summons three people, fights until death]
+
+"" Such a precious card, you’re just giving it to me directly?
+
+"" None of us can use it anyway, better that you use it now and strengthen our power.
 
 page 2
-"": Chilli Pepper…
-"": The evolved AINIMAL,
-// huh.
-<> ?!
-"": Chili Pepper?
-"": I’m having chills…
-"": …Isn’t it because they’re here?
-"": How rude, there’s no way I’m letting out cold air in the hospital, you know?
-"": How beautiful…
-// You are truly an “Angel in White”...!
-"": How about spewing some flames out your mouth if you’re feeling cold?
-"": I will never forget you, the angel that is you!
-"": Mr. Shirogane…!
-"": Well then, the next surgery will be on Tuesday.
+
+() That body is way too explosive!!
+
+"" Lin Tianhao! Wake up! You’re bleeding way too much!
 
 page 3
-"": It has been arranged by this beautiful angel in white for me!
-"": Huh?
-<> Why are you deciding it by yourself?!
-// We haven’t even gathered funds for the surgery cost!
-"": Oh, you don’t need to worry about financial stuff.
-// I already paid for the surgery.
-<> Wha-
-"": Your grandfather is now safe. (is this grandpa or uncle)
-"": I want to fight you seriously—
-// So consider this a selfish wish of mine, and just take it.
-<> …!
-"": Well then, adie!
-OT: Mr. Shirogane is so cool…
-"": …When the surgery ends, Grandpa will also be transferred to the general ward.
-"": Then, for now, we just need to earn for our medical and living expenses.
-"": Well, that’s true, but—
-// It’s like we’re playing into his hands, or something…
-"": Hm?
-"": Speak of the devil, he’s calling…
+
+"" As expected of a legendary card, too, too huge…!
+
+"" No, too strong!
+
+"" Master!
+
+"" Hey hey hey, don’t do that, I can’t take it.
+
+"" !
+
+#: Dragon Soaring Style, Horizontal Slash!
+
+<> Careful!
+
+<> Young Lady, be careful.
+
+"" As expected, still a rookie, you didn’t even notice this?
 
 page 4
-"": Sorry for disturbing your meal!
-"": What’s up, comrades, are you guys getting enough rest?!
-<> If you just didn’t call then we’d get enough!
-"": Well, you’re a very kind person after all, so I thought that you might be worried about the money.
-"": Welp, it’s a piece of cake for me. Don’t mind it.
-"": You liar.
-"": You were even crying worried about if you did something out of line.
-"": Wha- You little!
-// Kiba-
-"": I can’t show off to them if they knew about that!
-"": A-anyways!
-"": The only thing I want is for him to get well and fight you for real!
-"": So I’m thinking of giving you some advice.
-"": Advice?
-"": The Synchro Drive you activated at the end of the match—
-"": From what I saw, it seemed like you were just copying our elegant movements.
+
+"" !!!
+
+<> Th-that, what is that?!
+
+<> Mad Demon Hedgehog, a level 30 monster.
+
+<> Th-thirty?!
+
+"" What’s the rush? This is only the beginning.
 
 page 5
-"": But normally, you should prepare a more elegant pose in advance!
-St: Just look at this level of perfection!
-<> That’s just your hobby, right?
-"": It’s not about just posing randomly.
-// Joint attacks can dramatically increase your mobility by linking your movements.
-"": And to be able to use that, you need to have a Tune Score—
-// The link density for the both of you.
-"": Your score is still low, so your power leap is still small.
-"": Then what should I do to increase that Tune Score?
-"": It depends on the person, but—
-"": Me and Kiba improved it by cuddling and sleeping together.
-<> Wha…?!
-"": If your score increases, you’ll have more techniques you can use, and your chances of winning will increase!
-"": But, 
-"": I don’t recommend always using joint attacks.
-"": Why? It’s strong, isn’t it?
-"": It comes with its own risks.
-"": I and Kiba can do it once a day, or twice a day at maximum output.
-// If we go past that—
 
 page 6
-"": We’ll overheat and we won’t be able to move.
-// This is what we call “Heat Lock”.
-"": By the way, we took 2 days to recover from that.
-"": That long…?
-"": … But if you can use it well, you’ll have an advantage.
-"": …
-"": So you want me to be ready to use it before our match?
-"": That’s Right!
-// I’m wrapping it up here for now, I wish you guys all the best!
-"": Ah- wait…
-// Shirogane, Kiba, um… About Grandpa’s hospital bills…
-"": You really saved us.
-"": T-thank..
 
-page 7
-"": …He hung up.
-// That maaaaaaaaaaannnn!!
-St: Saying thanks to me violates my policy.
-St: You’re just so stubborn…
-"": Well then,
-"": We need to cuddle and sleep together for our tune score to go up, right…
-"": K-Kaito…?
-<> It’s for grandpa!
-<> Kyaaaa!!
-<> Come on! Don’t run away!
-<> Are you for real?! Return to your senses, Kaito!
-<> Even I would rather cuddle a woman!
-<> ?!
-<> Wha… What’s with you?!
-"": Search Individual
-"": Chili Pepper, confirmed.
-
-page 8
-"": Acknowledged.
-"": Securing the target.
-
+<> Slime, attack…?

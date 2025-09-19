@@ -137,43 +137,79 @@ for (var p = doc.pathItems.length - 1; p >= 0; p--) {
   var bubbles = bubblesData[key];
   if (!bubbles || bubbles.length === 0) continue;
 
+
+// === Function: Convex Hull (Graham Scan) ===
+function convexHull(points) {
+    points.sort(function(a, b) {
+        return a[0] === b[0] ? a[1] - b[1] : a[0] - b[0];
+    });
+
+    function cross(o, a, b) {
+        return (a[0] - o[0]) * (b[1] - o[1]) -
+               (a[1] - o[1]) * (b[0] - o[0]);
+    }
+
+    var lower = [];
+    for (var i = 0; i < points.length; i++) {
+        while (lower.length >= 2 && cross(lower[lower.length-2], lower[lower.length-1], points[i]) <= 0) {
+            lower.pop();
+        }
+        lower.push(points[i]);
+    }
+
+    var upper = [];
+    for (var i = points.length - 1; i >= 0; i--) {
+        while (upper.length >= 2 && cross(upper[upper.length-2], upper[upper.length-1], points[i]) <= 0) {
+            upper.pop();
+        }
+        upper.push(points[i]);
+    }
+
+    upper.pop();
+    lower.pop();
+    return lower.concat(upper);
+}
+
+// === Function: Scale polygon around center ===
+function scalePolygon(points, scaleFactor) {
+    var sumX = 0, sumY = 0;
+    for (var i = 0; i < points.length; i++) {
+        sumX += points[i][0];
+        sumY += points[i][1];
+    }
+    var cx = sumX / points.length;
+    var cy = sumY / points.length;
+
+    var scaled = [];
+    for (var i = 0; i < points.length; i++) {
+        var dx = points[i][0] - cx;
+        var dy = points[i][1] - cy;
+        scaled.push([
+            cx + dx * scaleFactor,
+            cy + dy * scaleFactor
+        ]);
+    }
+    return scaled;
+}
+
+
+
     // رسم الباثات كما هو موجود في الكود
     for (var i = bubbles.length - 1; i >= 0; i--) {
         var bubble = bubbles[i];
         var pts = bubble.points;
         if (!pts || pts.length === 0) continue;
 
-        // --- compute bounding box
-var xCoords = [], yCoords = [];
-for (var j = 0; j < pts.length; j++) {
-    var xy = pts[j];
-    var x = Number(xy[0]);
-    var y = Number(xy[1]);
-    if (isNaN(x) || isNaN(y)) continue;
-    xCoords.push(x);
-    yCoords.push(y);
-}
-if (xCoords.length === 0) continue;
+// --- compute convex hull and scale ---
+var hull = convexHull(pts);
+var scaledHull = scalePolygon(hull, 1.05); // 5% توسعة
 
-var minX = Math.min.apply(null, xCoords);
-var maxX = Math.max.apply(null, xCoords);
-var minY = Math.min.apply(null, yCoords);
-var maxY = Math.max.apply(null, yCoords);
-
-var centerX = (minX + maxX) / 2;
-var centerY = (minY + maxY) / 2;
-var radiusX = (maxX - minX) * 0.6; // 80% من العرض الكامل
-var radiusY = (maxY - minY) * 0.9; // 80% من الارتفاع الكامل
-
-
-// create circular path (32 points)
-var numPoints = 32;
 var subPathArray = [];
-for (var k = 0; k < numPoints; k++) {
-    var theta = (k / numPoints) * 2 * Math.PI;
-    var px = centerX + radiusX * Math.cos(theta);
-    var py = centerY + radiusY * Math.sin(theta);
-    var p = new PathPointInfo() ;
+for (var k = 0; k < scaledHull.length; k++) {
+    var xy = scaledHull[k];
+    var px = xy[0];
+    var py = xy[1];
+    var p = new PathPointInfo();
     p.kind = PointKind.CORNERPOINT;
     p.anchor = [px, py];
     p.leftDirection = [px, py];
@@ -214,4 +250,4 @@ var pathName = "page_" + pageNumber + "_bubble" + bubbleNumber;
 
 
 
- 
+    
