@@ -1,62 +1,19 @@
-page 1
 
-"" I knew it, you’re a wise man.
+page  11
+[]: The “Yuseon Gongsa” recorded in the universe is actually a non-existent Diamond rank character.
+[]: Forced Diamond rank unlocked through .
+[]: Evolution successful! Diamond enhancement rewards granted.
+[]: +1 Enhancement reward: Yuseon obtained a cow.
+[]: +2 Enhancement reward: Yuseon obtained skill ???
+[]: +3 Enhancement reward: Yuseon obtained skill ???
+[]: +4 Enhancement reward: Yuseon obtained skill ???
+[]: +5 Enhancement reward: Yuseon obtained skill ???
+[]: +6 Enhancement reward: Yuseon obtained skill ???
+[]: +7 Enhancement reward: Yuseon obtained skill ???
 
-"" Looks like the legends are all true.
-
-"" What legends?
-
-"" As for legends and such, I can slowly tell you later… but this thing, I still suggest you use it right now.
-
-$: [Equipment Name: Summoning Card - E - Shadow Legion]
-[Legendary Equipment]
-[Exclusive Equipment]
-[Summons three people, fights until death]
-
-"" Such a precious card, you’re just giving it to me directly?
-
-"" None of us can use it anyway, better that you use it now and strengthen our power.
-
-page 2
-
-() That body is way too explosive!!
-
-"" Lin Tianhao! Wake up! You’re bleeding way too much!
-
-page 3
-
-"" As expected of a legendary card, too, too huge…!
-
-"" No, too strong!
-
-"" Master!
-
-"" Hey hey hey, don’t do that, I can’t take it.
-
-"" !
-
-#: Dragon Soaring Style, Horizontal Slash!
-
-<> Careful!
-
-<> Young Lady, be careful.
-
-"" As expected, still a rookie, you didn’t even notice this?
-
-page 4
-
-"" !!!
-
-<> Th-that, what is that?!
-
-<> Mad Demon Hedgehog, a level 30 monster.
-
-<> Th-thirty?!
-
-"" What’s the rush? This is only the beginning.
-
-page 5
-
-page 6
-
-<> Slime, attack…?
+“”: Just like when I succeeded in +1 Diamond Lu Bu and got the …
+“”: So by becoming Diamond, Yuseon gets all the rewards for the level-ups until now?
+[]: Would you like to attempt +8 enhancement?
+[]: +7 Enhancement reward: Yuseon obtained a flute.
+“”: Of course I’ll try….
+[]: Failure will erase the existence of Yuseon Gongsa from the universe.

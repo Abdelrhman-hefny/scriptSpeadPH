@@ -552,9 +552,25 @@ function openNotepad() {
     return;
   }
 
-  // ====== Logging DISABLED ======
-  function L(s) {}
-  function E(s) {}
+  // ========= لوج محسن ==========
+  var log = [];
+  var errors = [];
+  function L(s) {
+    if (!ultraFastMode) log.push(s);
+  }
+  function E(s) {
+    errors.push(s);
+    if (!ultraFastMode) log.push("ERROR: " + s);
+  }
+
+  L("Photoshop Text Import - verbose log");
+  L("Date: " + new Date().toString());
+  L("TXT file: " + txtFile.fsName);
+  L("Total lines read: " + allLines.length);
+  L("Pages detected: " + pageStartIndices.length);
+  L("Base font size: " + baseFontSize + "  minFontSize: " + minFontSize);
+  L("Stop after first page: " + (stopAfterFirstPage ? "YES" : "NO"));
+  L("========================================");
 
   // جمع وترتيب المستندات بناءً على رقم الصفحة
   var documentsArray = [];
@@ -1127,7 +1143,26 @@ function openNotepad() {
     L("Errors: " + totalErrors);
     L("Skipped: " + totalSkipped);
 
-    // Note: logging and log file writing have been disabled.
+    // كتابة اللوج محسنة - في الذاكرة أولاً ثم كتابة مرة واحدة
+    if (!ultraFastMode) {
+      try {
+        var logPath = txtFile.path + "/photoshop_text_log_verbose.txt";
+        writeLogFile(logPath, log, errors);
+      } catch (e) {}
+    }
+
+    // كتابة الأخطاء فقط في Ultra Fast Mode
+    if (ultraFastMode && errors.length > 0) {
+      try {
+        var errFile = new File(txtFile.path + "/photoshop_text_errors.txt");
+        errFile.open("w");
+        for (var j = 0; j < errors.length; j++) {
+          errFile.writeln(errors[j]);
+        }
+        errFile.close();
+      } catch (e2) {}
+    }
+
     // افتح نسخة 21 فقط لو تم اختيار ذلك في الإعدادات
     if (openPS21 === true) {
       try {

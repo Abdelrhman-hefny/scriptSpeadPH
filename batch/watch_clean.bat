@@ -31,7 +31,7 @@ echo echo Line 4: %line1%
 
 :: ===== Teams array =====
 if "%line4%"=="" (
-    set "teams=rezo ez seren magus nyx arura ken mei quantom"
+    set "teams=rezo violet ez seren magus nyx arura ken mei quantom"
     set "teamChoice="
 
     :askTeam
@@ -145,7 +145,7 @@ start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
 :: ===== Step 5: Extract bubble coordinates from masks =====
 :: لازم يكون عندك Python متضاف في PATH
-python "C:\Users\abdoh\Downloads\testScript_auto_path\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
+python "C:\Users\abdoh\Downloads\testScript\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
 
 if errorlevel 1 (
     echo [ERROR] Bubble extractor failed! Check the script.

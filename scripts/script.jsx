@@ -16,7 +16,7 @@ app.bringToFront();
     }
 
     // ======= Teams array =======
-    var teams = ["arura","ez","ken","magus","mei","quantom","rezo","seren","nyx"];
+    var teams = ["arura","ez","ken", "violet", "magus","mei","quantom","rezo","seren","nyx"];
 
     // ======= Read temp file =======
     var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");

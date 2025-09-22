@@ -1,0 +1,2 @@
+File=07.psd | BubbleIndex=1 | SmartIndex=1 | PathName=page_07_bubble1 | LineIndex=78 : EXCEPTION : Error: User cancelled the operation at line 1037
+File=07.psd | BubbleIndex=2 | SmartIndex=2 | PathName=page_07_bubble2 | LineIndex=79 : EXCEPTION : Error: User cancelled the operation at line 873

@@ -1,17 +1,28 @@
 #target photoshop
+var folderName;
+var parentFolder;
 
-// ==== Read folder name from temp-title.txt ====
-var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");
-tempFile.open("r");
-var folderName = tempFile.readln().replace(/\s+$/, ""); // remove trailing spaces/newlines
-tempFile.close();
+if (app.documents.length > 0) {
+    // المسار الكامل للملف المفتوح
+    var fullPath = app.activeDocument.fullName;
+
+    // كائن Folder يمثل المجلد اللي فيه الملف
+    parentFolder = fullPath.parent;
+
+    // اسم المجلد الأب
+    folderName = parentFolder.name;
+
+} else {
+    alert("مفيش ملف مفتوح في فوتوشوب!");
+    exit();
+}
 
 // ==== JSON file path ====
-var jsonFile = new File("C:/Users/abdoh/Downloads/" + folderName + "/cleaned/all_bubbles.json");
+var jsonFile = new File(parentFolder + "/cleaned/all_bubbles.json");
 
 // ==== Open and read JSON ====
 if (!jsonFile.exists || !jsonFile.open("r")) {
-    alert("JSON file not found!"+jsonFile);
+    alert("JSON file not found!"+jsonFile + "FOLDER NAME" + folderName);
     exit();
 }
 var jsonString = jsonFile.read();
