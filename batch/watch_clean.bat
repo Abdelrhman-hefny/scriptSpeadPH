@@ -145,7 +145,7 @@ start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
 :: ===== Step 5: Extract bubble coordinates from masks =====
 :: لازم يكون عندك Python متضاف في PATH
-python "C:\Users\abdoh\Downloads\testScript\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
+python "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
 
 if errorlevel 1 (
     echo [ERROR] Bubble extractor failed! Check the script.

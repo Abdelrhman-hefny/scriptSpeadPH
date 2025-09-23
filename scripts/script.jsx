@@ -260,7 +260,7 @@ else if (chosenTeam.toLowerCase() === "seren") {
 
 
 
-    var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\extract_bubbles_from_mask.py";
+    var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
     var param = trimStr(lines[1]);  
     
     // أمر التشغيل

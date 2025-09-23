@@ -118,77 +118,6 @@ function parseStrokeTag(line) {
   return { needed: false, text: line };
 }
 
-// كسر السطر الأول فقط بشكل ذكي وفق عرض معيّن (بدون كسر حروف)
-function breakFirstLineByWidth(doc, text, fontName, fontSizePt, targetWidthPx) {
-  try {
-    if (!text) return text;
-    // لا نعبث بالنص إذا كان يحتوي على كسر أسطر مسبقًا
-    if (/\r|\n/.test(text)) return text;
-
-    // قسّم حسب المسافات فقط حتى لا نكسر الحروف
-    var words = String(text).split(/(\s+)/); // يشمل الفواصل البيضاء للحفاظ على المسافات
-    if (words.length <= 1) return text;
-
-    // أنشئ طبقة مؤقتة لقياس العرض الفعلي للنص بالنمط والخط المطلوبين
-    var tempLayer = doc.artLayers.add();
-    tempLayer.kind = LayerKind.TEXT;
-    tempLayer.textItem.kind = TextType.POINTTEXT;
-    tempLayer.textItem.font = fontName;
-    tempLayer.textItem.size = fontSizePt;
-    tempLayer.textItem.justification = Justification.CENTER;
-
-    // نبني السطر الأول تدريجيًا حتى نقترب من الهدف
-    var firstLine = "";
-    var built = "";
-    for (var i = 0; i < words.length; i++) {
-      var candidate = built + words[i];
-      tempLayer.textItem.contents = candidate || "";
-      var b = tempLayer.bounds;
-      var cw = Math.max(0, toNum(b[2]) - toNum(b[0]));
-      if (cw > targetWidthPx && built) {
-        // تجاوزنا العرض المستهدف، نتوقف عند البُنية السابقة
-        firstLine = built;
-        break;
-      }
-      built = candidate;
-    }
-
-    // لم نتجاوز الهدف أبدًا — اجعل أول سطر أقل بقليل عبر قصٍ محفوظ
-    if (!firstLine) {
-      // تقدير طول مقارب: متوسط عرض الحرف ~ 0.55 من حجم النقطة
-      var approxChars = Math.max(1, Math.floor(targetWidthPx / Math.max(1, (fontSizePt * 0.55))));
-      // حاول القطع عند أول حد كلمة قبل هذا العدد التقريبي
-      var acc = "";
-      for (var j = 0; j < words.length; j++) {
-        var nacc = acc + words[j];
-        if (nacc.replace(/\s+/g, " ").length > approxChars) break;
-        acc = nacc;
-      }
-      firstLine = acc || built;
-    }
-
-    // تنظيف المسافات الطرفية
-    firstLine = trimString(firstLine);
-    if (!firstLine) {
-      tempLayer.remove();
-      return text;
-    }
-
-    // بقية النص بعد السطر الأول
-    var rest = trimString(String(text).substring(firstLine.length));
-    tempLayer.remove();
-
-    if (!rest) return text; // لا داعي للكسر إن لم توجد بقية
-    return firstLine + "\r" + rest; // كسر سطر أول فقط
-  } catch (_e) {
-    // في حال أي خطأ، أعد النص دون تعديل
-    try {
-      if (tempLayer) tempLayer.remove();
-    } catch (_ee) {}
-    return text;
-  }
-}
-
 // دالة جديدة لإدارة المسارات بشكل ذكي
 // عداد عام للباثات ليضمن تسلسلًا خطيًا ثابتًا عبر كل الصفحات أثناء التشغيل
 var lastBubbleIndex = 0;
@@ -604,8 +533,6 @@ function openNotepad() {
   var fontMap = teams[currentTeam].fontMap;
   var compiledFontIndex = buildFontIndex(fontMap);
   var verticalCenterCompensationRatio = 0.06; // تعويض رأسي أخف لتقليل الرفع للأعلى
-  // فريق EZ: تطبيق قواعد scale أفقية خاصة بناءً على البادئة
-  var isEzTeam = /^(ez japan|ez scan)$/i.test(currentTeam);
 
   if (minFontSize && minFontSize > baseFontSize)
     minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
@@ -752,7 +679,6 @@ function openNotepad() {
       var match = pathTextMatches[k];
       var pathItem = match.pathItem;
       var lineText = match.lineText;
-      var originalLineText = match.lineText; // احتفظ بالنص الأصلي لاكتشاف البادئة
       var pathName = "(unknown)";
 
       try {
@@ -776,8 +702,6 @@ function openNotepad() {
       var isBracketTag = false;
       var isOTTag = false;
       var inheritPrevFont = false;
-      var isSTTag = /^\s*ST\s*:?\s*/.test(originalLineText || "");
-      var matchedPrefixKey = null; // سنملؤها عند مطابقة fontMap
 
       if (ultraFastMode) {
         // فحص التاجات الخاصة قبل حذفها
@@ -859,7 +783,6 @@ function openNotepad() {
         var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
         if (fontResult.found) {
           wantedFont = fontResult.font;
-          matchedPrefixKey = fontResult.key;
           lineText = trimString(lineText.substring(fontResult.key.length));
         }
 
@@ -896,7 +819,6 @@ function openNotepad() {
           var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
           if (fontResult.found) {
             wantedFont = fontResult.font;
-            matchedPrefixKey = fontResult.key;
             if (!isOTTag) {
               lineText = trimString(lineText.substring(fontResult.key.length));
             }
@@ -943,13 +865,6 @@ function openNotepad() {
         // استخدام الخط الثابت بدلاً من الحساب الديناميكي
         var newFontSize = curFontSize;
 
-        // اجعل السطر الأول أقصر قليلاً ليتناسب مع انحناءة الفقاعة
-        // نستخدم تقريب 0.6 من عرض الصندوق للسطر الأول
-        try {
-          var firstLineTargetWidth = Math.max(10, Math.round(availableWidth * 0.6));
-          lineText = breakFirstLineByWidth(doc, lineText, usedFont, newFontSize, firstLineTargetWidth);
-        } catch (_br) {}
-
         var textLayer = doc.artLayers.add();
         textLayer.kind = LayerKind.TEXT;
         if (!textLayer.textItem) {
@@ -960,25 +875,6 @@ function openNotepad() {
         textLayer.textItem.justification = Justification.CENTER;
         textLayer.textItem.font = usedFont;
         textLayer.textItem.size = newFontSize;
-
-        // تطبيق horizontalScale خاص لفريق EZ بناءً على البادئة
-        if (isEzTeam) {
-          try {
-            var keyForScale = matchedPrefixKey || "";
-            // طبّق 97% إذا كان ST: (حتى لو لم تكن في fontMap)
-            if (isSTTag) {
-              textLayer.textItem.horizontalScale = 97;
-            } else if (/^\s*(["“”]{2}:?|\(\):?)/.test(originalLineText || "") ||
-                       keyForScale === '""' || keyForScale === '"":' ||
-                       keyForScale === '““' || keyForScale === '““:' ||
-                       keyForScale === '()' || keyForScale === '():') {
-              textLayer.textItem.horizontalScale = 95;
-            } else if (/^\s*<>:?/.test(originalLineText || "") ||
-                       keyForScale === '<>' || keyForScale === '<>:') {
-              textLayer.textItem.horizontalScale = 90;
-            }
-          } catch (_hs) {}
-        }
 
         // تطبيق تنسيقات إضافية فقط إذا لم يكن في وضع Ultra Fast
         if (!ultraFastMode) {

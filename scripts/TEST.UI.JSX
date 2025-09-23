@@ -1,4 +1,4 @@
-#target photoshop
+//#target photoshop
 // محرّر المسارات - أزرار بسيطة (نسخة عربية)
 // أزرار: ← → ↑ ↓   |  تصغير/تكبير أفقي / عمودي
 // التطبيق الفوري عند الضغط. آمن (يحفظ نسخ احتياطية في الذاكرة).
@@ -208,6 +208,10 @@ docDrop.onChange = refreshPaths;
 var applyAllChk = win.add("checkbox", undefined, "طبق على كل المسارات في المستند");
 applyAllChk.value = false;
 
+// خيار التطبيق على كل المسارات في كل الملفات المفتوحة
+var applyAllDocsChk = win.add("checkbox", undefined, "طبق على كل المسارات في كل الملفات المفتوحة");
+applyAllDocsChk.value = false;
+
 // مجموعة أزرار التحريك
 var arrows = win.add("panel", undefined, "تحريك");
 arrows.orientation = "column"; arrows.alignChildren = ["center","center"];
@@ -249,55 +253,87 @@ var selMissingMsg = "اختر المستند/المسار أولاً";
 
 // معالجات الأزرار
 upBtn.onClick = function(){
+    var opts = { scaleX:1, scaleY:1, translateX:0, translateY: -MOVE_STEP, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX:1, scaleY:1, translateX:0, translateY: -MOVE_STEP, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 downBtn.onClick = function(){
+    var opts = { scaleX:1, scaleY:1, translateX:0, translateY: MOVE_STEP, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX:1, scaleY:1, translateX:0, translateY: MOVE_STEP, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 leftBtn.onClick = function(){
+    var opts = { scaleX:1, scaleY:1, translateX: -MOVE_STEP, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX:1, scaleY:1, translateX: -MOVE_STEP, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 rightBtn.onClick = function(){
+    var opts = { scaleX:1, scaleY:1, translateX: MOVE_STEP, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX:1, scaleY:1, translateX: MOVE_STEP, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 
 shrinkH.onClick = function(){
+    var opts = { scaleX: SHRINK_STEP, scaleY: 1, translateX:0, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX: SHRINK_STEP, scaleY: 1, translateX:0, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 
 shrinkV.onClick = function(){
+    var opts = { scaleX: 1, scaleY: SHRINK_STEP, translateX:0, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX: 1, scaleY: SHRINK_STEP, translateX:0, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 
 expandH.onClick = function(){
+    var opts = { scaleX: EXPAND_STEP, scaleY: 1, translateX:0, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX: EXPAND_STEP, scaleY: 1, translateX:0, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 
 expandV.onClick = function(){
+    var opts = { scaleX: 1, scaleY: EXPAND_STEP, translateX:0, translateY:0, tighten:0, handleScale:1 };
+    if (applyAllDocsChk.value) {
+        for (var di=0; di<app.documents.length; di++) { applyToAllPaths(app.documents[di], opts); }
+        return;
+    }
     var sel = getSelectedPathItem();
     if (!sel) return alert(selMissingMsg);
-    var opts = { scaleX: 1, scaleY: EXPAND_STEP, translateX:0, translateY:0, tighten:0, handleScale:1 };
     if (applyAllChk.value) { applyToAllPaths(sel.doc, opts); } else { applyTransformToPath(sel.doc, sel.path, opts); }
 };
 

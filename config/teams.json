@@ -69,6 +69,7 @@
       "[]:": "CCTallTales-Regular",
       "[]": "CCTallTales-Regular",
       "**": "CreatorcreditsBB-Italic",
+      "^^": "CreatorcreditsBB-Italic",
       "SFX:": "BlambasticAltBB",
       "ST:": "KomikaSlim-Regular",
       "st:": "KomikaSlim",
@@ -104,13 +105,13 @@
       "()": "Bang-Zoom!-Italic",
       "():": "Bang-Zoom!-Italic",
       "[]:": "DomCasual-Regular",
-      "[]": "Timelapse-Regular",
+       "[]": "DomCasual-Regular",
       "<>": "CCShoutOut",
-      "OT:": "CCTallTales-Regular",
-      "OT": "CCTallTales-Regular",
-      "Ot:": "CCTallTales-Regular"
+      "OT:": "CCGeekSpeak-Regular",     
+      "OT": "CCGeekSpeak-Regular",
+      "Ot:": "CCPrinceOfDarkness-Regular  historical"
     }
-  },
+  }, 
   "violet": {
     "defaultFont": "Bang-Zoom!-Regular",
     "baseFontSize": 29,

@@ -17,7 +17,7 @@ if "!folderName:~-1!"==" " (
 )
 
 :: python script path
-set "pythonScript=C:\Users\abdoh\Downloads\testScript\extract_bubbles_from_mask.py"
+set "pythonScript=C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_from_mask.py"
 
 :: cleaned folder
 set "cleanedFolder=C:\Users\abdoh\Downloads\!folderName!\cleaned"
@@ -31,7 +31,7 @@ cd /d "!cleanedFolder!" || (
 python "!pythonScript!" "!cleanedFolder!"
 
 :: run Photoshop script
-set "psScript=C:\Users\abdoh\Downloads\testScript\read-bb-jsonfile.jsx"
+set "psScript=C:\Users\abdoh\Downloads\testScript\scripts\read-bb-jsonfile.jsx"
 set "psApp=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
 
 if exist "!psApp!" (

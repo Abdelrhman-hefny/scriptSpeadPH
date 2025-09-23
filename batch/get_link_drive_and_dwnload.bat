@@ -30,24 +30,11 @@ if "%chosenTeam%"=="" (
     goto askTeam
 )
 
-:: ===== Photoshop path selection =====
-:askPsVer
-echo Choose Photoshop version:
-echo [1] Photoshop CC 2015
-echo [2] Photoshop 2021
-set /p psver=Enter 1 or 2: 
-
-if "%psver%"=="1" (
-    set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2015\Photoshop.exe"
-) else if "%psver%"=="2" (
-    set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
-) else (
-    echo Invalid choice. Try again.
-    goto askPsVer
-)
-
+:: ===== Photoshop path fixed to 2021 =====
+set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
 if not exist "%pspath%" (
-    echo Photoshop not found at %pspath%. Please check the path.
+    echo Photoshop 2021 not found at %pspath%.
+    echo Please install Photoshop 2021 or update the fixed path in get_link_drive_and_dwnload.bat
     pause
     exit /b
 )

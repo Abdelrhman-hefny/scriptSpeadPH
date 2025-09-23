@@ -142,7 +142,7 @@ function centerTextInBubble() {
     if (selectionBounds.error === "noSelection") {
       alert("Please select the bubble area first");
     } else if (selectionBounds.error === "smallSelection") {
-      alert("The selected area is too small");
+      // alert("The selected area is too small");
     }
     return false;
   }
@@ -180,7 +180,7 @@ function centerTextInBubbleWithTail() {
     if (selectionBounds.error === "noSelection") {
       alert("Please select the bubble area first");
     } else if (selectionBounds.error === "smallSelection") {
-      alert("The selected area is too small");
+      // alert("The selected area is too small");
     }
     return false;
   }
@@ -222,7 +222,7 @@ function createTextInBubble(text, fontSize, fontFamily) {
     if (selectionBounds.error === "noSelection") {
       alert("Please select the bubble area first");
     } else if (selectionBounds.error === "smallSelection") {
-      alert("The selected area is too small");
+      // alert("The selected area is too small");
     }
     return false;
   }
