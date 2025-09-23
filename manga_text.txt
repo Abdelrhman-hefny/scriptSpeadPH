@@ -1,19 +1,150 @@
+ 
 
-page  11
-[]: The “Yuseon Gongsa” recorded in the universe is actually a non-existent Diamond rank character.
-[]: Forced Diamond rank unlocked through .
-[]: Evolution successful! Diamond enhancement rewards granted.
-[]: +1 Enhancement reward: Yuseon obtained a cow.
-[]: +2 Enhancement reward: Yuseon obtained skill ???
-[]: +3 Enhancement reward: Yuseon obtained skill ???
-[]: +4 Enhancement reward: Yuseon obtained skill ???
-[]: +5 Enhancement reward: Yuseon obtained skill ???
-[]: +6 Enhancement reward: Yuseon obtained skill ???
-[]: +7 Enhancement reward: Yuseon obtained skill ???
+page 1
 
-“”: Just like when I succeeded in +1 Diamond Lu Bu and got the …
-“”: So by becoming Diamond, Yuseon gets all the rewards for the level-ups until now?
-[]: Would you like to attempt +8 enhancement?
-[]: +7 Enhancement reward: Yuseon obtained a flute.
-“”: Of course I’ll try….
-[]: Failure will erase the existence of Yuseon Gongsa from the universe.
+# Demons, in exchange for lending their power to the contractor
+
+# gnaw away at the contractor’s mind.
+
+[] Ever since I awakened the butterfly
+
+[] I’ve been tormented by nightmares.
+
+# ...A baby is crying.
+
+# Where is it coming from?
+
+
+---
+
+page 2
+
+# I have to find the baby.
+
+<> Ah!...
+
+# ...Even though I definitely know it’s just a dream
+
+# my heart still grows restless.
+
+# Please, don’t cry, baby.
+
+# If he hears you....
+
+
+---
+
+page 3
+
+
+
+---
+
+page 4
+
+# It’s too late—
+
+<> ...!
+
+
+---
+
+page 5
+
+<> No! Duke Lennox!!
+
+"": It’s my fault.
+
+
+---
+
+page 6
+
+"": I’ll apologize.
+
+"":  So please, just return the child back to me.
+
+"":  I beg you!
+
+"":  I’ll do whatever you want me to!
+
+
+---
+
+page 7
+
+“” Juliet.
+
+“” You’ll do anything?
+
+“” Then choose me.
+
+"": Yes.
+
+"": I will.
+
+"": I’ll do it, so please, give the child back—
+
+
+---
+
+page 8
+
+<> ....!
+
+
+---
+
+page 9
+
+"": But in return, you give this up.
+"": ….
+"":  It’s fine, it’s just a dream.
+
+# ...What a horrible nightmare.
+
+
+---
+
+page 10
+
+# Why would I dream of something like that?
+
+“” That being inside your belly—is it not my child?
+
+# last night at the train station…
+
+# Was it because of what I heard there?
+
+# It was a misunderstanding, but... in a fit of rage I claimed to be carrying another man’s child.
+
+# It was a lie I said to leave him, but...,
+
+# I lived as his lover for seven years.
+
+
+---
+
+page 11
+
+# If I stayed by his side any longer
+
+# It seemed like I’d never escape the miserable fate of my first life.
+
+# Mother’s keepsake, the pearl necklace...
+
+() Seven years ago, while settling my family’s estate, I found it in her jewelry box.
+
+() I never once saw Mother wear it...
+
+() But the name engraved on it troubled me, so I couldn’t part with it.
+
+# Before marriage, Mother’s maiden name was Mayfair...
+
+
+---
+
+page 12
+
+# Who in the world is ‘Lilian Seneca’?
+

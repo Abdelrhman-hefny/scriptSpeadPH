@@ -1,50 +1,64 @@
 #target photoshop
 app.bringToFront();
 
-if (app.documents.length === 0) {
-    alert("لا يوجد مستند مفتوح في الفوتوشوب.");
-} else {
-    // مسار أول مستند مفتوح
-    var docPath = app.activeDocument.path.fsName;
-
-    // اسم المجلد الحالي
-    var currentFolderName = new Folder(docPath).name;
-
-    // المجلد الأب
-    var parentFolder = new Folder(docPath).fsName;
-
-    // إنشاء اسم المجلد الجديد _JPG
-    var targetFolder = parentFolder + "\\" + currentFolderName + "_JPG";
-    var jpgFolder = new Folder(targetFolder);
-    if (!jpgFolder.exists) jpgFolder.create();
-
-    // إعدادات الحفظ بصيغة JPG
-    var jpgOptions = new JPEGSaveOptions();
-    jpgOptions.quality = 12;
-
-    // حفظ كل مستند مفتوح في المجلد الجديد
-    for (var i = 0; i < app.documents.length; i++) {
-        var doc = app.documents[i];
-        var saveFile = new File(jpgFolder.fsName + "\\" + doc.name.replace(/\.[^\.]+$/, "") + ".jpg");
-        doc.saveAs(saveFile, jpgOptions, true, Extension.LOWERCASE);
+function main() {
+    if (app.documents.length === 0) {
+        alert("لا يوجد مستند مفتوح في الفوتوشوب.");
+        return;
     }
 
-    // إعداد مسار بايثون و SmartStitch
-    var pythonPath = "C:\\Users\\abdoh\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe";
-    var smartStitchPath = "C:\\Users\\abdoh\\Downloads\\testScript\\SmartStitch-3.1\\SmartStitchConsole.py";
+    var docPath = app.activeDocument.path.fsName;
+    var currentFolderName = new Folder(docPath).name;
+    var parentFolder = new Folder(docPath).fsName;
+    var jpgFolderPath = parentFolder + "\\" + currentFolderName + "_JPG";
+    var jpgFolder = new Folder(jpgFolderPath);
 
-    // إنشاء ملف BAT لتشغيل SmartStitch كمسؤول
-    var cmdFile = new File(parentFolder + "\\run_smartstitch_admin.bat");
-    cmdFile.open("w");
-    cmdFile.writeln("@echo off");
-    // تشغيل SmartStitch بصلاحيات المسؤول
-    cmdFile.writeln('powershell -Command "Start-Process \'' + pythonPath + '\' -ArgumentList \'' + smartStitchPath + ' -i \\\"' + targetFolder + '\\\" -sh 14000 -cw 800 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5\' -Verb RunAs"');
-     cmdFile.close();
+    if (!jpgFolder.exists) {
+        alert("المجلد غير موجود:\n" + jpgFolderPath);
+        return;
+    }
 
-    // تنفيذ الملف BAT
+    var smartStitchDir = "C:\\Users\\abdoh\\Downloads\\testScript\\SmartStitch-3.1";
+    var ssFile = new File(smartStitchDir + "\\SmartStitchConsole.py");
+    if (!ssFile.exists) {
+        alert("لم أجد SmartStitchConsole.py:\n" + ssFile.fsName);
+        return;
+    }
+
+    var batPath = parentFolder + "\\run_smartstitch_temp.bat";
+    var batFile = new File(batPath);
+
+    function esc(p) { return p.replace(/\\/g, "\\\\"); }
+    var escapedSmart = esc(ssFile.fsName);
+    var escapedJpg = esc(jpgFolderPath);
+
+    var psCmd = ""
+        + "if (Get-Command py -ErrorAction SilentlyContinue) {"
+        + "  & py -3 '" + escapedSmart + "' -i '" + escapedJpg + "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5"
+        + "} elseif (Get-Command python -ErrorAction SilentlyContinue) {"
+        + "  & python '" + escapedSmart + "' -i '" + escapedJpg + "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5"
+        + "} elseif (Get-Command python3 -ErrorAction SilentlyContinue) {"
+        + "  & python3 '" + escapedSmart + "' -i '" + escapedJpg + "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5"
+        + "} else { Write-Error 'No Python found.'; }";
+
+    // إنشاء BAT مؤقت
+    batFile.open("w");
+    batFile.writeln('@echo off');
+    batFile.writeln('chcp 65001>nul');
+    batFile.writeln('pushd "' + esc(smartStitchDir) + '"');
+    // هنا استدعاء PowerShell عادي وهيقفل بعد التنفيذ
+    batFile.writeln('powershell -NoProfile -ExecutionPolicy Bypass -Command "' + psCmd + '"');
+    batFile.writeln('popd');
+    batFile.writeln('del "%~f0"'); // يحذف نفسه بعد الانتهاء
+    batFile.close();
+
+    // تشغيله
     try {
-        cmdFile.execute();
-     } catch (e) {
-        alert("حدث خطأ عند تشغيل SmartStitch:\n" + e);
+        batFile.execute();
+    } catch (e) {
+        alert("خطأ عند تشغيل SmartStitch:\n" + e);
     }
 }
+
+main();
+    
