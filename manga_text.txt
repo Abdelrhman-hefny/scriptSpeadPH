@@ -1,274 +1,156 @@
-page 01
+page 1
 
-“” Iced Americano and an Earl Grey cake to go, right?
+[]: If it's for the sake of living—
 
-“” I’ll help you with the payment.
+(): Something like a first kiss...
 
-“” Hope you sell a lot~.
+(): you can have it...!
 
-“” Thank you! Please come again~.
+[]: I kissed him on impulse, but... doing it so suddenly...
 
-# Of course, I failed the last interview,
+(): How am I even supposed to do this mouth-to-mouth thing?!
 
-# And today I’m still working at the café.
+“”: ?!
 
-“” Seoyeon, good work.
+page 2
 
-“” Take a short break.
+"": Mmph…
 
-^^ Okay! Then, I’ll go feed Kami.
+"": …?!
 
-“” Alright.
+"": That was a rather stimulating kiss.
 
-[] This is the owner of the place where I work part-time.
+(): Don't tell me... he drank it knowing it was poison?!
 
-[] And this is Kami, a stray cat.
+"": Mmph.
 
-“” Don’t worry, no one’s gonna take it. Eat slowly.
+"": Mmmph...
 
-# It has been a few days since I broke up with that guy—
+ST: Mh, 
 
-# Fortunately, no major problems happened and I’ve been living well.   .
+“”: hah...
 
-# I still worry if I did the right thing, or if I was deceived…
+//: wait...
 
-# But for now, all I can do is trust him.
+"": Unlike me, you have no tolerance for this, do you?
 
+//: I'll take every last drop.
 
+"": Mmph.
 
+page 3
 
-page 02
+(): Tolerance... does that mean the poison has no effect on him?
 
-“” Kami, did you finish eating?
+(): I can't breathe…
 
-() And today—
+(): I can't...
 
-“” Kami! Come again tomorrow~.
+[]: looks completely at ease.
 
-() Ah, you are really cute today too..
+"": Bite.
 
-“” Who are you talking to?
+"": Such a cute woman.
 
-# It was the first time meeting this man again since that day.
+"": Wha…?!
 
-“” Is your injury all better now?
+OT: Is he toying with me?!
 
-“” Ah, yes!
+(): How can he be so damn calm?!
 
-“” That’s such a relief.
+page 4
 
- 
+(): When I'm putting my life on the line!
 
-“” You sure like sweets….
+(): Damn it!!
 
-# Can’t eat sweets well. 
+"": ...How unexpected.
 
+"": You've taken quite a liking to Lady Estella, haven't you?
 
-page 03
+"": I was sure you were just using her to avoid marriage proposals.
 
-# …Actually,
+"": I figured if you had a fiancee, even that person would stop telling you to get married.
 
-# “That” thing has been bothering me, but I’ll bring it up later.
+"": Besides, having Lady Estella as your partner is convenient in all sorts of ways~
 
-“” Seoyeon! The macarons you made earlier are ready,
+page 5
 
-"" Ah, is it a customer…!
+"": ...Of course, that's my main reason,
 
-“” The macarons are already done?
+//: But…
 
-“” Can I get them now?
+"": Estella entertains me more than I ever imagined.
 
-“” Of course, they’re all packed.
+"": ...Is that blood?
 
-^^ Thank you so much! You’re the best, boss!!
+"": Estella made me drink it.
 
-“” But, do you know him?
+//: Mouth-to-mouth.
 
-** Whisper 
+"": From Lady Estella?!
 
-"" Ah, yes! I called him because I had something to say to him, is that okay?
+//: what kind of situation was that! Isn't that just hilarious?
 
-“” Yeah, that’s fine.
+ST: Ahaha, 
 
-"" Then I’ll go make a call.
+"": I think I understand why you've taken such a liking to Lady Estella now.
 
-“” Okay, come back soon.
+"": Knowing you, Duke Rovelt, I'm sure you drank it knowing what it was, but...
 
-“” Um, Hyunwoo.
+//: Please get some proper rest when you get back, okay?
 
+“”: not that it's completely ineffective,
 
+//: It just won't kill me.
 
-page 04
+[]: There’s a burning pain in my stomach.
 
-“” Do you like macarons?
+page 6
 
-“” I made them, they might not look perfect, but the taste…
+[]: Even with a body resistant to all poisons, it's reacting this much.
 
-“” Yes,
+[]: A normal person would have undoubtedly died.
 
-“” I really, really love them.
+[]: That chandelier, too.
 
-# If I knew you like them this much, I wouldn’t have wasted so much time decorating it. 
+[]: She must have prepared it to coincide with my visit.
 
-# Not very skillful.
+[]: As I thought, that woman...
 
-“” Then, shall we start talking?
+OT: She's seriously trying to kill me.
 
-“” Seoyeon, what makes you most uncomfortable about “that”?
+"": Can you
 
-“” Hmm,
+//: have someone keep an eye on Estella?
 
-“” First, I can’t live a normal life.
+"": We have to keep an eye on my cute fiancee 
 
-“” I nearly died too.
+//: to make sure she doesn't cheat.
 
-“” Sometimes I wonder if I was the real problem.
+[]: Estella is likely in love with His Highness, Prince Alex.
 
-# What I regretted most was,
+[]: And it seemed His Highness wasn't entirely against the idea, but...
 
-# When people said I was crazy,
+page 7
 
-# I couldn’t even strongly deny it.
+(): That woman is my prey.
 
-# Because deep down, I thought so too—.
+"": Your Majesty.
 
-“” …
+"": It seems Duke Dizaree visited the Hyatt household today 
 
+//: and formally arranged their engagement.
 
+"": I see...
 
+[]: It's impossible to believe that Lady Estella accepted this engagement of her own free will.
 
-page 05
+[]: She must have been threatened by Duke Rovelt.
 
- 
+"": I must save Lady Estella...
 
-“” —Seoyeon,
+page 8
 
-“” I told you I was confused once too.
-
-“” People said I was strange,
-
-“” I thought so too,
-
-“” And I spent every day just crying.
-
-# Then one day, the one who comforted me as I cried was—
-
-“” Are you okay, child.
-
-“” Your voice is sorrowful.
-
-“” Child,
-
-“” Don’t throw your life away,
-
-# And just like that, suddenly,
-
-
-
-page 06
-
-# I realized that those things aren’t just scary existences to avoid.
-
-# Even if some might call it resignation or rationalization—
-
-“” …Yes, I’m fine now.
-
-“” It just means I get to see a wider world than others.’
-
-“” Once I understood it this way, my heart felt at ease.
-
-“” After that, I learned how to coexist with them,
-
-“” And eventually, more people began to accept me as I am—.
-
-“” So Seoyeon,
-
-“” Don't blame yourself.
-
-“” There’s nothing wrong with you.
-
-“” ....
-
-“” ...
-
-“” ….Yes.
-
-
-
-page 07
-
-<> Since it’s come to this, I’ll give it my best!
-
-** Might as well go for it!
-
-# After hearing his story, the anxiety that kept clinging to me eased.
-
-# And I decided to set aside my doubts about him for now.
-
-# I don’t know, whether what he said was true or not—
-
-** Nothing bad happened—
-
-# But I couldn’t just stay still like before.
-
-“” So what should we do the next time we meet? 
-
-“” Should we try going to a place with lots of ghosts first?
-
-** Huh
-
-# Straight into practice?!
-
-“” I have to go now for today, so let’s set another time to meet.
-
-“” The place can be around the mountain or its base,
-
-“” Somewhere bright enough and not too far.
-
-“” —Namsan?
-
-
-
-page 08
-
-<> Namsan!
-
-** Gasp! Did I just suggest hiking with my own mouth!
-
-<> That’s perfect!
-
-^^ This is my first time going to Namsan! I’m so excited!
-
-# Welcome! 
-# ~Stairs of Hell~ 
-
-<> Wait, why do the stairs never end?
-
-"" Seoyeon, are you oka…?
-
-“” Yes?
-
-# Fine
-
-“” ...Oh my God,
-
-"" If I’d known it was this hellish training course, I wouldn’t have babbled about being excited.
-
-^^ Oh my, students ! Hang in there~.
-
-^^ Ah, it’s so nice seeing young people like this!
-
-
-
-page 09
-
-# At the time, I didn’t know.
-
-# That the scenery of Namsan, which always looked peaceful,
-
-# Would appear completely different this time—,
-
-
-# To be continued
-
+Nothing
 
