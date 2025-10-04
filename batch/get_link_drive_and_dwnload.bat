@@ -6,7 +6,7 @@ setlocal enabledelayedexpansion
 set /p folder_url=Enter Google Drive folder URL or local folder path: 
 
 :: ===== Get chosen team name =====
-set "teams=rezo violet ez seren magus nyx arura ken mei quantom  "
+set "teams=rezo violet ez seren magus nyx arura ken mei quantom"
 
 :askTeam
 echo Select the team:
@@ -30,11 +30,27 @@ if "%chosenTeam%"=="" (
     goto askTeam
 )
 
-:: ===== Photoshop path fixed to 2021 =====
-set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
+:: ===== Ask for manga type =====
+echo.
+echo Select manga type:
+echo [1] Korian (Default)
+echo [2] Japanise
+set /p mangaChoice=Enter number: 
+
+if "%mangaChoice%"=="1" (
+    set "mangaType=korian"
+) else if "%mangaChoice%"=="2" (
+    set "mangaType=japanise"
+) else (
+    echo No choice entered, defaulting to Korian.
+    set "mangaType=korian"
+)
+
+:: ===== Photoshop path fixed to CC 2019 =====
+set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
 if not exist "%pspath%" (
-    echo Photoshop 2021 not found at %pspath%.
-    echo Please install Photoshop 2021 or update the fixed path in get_link_drive_and_dwnload.bat
+    echo Photoshop CC 2019 not found at %pspath%.
+    echo Please install Photoshop CC 2019 or update the fixed path in get_link_drive_and_dwnload.bat
     pause
     exit /b
 )
@@ -56,7 +72,7 @@ if exist "%folder_url%" (
 echo 📌 Folder/Title: %title%
 set "cleanTitle=%title:?=%"
 
-:: ===== Save folder name and other info to file =====
+:: ===== Save to TXT =====
 set "savePath=C:\Users\abdoh\Downloads\testScript\temp-title.txt"
 
 if defined cleanTitle (
@@ -68,8 +84,22 @@ if defined cleanTitle (
 echo %folder_url% >> "%savePath%"
 echo %chosenTeam% >> "%savePath%"
 echo %pspath% >> "%savePath%"
+echo %mangaType% >> "%savePath%"
+
+:: Escape backslashes for JSON
+set "json_folder=%folder_url:\=\\%"
+set "json_pspath=%pspath:\=\\%"
+
+:: ===== Save JSON =====
+(
+    echo {
+    echo   "title": "%cleanTitle%",
+    echo   "folder_url": "%json_folder%",
+    echo   "team": "%chosenTeam%",
+    echo   "pspath": "%json_pspath%",
+    echo   "mangaType": "%mangaType%"
+    echo }
+) > "C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
 
 :: ===== Run Python script =====
 python "C:\Users\abdoh\Downloads\testScript\python\download_and_unzip.py"
-
- 

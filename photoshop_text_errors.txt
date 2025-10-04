@@ -1,4 +1,6 @@
-File=10.psd | BubbleIndex=9 | SmartIndex=9 | PathName=page_10_bubble8 | LineIndex=8 : EXCEPTION : Error: User cancelled the operation at line 1141
-File=10.psd | BubbleIndex=10 | SmartIndex=10 | PathName=page_10_bubble9 | LineIndex=9 : EXCEPTION : Error: User cancelled the operation at line 954
-File=10.psd | BubbleIndex=11 | SmartIndex=11 | PathName=page_10_bubble10 | LineIndex=10 : EXCEPTION : Error: User cancelled the operation at line 958
-File=10.psd | BubbleIndex=12 | SmartIndex=12 | PathName=page_10_bubble11 | LineIndex=11 : EXCEPTION : Error: User cancelled the operation at line 958
+File=01.psd | BubbleIndex=1 | SmartIndex=1 | PathName=page_01_bubble1 | LineIndex=0 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003
+File=01.psd | BubbleIndex=2 | SmartIndex=2 | PathName=page_01_bubble2 | LineIndex=1 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003
+File=01.psd | BubbleIndex=3 | SmartIndex=3 | PathName=page_01_bubble3 | LineIndex=2 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003
+File=01.psd | BubbleIndex=4 | SmartIndex=4 | PathName=page_01_bubble4 | LineIndex=3 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003
+File=01.psd | BubbleIndex=5 | SmartIndex=5 | PathName=page_01_bubble5 | LineIndex=4 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003
+File=01.psd | BubbleIndex=6 | SmartIndex=6 | PathName=page_01_bubble6 | LineIndex=5 : EXCEPTION : ReferenceError: textLayer is undefined at line 1003

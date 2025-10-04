@@ -11,6 +11,17 @@ from pathlib import Path
 from PIL import Image
 import subprocess  # لإطلاق السكربت .jsx بعد الانتهاء
 
+def _close_terminals_windows_safely():
+    if sys.platform.startswith('win'):
+        try:
+            subprocess.call(["taskkill", "/F", "/IM", "cmd.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+        try:
+            subprocess.call(["taskkill", "/F", "/IM", "powershell.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+
 def extract_bubble_contours(mask_image: Image.Image) -> list[dict]:
     """
     Extract contours from a mask image and return as a list of dictionaries
@@ -149,23 +160,14 @@ def main():
     jsx_path = Path(r"C:\Users\abdoh\Downloads\testScript\scripts\read-bb-jsonfile.jsx")
 
     # عدّدي هنا مسارات فوتوشوب المحتملة أو حطي المسار الصحيح بنفسك
-    photoshop_paths = [
-        Path(r"C:\Program Files\Adobe\Adobe Photoshop 2024\Photoshop.exe"),
-        Path(r"C:\Program Files\Adobe\Adobe Photoshop 2023\Photoshop.exe"),
-        Path(r"C:\Program Files\Adobe\Adobe Photoshop 2022\Photoshop.exe"),
-    ]
+       # مسار فوتوشوب الثابت (CC 2019 فقط)
+    photoshop_exe = Path(r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe")
 
-    photoshop_exe = None
-    for p in photoshop_paths:
-        if p.exists():
-            photoshop_exe = p
-            break
-
-    if photoshop_exe is None:
-        print("\nPhotoshop executable not found in default locations.")
-        print("If you want to run the JSX automatically, set the correct path in 'photoshop_paths' or define 'photoshop_exe' manually.")
-        print(f"Target JSX: {jsx_path}")
+    if not photoshop_exe.exists():
+        print(f"\n❌ Photoshop executable not found at: {photoshop_exe}")
+        print("Please check the path and update 'photoshop_exe'")
         return
+
 
     if not jsx_path.exists():
         print(f"\nJSX file not found: {jsx_path}")
@@ -185,4 +187,7 @@ def main():
         print(f"Failed to run JSX script: {e}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        _close_terminals_windows_safely()

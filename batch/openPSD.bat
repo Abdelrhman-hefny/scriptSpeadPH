@@ -12,10 +12,10 @@ echo Waiting 3 seconds to ensure Photoshop 2015 is closed...
 timeout /t 5 /nobreak
 echo Done waiting.
 
-REM 2️⃣ Launch Photoshop 2021 to initialize
-echo Launching Photoshop 2021...
-start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
-echo Photoshop 2021 launched.
+REM 2️⃣ Launch Photoshop CC 2019 to initialize
+echo Launching Photoshop CC 2019...
+start "" "C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
+echo Photoshop CC 2019 launched.
 
 
 REM 5️⃣ Read folder path from the temporary file
@@ -46,38 +46,12 @@ echo Opening PSD files in numeric order:
 for /f "usebackq delims=" %%F in (`powershell -command ^
   "Get-ChildItem -Path '%folderPath%' -Filter *.psd | Sort-Object {[int]($_.BaseName)} | ForEach-Object { $_.Name }"`) do (
     echo Opening file: %%F
-    "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "%folderPath%\%%F"
+    "C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" "%folderPath%\%%F"
 )
 echo Done opening all PSD files.
 
  
-REM ✅ Read team name from line 3 in temp-title.txt
-setlocal enabledelayedexpansion
-set "lineNum=0"
-for /f "usebackq delims=" %%A in ("C:\Users\abdoh\Downloads\testScript\temp-title.txt") do (
-    set /a lineNum+=1
-    if !lineNum! equ 3 set "teamName=%%A"
-)
 
-echo Team name: %teamName%
-
-if /i "%teamName%"=="rezo" (
-    echo Team is REZO, opening watermark PSD...
-    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\rezo\00.psd"
-) 
- if /i "%teamName%"=="ez " (
-    echo Team is EZ SCAN, opening watermark PSD...
-    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\ez\000.jpg"
-) 
- if /i "%teamName%"=="nyx " (
-    echo Team is EZ SCAN, opening watermark PSD...
-    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\nyx\00.png"
-) 
- if /i "%teamName%"=="seren " (
-    echo Team is EZ SCAN, opening watermark PSD...
-    start "" "C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe" "C:\Users\abdoh\Documents\waterMark\seren\00.psd"
-) 
-endlocal
 
 
 

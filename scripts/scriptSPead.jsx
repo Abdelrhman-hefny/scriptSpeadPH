@@ -1,4 +1,4 @@
-//#target photoshop
+#target photoshop
 
 app.bringToFront();
 $.evalFile("C:/Users/abdoh/Downloads/testScript/config/json2.js");
@@ -391,7 +391,6 @@ function openNotepad() {
     ultraFastMode: false,
     fastMode: true,
     stopAfterFirstPage: false,
-    openPS21: false,
   };
 
   // قراءة الإعدادات المحفوظة
@@ -416,7 +415,7 @@ function openNotepad() {
         if (sobj.fastMode !== undefined) lastSettings.fastMode = sobj.fastMode;
         if (sobj.stopAfterFirstPage !== undefined)
           lastSettings.stopAfterFirstPage = sobj.stopAfterFirstPage;
-        if (sobj.openPS21 !== undefined) lastSettings.openPS21 = sobj.openPS21;
+        
       }
     }
   } catch (_re) {}
@@ -508,12 +507,7 @@ function openNotepad() {
   );
   stopAfterFirstCheck.value = lastSettings.stopAfterFirstPage;
 
-  var openPS21Check = runGroup.add(
-    "checkbox",
-    undefined,
-    "إغلاق فوتوشوب وفتح نسخة 21 بعد الانتهاء"
-  );
-  openPS21Check.value = lastSettings.openPS21;
+  
 
   // أزرار التحكم
   var buttonGroup = settingsDialog.add("group");
@@ -528,7 +522,7 @@ function openNotepad() {
   var ultraFastMode = null;
   var fastMode = null;
   var stopAfterFirstPage = null;
-  var openPS21 = null;
+  
 
   okButton.onClick = function () {
     // التحقق من صحة البيانات
@@ -550,7 +544,7 @@ function openNotepad() {
     ultraFastMode = ultraFastCheck.value;
     fastMode = fastModeCheck.value;
     stopAfterFirstPage = stopAfterFirstCheck.value;
-    openPS21 = openPS21Check.value;
+    
 
     // حفظ الإعدادات في الملف
     try {
@@ -560,7 +554,7 @@ function openNotepad() {
         ultraFastMode: ultraFastMode,
         fastMode: fastMode,
         stopAfterFirstPage: stopAfterFirstPage,
-        openPS21: openPS21,
+        
       };
       settingsFile.open("w");
       settingsFile.write(JSON.stringify(toSave));
@@ -628,13 +622,9 @@ function openNotepad() {
   // ========= لوج محسن ==========
   var log = [];
   var errors = [];
-  function L(s) {
-    if (!ultraFastMode) log.push(s);
-  }
-  function E(s) {
-    errors.push(s);
-    if (!ultraFastMode) log.push("ERROR: " + s);
-  }
+  // تقليل اللوج لأقصى حد: لا نضيف أي لوج أثناء التشغيل، ونحتفظ فقط بالأخطاء
+  function L(_s) {}
+  function E(s) { errors.push(s); }
 
   L("Photoshop Text Import - verbose log");
   L("Date: " + new Date().toString());
@@ -686,6 +676,11 @@ function openNotepad() {
   var totalErrors = 0;
   var lineIndex = 0;
   var pageCounter = 0;
+
+  // تقليل/تعطيل الUndo: اجعل عدد حالات التاريخ 1 طيلة التنفيذ ثم أعِدها لاحقًا
+  var __prevHistoryStates;
+  try { __prevHistoryStates = app.preferences.numberOfHistoryStates; } catch(_hs) { __prevHistoryStates = undefined; }
+  try { app.preferences.numberOfHistoryStates = 1; } catch(_hs2) {}
 
   // ====== نلف على المستندات المرتبة ======
   for (var d = 0; d < documentsArray.length; d++) {
@@ -933,21 +928,29 @@ function openNotepad() {
         var centerY = (y1 + y2) / 2;
 
         var textLength = lineText.length;
-        var padding = Math.max(
-          2,
-          Math.min(8, Math.min(boxWidth, boxHeight) * 0.03)
-        );
+        var padding = Math.max(2, Math.min(8, Math.min(boxWidth, boxHeight) * 0.03));
         var availableWidth = Math.max(10, boxWidth - padding * 2);
         var availableHeight = Math.max(10, boxHeight - padding * 2);
 
         // استخدام الخط الثابت بدلاً من الحساب الديناميكي
-        var newFontSize = curFontSize;
+        // var newFontSize = curFontSize;
+        var newFontSize = baseFontSize;
 
-        // اجعل السطر الأول أقصر قليلاً ليتناسب مع انحناءة الفقاعة
-        // نستخدم تقريب 0.6 من عرض الصندوق للسطر الأول
+        // تخفيف breakFirstLineByWidth للصفحات الطويلة: تقريب سريع بدون قياس مكثف
         try {
-          var firstLineTargetWidth = Math.max(10, Math.round(availableWidth * 0.6));
-          lineText = breakFirstLineByWidth(doc, lineText, usedFont, newFontSize, firstLineTargetWidth);
+          if (textLength > 25) {
+            var approxChars = Math.max(5, Math.floor(availableWidth / Math.max(1, (newFontSize * 0.6))));
+            var words = String(lineText).split(/(\s+)/);
+            var acc = "";
+            for (var wi = 0; wi < words.length; wi++) {
+              var tentative = acc + words[wi];
+              if (tentative.replace(/\s+/g, " ").length > approxChars) break;
+              acc = tentative;
+            }
+            if (acc && acc.length < lineText.length) {
+              lineText = acc + "\r" + trimString(lineText.substring(acc.length));
+            }
+          }
         } catch (_br) {}
 
         var textLayer = doc.artLayers.add();
@@ -1226,6 +1229,9 @@ function openNotepad() {
       }
     } catch (_finalize) {}
 
+    // تفريغ التاريخ بعد إنهاء المستند لتقليل الذاكرة ومنع الUndo
+    try { app.purge(PurgeTarget.HISTORYCACHES); } catch(_pg) {}
+
     try {
       app.preferences.rulerUnits = prevUnits;
     } catch (_ur) {}
@@ -1268,33 +1274,11 @@ function openNotepad() {
     }
 
     // افتح نسخة 21 فقط لو تم اختيار ذلك في الإعدادات
-    if (openPS21 === true) {
-      try {
-        var _docPS = app.activeDocument;
-        var _psdFolder = _docPS.path;
-        var _tmp = new File(
-          "C:/Users/abdoh/Downloads/testScript/psdFolderPath.txt"
-        );
-        _tmp.open("w");
-        _tmp.write(_psdFolder.fsName);
-        _tmp.close();
-
-        var _bat = new File(
-          "C:/Users/abdoh/Downloads/testScript/batch/openPSD.bat"
-        );
-        if (_bat.exists) {
-          _bat.execute();
-        } else {
-          alert("ملف الباتش غير موجود: " + _bat.fsName);
-        }
-
-        var _ver = parseInt(app.version.split(".")[0]);
-        if (_ver < 21) {
-          app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
-        }
-      } catch (_eop) {}
-    }
+    
   } catch (e) {
     alert("حدث خطأ: " + e);
   }
+
+  // إعادة ضبط عدد حالات التاريخ كما كان
+  try { if (__prevHistoryStates !== undefined) app.preferences.numberOfHistoryStates = __prevHistoryStates; } catch(_rh) {}
 })();

@@ -81,13 +81,13 @@ if "%line2%"=="" (
 if "%line4%"=="" (
     echo Choose Photoshop version:
     echo [1] Photoshop CC 2015
-    echo [2] Photoshop 2021
+    echo [2] Photoshop CC 2019
     set /p psver=Enter 1 or 2: 
 
     if "%psver%"=="1" (
         set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2015\Photoshop.exe"
     ) else if "%psver%"=="2" (
-        set "pspath=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
+        set "pspath=C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
     ) else (
         echo Invalid choice. Try again.
         goto askPsVer
@@ -145,7 +145,6 @@ start "" "%pspath%" "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
 :: ===== Step 5: Extract bubble coordinates from masks =====
 :: لازم يكون عندك Python متضاف في PATH
-python "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_from_mask.py" "%folderPath%\cleaned"
 
 if errorlevel 1 (
     echo [ERROR] Bubble extractor failed! Check the script.

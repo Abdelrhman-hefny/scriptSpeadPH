@@ -1,3 +1,0 @@
-files:
-  - source: translations/PanelCleaner_source.ts
-    translation: /translations/PanelCleaner_%locale_with_underscore%.ts

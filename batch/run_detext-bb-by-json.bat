@@ -32,7 +32,7 @@ python "!pythonScript!" "!cleanedFolder!"
 
 :: run Photoshop script
 set "psScript=C:\Users\abdoh\Downloads\testScript\scripts\read-bb-jsonfile.jsx"
-set "psApp=C:\Program Files\Adobe\Adobe Photoshop 2021\Photoshop.exe"
+set "psApp=C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
 
 if exist "!psApp!" (
     start "" "!psApp!" "!psScript!"

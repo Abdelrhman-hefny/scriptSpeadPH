@@ -23,26 +23,32 @@ bat_file = r"C:\Users\abdoh\Downloads\testScript\batch\watch_clean.bat"
 def run_panel_cleaner(target_folder: str) -> None:
     """Run Panel Cleaner with text extraction and ensure masks; then run OCR to a file."""
     cleaned_folder = os.path.join(target_folder, "cleaned")
-    print("🧹 Running Panel Cleaner...")
-    logging.info("Running Panel Cleaner with text extraction...")
-    try:
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                f"pcleaner-cli clean '{target_folder}' --extract-text --cache-masks",
-            ],
-            check=True,
-        )
-        # Wait for cleaned folder
-        while not os.path.exists(cleaned_folder):
-            time.sleep(1)
-        print("✅ Cleaning done, cleaned folder created.")
-        logging.info("Panel Cleaner finished successfully.")
-    except Exception as e:
-        logging.error(f"Panel Cleaner failed: {e}")
-        print(f"[ERROR] Panel Cleaner failed: {e}")
-        return
+
+    # لو الفولدر موجود بالفعل، سكيب للتنظيف
+    if os.path.exists(cleaned_folder):
+        print("⚡ Skipping cleaning step, 'cleaned' folder already exists.")
+        logging.info("Skipping Panel Cleaner, cleaned folder already exists.")
+    else:
+        print("🧹 Running Panel Cleaner...")
+        logging.info("Running Panel Cleaner with text extraction...")
+        try:
+            subprocess.run(
+                [
+                    "powershell",
+                    "-Command",
+                    f"pcleaner-cli clean '{target_folder}' --extract-text --cache-masks",
+                ],
+                check=True,
+            )
+            # Wait for cleaned folder
+            while not os.path.exists(cleaned_folder):
+                time.sleep(1)
+            print("✅ Cleaning done, cleaned folder created.")
+            logging.info("Panel Cleaner finished successfully.")
+        except Exception as e:
+            logging.error(f"Panel Cleaner failed: {e}")
+            print(f"[ERROR] Panel Cleaner failed: {e}")
+            return
 
     # Ensure mask files are in cleaned folder
     print("📁 Ensuring mask files are available in cleaned folder...")
@@ -58,22 +64,6 @@ def run_panel_cleaner(target_folder: str) -> None:
         print("✅ Mask files ensured successfully.")
     except Exception as e:
         print(f"[ERROR] Failed to ensure mask files: {e}")
-
-    # Run OCR to text file for convenience (does not affect cleaning)
-    # try:
-    #     ocr_out = os.path.join(cleaned_folder, "ocr.txt")
-    #     print("🔎 Running OCR to:", ocr_out)
-    #     subprocess.run(
-    #         [
-    #             "powershell",
-    #             "-Command",
-    #             f"pcleaner-cli ocr '{target_folder}' '",
-    #         ],
-    #         check=True,
-    #     )
-    # except Exception as e:
-    #     print(f"[WARN] OCR step failed or not configured: {e}")
-
 print("Start downloading files...")
 
 if os.path.exists(my_text_temp_url):
