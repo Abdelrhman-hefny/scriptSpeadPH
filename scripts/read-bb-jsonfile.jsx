@@ -1,4 +1,4 @@
-#target photoshop
+// #target photoshop
 var folderName;
 var parentFolder;
 
@@ -95,8 +95,8 @@ for (var d = 0; d < app.documents.length; d++) {
         var alt = filename + "_mask";
         if (bubblesData[alt]) key = alt;
         else {
-            alt = filename + "_clean";
-            if (bubblesData[alt]) key = alt;
+            var alt2 = filename + "_clean";
+            if (bubblesData[alt2]) key = alt2;
             else {
                 var stripped = filename.replace(/_mask$/, "").replace(/_clean$/, "");
                 if (bubblesData[stripped]) key = stripped;
@@ -118,15 +118,19 @@ for (var d = 0; d < app.documents.length; d++) {
     }
 
     var bubbles = bubblesData[key];
-    if (!bubbles || bubbles.length === 0) continue;
+    if (!bubbles || bubbles.length === 0) {
+        $.writeln("No bubbles found for key: " + key);
+        continue;
+    }
 
-    // ==== Draw Bubbles ====
-    for (var i = bubbles.length - 1; i >= 0; i--) {
+    // ==== Draw Bubbles (كل فقاعة Path Item منفصل) ====
+    // الحلقة تبدأ من 0 حتى النهاية لضمان الترتيب (1, 2, 3...)
+    for (var i = 0; i < bubbles.length; i++) {
         var bubble = bubbles[i];
-        var pts = bubble.points;
+        var pts = bubble.points; 
         if (!pts || pts.length === 0) continue;
 
-        // احسب المدى الكامل
+        // احسب المدى الكامل (Bounding Box)
         var xCoords = [], yCoords = [];
         for (var j = 0; j < pts.length; j++) {
             var xy = pts[j];
@@ -169,18 +173,22 @@ for (var d = 0; d < app.documents.length; d++) {
 
         var subPathInfo = new SubPathInfo();
         subPathInfo.closed = true;
-        subPathInfo.operation = ShapeOperation.SHAPEXOR;
+        // هنا تم استخدام SHAPEXOR كما كان في كودك القديم، لاختيار الفقاعة كنظام شكل
+        subPathInfo.operation = ShapeOperation.SHAPEXOR; 
         subPathInfo.entireSubPath = subPathArray;
 
-        var baseName = filename;
-        var bubbleNumber = bubbles.length - i;
-        var pathName = "page_" + baseName + "_bubble" + bubbleNumber;
-        pathCounter++;
+        // ⭐️ إضافة المسار كـ Path Item منفصل، باستخدام ID المرتب
+        // نستخدم i + 1 لأن الـ JSON مرتب من 1 إلى N
+        var bubbleNumber = i + 1; 
+        var pathName = "page_" + filename + "_bubble" + bubbleNumber;
 
         try {
+            // يتم إضافة Path Item جديد في كل تكرار
             doc.pathItems.add(pathName, [subPathInfo]);
+            pathCounter++;
         } catch (e) {
             $.writeln("⚠️ Failed to add path: " + e);
         }
     }
+    $.writeln("✅ Processed " + filename + ". Created " + bubbles.length + " separate, sorted Path Items.");
 }

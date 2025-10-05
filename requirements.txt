@@ -1,0 +1,15 @@
+ultralytics==8.3.0
+opencv-python
+numpy
+Pillow
+easyocr
+manga-ocr
+torch
+torchvision
+torchaudio
+tqdm
+matplotlib
+scipy
+onnxruntime
+PyYAML
+requests
