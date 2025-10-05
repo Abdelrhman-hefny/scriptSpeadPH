@@ -105,14 +105,14 @@ def copy_masks_to_cleaned(original_folder: str) -> bool:
     cleaned_path = original_path / "cleaned"
     
     if not cleaned_path.exists():
-        print(f"❌ cleaned folder not found: {cleaned_path}")
+        print(f" cleaned folder not found: {cleaned_path}")
         return False
     
-    print(f"📂 Searching for masks in: {original_folder}")
-    print(f"📂 Target cleaned folder: {cleaned_path}")
+    print(f" Searching for masks in: {original_folder}")
+    print(f" Target cleaned folder: {cleaned_path}")
     
     # Check if Panel Cleaner created both clean images and masks
-    print("\n🔍 Checking Panel Cleaner output...")
+    print("\n Checking Panel Cleaner output...")
     cleaned_images = []
     for ext in ['*.png', '*.jpg', '*.jpeg', '*.webp']:
         cleaned_images.extend(list(cleaned_path.glob(ext)))
@@ -122,17 +122,17 @@ def copy_masks_to_cleaned(original_folder: str) -> bool:
         print(f"  - {img.name}")
     
     # Method 1: Find all masks in original folder
-    print("\n🔍 Method 1: Searching for all mask files in original folder...")
+    print("\n Method 1: Searching for all mask files in original folder...")
     original_masks = find_all_mask_files(str(original_path))
     print(f"Found {len(original_masks)} mask files in original folder")
     
     # Method 2: Find corresponding masks for cleaned images
-    print("\n🔍 Method 2: Finding corresponding masks for cleaned images...")
+    print("\n Method 2: Finding corresponding masks for cleaned images...")
     mask_mappings = find_corresponding_masks(str(original_path), str(cleaned_path))
     print(f"Found {len(mask_mappings)} corresponding mask mappings")
     
     # Method 3: Check if masks already exist in cleaned folder
-    print("\n🔍 Method 3: Checking existing masks in cleaned folder...")
+    print("\n Method 3: Checking existing masks in cleaned folder...")
     existing_masks = find_all_mask_files(str(cleaned_path))
     print(f"Found {len(existing_masks)} existing mask files in cleaned folder")
     
@@ -147,12 +147,12 @@ def copy_masks_to_cleaned(original_folder: str) -> bool:
         if not dest_path.exists():
             try:
                 shutil.copy2(mask_file, str(dest_path))
-                print(f"✅ Copied from original: {mask_path.name}")
+                print(f" Copied from original: {mask_path.name}")
                 copied_count += 1
             except Exception as e:
-                print(f"❌ Failed to copy {mask_path.name}: {e}")
+                print(f" Failed to copy {mask_path.name}: {e}")
         else:
-            print(f"⚠️  Already exists: {mask_path.name}")
+            print(f"  Already exists: {mask_path.name}")
     
     # Copy from mappings (different names)
     for cleaned_img, mask_file in mask_mappings.items():
@@ -166,10 +166,10 @@ def copy_masks_to_cleaned(original_folder: str) -> bool:
         if not dest_path.exists() and mask_path.exists():
             try:
                 shutil.copy2(mask_file, str(dest_path))
-                print(f"✅ Copied mapped mask: {mask_name}")
+                print(f" Copied mapped mask: {mask_name}")
                 copied_count += 1
             except Exception as e:
-                print(f"❌ Failed to copy {mask_name}: {e}")
+                print(f" Failed to copy {mask_name}: {e}")
     
     print(f"\n🎉 Total masks copied: {copied_count}")
     
@@ -187,7 +187,7 @@ def copy_masks_to_cleaned(original_folder: str) -> bool:
 def main():
     """Main function"""
     print("=" * 70)
-    print("🔄 COMPREHENSIVE MASK FINDER")
+    print(" COMPREHENSIVE MASK FINDER")
     print("Finding and copying mask files to cleaned folder")
     print("=" * 70)
     
@@ -201,14 +201,14 @@ def main():
     original_folder = sys.argv[1]
     original_folder = original_folder.strip('"')
     
-    print(f"📂 Original folder: {original_folder}")
+    print(f" Original folder: {original_folder}")
     
     success = copy_masks_to_cleaned(original_folder)
     
     if success:
-        print("\n✅ Comprehensive mask copying completed successfully!")
+        print("\n Comprehensive mask copying completed successfully!")
     else:
-        print("\n❌ No masks found or copying failed!")
+        print("\n No masks found or copying failed!")
         sys.exit(1)
 
 if __name__ == "__main__":

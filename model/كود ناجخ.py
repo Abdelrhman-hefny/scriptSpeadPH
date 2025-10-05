@@ -112,7 +112,7 @@ for idx, img_file in enumerate(image_files, start=1):
     img_path = os.path.join(image_folder, img_file)
     image = cv2.imread(img_path)
     if image is None:
-        print(f"⚠️ لم يتمكن من قراءة الصورة: {img_path}")
+        print(f" لم يتمكن من قراءة الصورة: {img_path}")
         continue
 
     image = preprocess_image(image)
@@ -146,7 +146,7 @@ for idx, img_file in enumerate(image_files, start=1):
 
     key = f"{idx:02d}_mask"
     all_bubbles[key] = [{"id": i + 1, "points": [[int(x), int(y)] for x, y in b]} for i, b in enumerate(bubbles)]
-    print(f"✅ Processed {img_file}, found {len(bubbles)} text-containing bubbles.")
+    print(f" Processed {img_file}, found {len(bubbles)} text-containing bubbles.")
 
 # ==========================
 # 🔹 حفظ النتائج
@@ -269,7 +269,7 @@ for idx, img_file in enumerate(image_files, start=1):
     img_path = os.path.join(image_folder, img_file)
     image = cv2.imread(img_path)
     if image is None:
-        print(f"⚠️ لم يتمكن من قراءة الصورة: {img_path}")
+        print(f" لم يتمكن من قراءة الصورة: {img_path}")
         continue
 
     image = preprocess_image(image)
@@ -303,7 +303,7 @@ for idx, img_file in enumerate(image_files, start=1):
         "points": [[int(x), int(y)] for x, y in b]
     } for i, b in enumerate(bubbles)]
 
-    print(f"✅ Processed {img_file}, found {len(bubbles)} bubbles.")
+    print(f" Processed {img_file}, found {len(bubbles)} bubbles.")
 
 # ==========================
 # 🔹 حفظ النتائج
@@ -413,17 +413,17 @@ for idx, img_file in enumerate(image_files, start=1):
     img_path = os.path.join(image_folder, img_file)
     image = cv2.imread(img_path)
     if image is None:
-        print(f"⚠️ لم يتمكن من قراءة الصورة: {img_path}")
+        print(f" لم يتمكن من قراءة الصورة: {img_path}")
         continue
 
-    # ✅ تحسين الصورة لاكتشاف الفقاعات الملونة أو الداكنة
+    #  تحسين الصورة لاكتشاف الفقاعات الملونة أو الداكنة
     enhanced_img = enhance_image_for_detection(image)
 
     h, w, _ = image.shape
     bubbles = []
     boxes = []
 
-    # ✅ تقسيم الصورة الطويلة
+    #  تقسيم الصورة الطويلة
     if h > 4000:
         slices = slice_image(enhanced_img)
         for slice_img, offset_y in slices:
@@ -467,10 +467,10 @@ for idx, img_file in enumerate(image_files, start=1):
                         boxes.append((x1, y1, x2, y2))
                         bubbles.append([[x1, y1], [x2, y1], [x2, y2], [x1, y2]])
 
-    # ✅ حفظ النتيجة في القاموس
+    #  حفظ النتيجة في القاموس
     key = f"{idx:02d}_mask"
     all_bubbles[key] = [{"id": i + 1, "points": [[int(x), int(y)] for x, y in b]} for i, b in enumerate(bubbles)]
-    print(f"✅ Processed {img_file}, found {len(bubbles)} unique bubbles.")
+    print(f" Processed {img_file}, found {len(bubbles)} unique bubbles.")
 
 # ==========================
 # 🔹 حفظ النتائج إلى JSON
@@ -576,7 +576,7 @@ for idx, img_file in enumerate(image_files, start=1):
     img_path = os.path.join(image_folder, img_file)
     image = cv2.imread(img_path)
     if image is None:
-        print(f"⚠️ لم يتم قراءة الصورة: {img_path}")
+        print(f" لم يتم قراءة الصورة: {img_path}")
         continue
 
     enhanced = enhance_image(image)
@@ -629,7 +629,7 @@ for idx, img_file in enumerate(image_files, start=1):
         {"id": i + 1, "points": [[int(x), int(y)] for x, y in b]} for i, b in enumerate(bubbles)
     ]
 
-    print(f"✅ {img_file}: {len(bubbles)} فقاعة مكتشفة تحتوي نصوص.")
+    print(f" {img_file}: {len(bubbles)} فقاعة مكتشفة تحتوي نصوص.")
 
 # ==========================
 # 🔹 حفظ النتائج
@@ -852,7 +852,7 @@ for idx, img_file in enumerate(image_files, start=1):
     img_path = os.path.join(image_folder, img_file)
     image = cv2.imread(img_path)
     if image is None:
-        print(f"⚠️ لم يتم قراءة الصورة: {img_path}")
+        print(f" لم يتم قراءة الصورة: {img_path}")
         continue
 
     # تعزيز الصورة
@@ -920,7 +920,7 @@ for idx, img_file in enumerate(image_files, start=1):
         {"id": i + 1, "points": [[int(x), int(y)] for x, y in b]} for i, b in enumerate(bubbles)
     ]
 
-    print(f"✅ {img_file}: detected {len(bubbles)} bubbles (preview saved -> {preview_path})")
+    print(f" {img_file}: detected {len(bubbles)} bubbles (preview saved -> {preview_path})")
 
 # save JSON
 os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -2,8 +2,7 @@
 (function(){
     if (typeof IS_TEXT_UTILS_LOADED !== 'undefined') return;
     
-    // تحليل علامات النص لتطبيق Stroke
-    function parseStrokeTag(line) {
+     function parseStrokeTag(line) {
         try {
             var m = String(line).match(/^\s*(?:NA:\s*|\*\*:\s*|SFX:\s*|ST:\s*|Ot:\s*|OT:\s*|#\s*)([\s\S]*)$/);
             if (m) { return { needed: true, text: trimString(m[1]) }; }
@@ -76,8 +75,7 @@
             result.cleanText = lineText.substring(2).trim();
         }
         
-        // خصائص خاصة لسطور تبدأ بـ []:
-        if (lineText.indexOf("[]") === 0) {
+         if (lineText.indexOf("[]") === 0) {
             result.isBracketTag = true;
         }
         

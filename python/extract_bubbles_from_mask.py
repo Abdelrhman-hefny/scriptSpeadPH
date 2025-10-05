@@ -164,7 +164,7 @@ def main():
     photoshop_exe = Path(r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe")
 
     if not photoshop_exe.exists():
-        print(f"\n❌ Photoshop executable not found at: {photoshop_exe}")
+        print(f"\n Photoshop executable not found at: {photoshop_exe}")
         print("Please check the path and update 'photoshop_exe'")
         return
 

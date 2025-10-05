@@ -17,7 +17,7 @@ It intelligently matches text lines to bubble paths, centers them visually, and 
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```py
 
@@ -56,7 +56,7 @@ testScript/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 1. Open **Adobe Photoshop**.
 2. Go to `File → Scripts → Browse` and select `scripts/scriptSPead.jsx`.

@@ -2,7 +2,7 @@
 app.bringToFront();
 
 if (app.documents.length === 0) {
-    alert("⚠️ مفيش ملفات مفتوحة.");
+    alert(" مفيش ملفات مفتوحة.");
 } else {
     for (var i = 0; i < app.documents.length; i++) {
         var doc = app.documents[i];

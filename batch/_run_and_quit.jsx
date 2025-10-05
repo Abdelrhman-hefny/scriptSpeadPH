@@ -1,1 +1,0 @@
-var f = File("C:\\Users\\abdoh\\Downloads\\testScript\\scripts\\read-bb-jsonfile.jsx");if (f.exists) { try { $.evalFile(f); } catch(e) {} }try { app.quit(); } catch(e) {}

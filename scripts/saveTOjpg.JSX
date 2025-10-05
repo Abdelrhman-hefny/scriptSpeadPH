@@ -56,7 +56,7 @@ if (app.documents.length === 0) {
 
     for (var i = 0; i < app.documents.length; i++) {
         var doc = app.documents[i];
-        app.activeDocument = doc; // ✅ لازم تخليه Active قبل الحفظ
+        app.activeDocument = doc; //  لازم تخليه Active قبل الحفظ
 
         var fileName = doc.name.replace(/\.[^\.]+$/, "") + ".jpg";
         var saveFile = new File(jpgFolder.fsName + "\\" + fileName);

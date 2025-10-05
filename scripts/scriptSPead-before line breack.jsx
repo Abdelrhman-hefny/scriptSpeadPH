@@ -105,7 +105,6 @@ function findFontInCompiledMap(lineText, compiled) {
   return { found: false, font: null, key: null };
 }
 
-// تحليل علامات النص لتطبيق Stroke
 function parseStrokeTag(line) {
   try {
     var m = String(line).match(
@@ -156,7 +155,10 @@ function breakFirstLineByWidth(doc, text, fontName, fontSizePt, targetWidthPx) {
     // لم نتجاوز الهدف أبدًا — اجعل أول سطر أقل بقليل عبر قصٍ محفوظ
     if (!firstLine) {
       // تقدير طول مقارب: متوسط عرض الحرف ~ 0.55 من حجم النقطة
-      var approxChars = Math.max(1, Math.floor(targetWidthPx / Math.max(1, (fontSizePt * 0.55))));
+      var approxChars = Math.max(
+        1,
+        Math.floor(targetWidthPx / Math.max(1, fontSizePt * 0.55))
+      );
       // حاول القطع عند أول حد كلمة قبل هذا العدد التقريبي
       var acc = "";
       for (var j = 0; j < words.length; j++) {
@@ -227,8 +229,8 @@ function getSmartPathsForPage(doc) {
 
   // ترتيب المسارات حسب الرقم التسلسلي الممنوح بدلًا من اسم المسار
   pagePaths.sort(function (a, b) {
-    var na = (typeof a._smartIndex === "number") ? a._smartIndex : 999999;
-    var nb = (typeof b._smartIndex === "number") ? b._smartIndex : 999999;
+    var na = typeof a._smartIndex === "number" ? a._smartIndex : 999999;
+    var nb = typeof b._smartIndex === "number" ? b._smartIndex : 999999;
     return na - nb;
   });
 
@@ -269,13 +271,13 @@ function matchPathsWithTexts(pagePaths, allLines, startLineIndex, L) {
 
   // إذا كان عدد المسارات أكبر من النصوص المتاحة
   if (pagePaths.length > allLines.length - lineIndex) {
-    L("⚠️  More paths than text lines available!");
+    L("  More paths than text lines available!");
     L("Will use available text lines only, remaining paths will be skipped.");
   }
 
   // إذا كان عدد النصوص أكبر من المسارات
   if (allLines.length - lineIndex > pagePaths.length) {
-    L("⚠️  More text lines than paths available!");
+    L("  More text lines than paths available!");
     L("Will use available paths only, remaining text lines will be skipped.");
   }
 
@@ -759,13 +761,19 @@ function openNotepad() {
         pathName = pathItem.name;
       } catch (e) {}
 
-      var smartIdx = (function(){ try { return pathItem._smartIndex; } catch(_e){ return undefined; } })();
+      var smartIdx = (function () {
+        try {
+          return pathItem._smartIndex;
+        } catch (_e) {
+          return undefined;
+        }
+      })();
       var entryPrefix =
         "File=" +
         doc.name +
         " | BubbleIndex=" +
         (match.pathIndex + 1) +
-        (smartIdx !== undefined ? (" | SmartIndex=" + smartIdx) : "") +
+        (smartIdx !== undefined ? " | SmartIndex=" + smartIdx : "") +
         " | PathName=" +
         pathName +
         " | LineIndex=" +
@@ -946,8 +954,17 @@ function openNotepad() {
         // اجعل السطر الأول أقصر قليلاً ليتناسب مع انحناءة الفقاعة
         // نستخدم تقريب 0.6 من عرض الصندوق للسطر الأول
         try {
-          var firstLineTargetWidth = Math.max(10, Math.round(availableWidth * 0.6));
-          lineText = breakFirstLineByWidth(doc, lineText, usedFont, newFontSize, firstLineTargetWidth);
+          var firstLineTargetWidth = Math.max(
+            10,
+            Math.round(availableWidth * 0.6)
+          );
+          lineText = breakFirstLineByWidth(
+            doc,
+            lineText,
+            usedFont,
+            newFontSize,
+            firstLineTargetWidth
+          );
         } catch (_br) {}
 
         var textLayer = doc.artLayers.add();
@@ -968,13 +985,21 @@ function openNotepad() {
             // طبّق 97% إذا كان ST: (حتى لو لم تكن في fontMap)
             if (isSTTag) {
               textLayer.textItem.horizontalScale = 97;
-            } else if (/^\s*(["“”]{2}:?|\(\):?)/.test(originalLineText || "") ||
-                       keyForScale === '""' || keyForScale === '"":' ||
-                       keyForScale === '““' || keyForScale === '““:' ||
-                       keyForScale === '()' || keyForScale === '():') {
+            } else if (
+              /^\s*(["“”]{2}:?|\(\):?)/.test(originalLineText || "") ||
+              keyForScale === '""' ||
+              keyForScale === '"":' ||
+              keyForScale === "““" ||
+              keyForScale === "““:" ||
+              keyForScale === "()" ||
+              keyForScale === "():"
+            ) {
               textLayer.textItem.horizontalScale = 95;
-            } else if (/^\s*<>:?/.test(originalLineText || "") ||
-                       keyForScale === '<>' || keyForScale === '<>:') {
+            } else if (
+              /^\s*<>:?/.test(originalLineText || "") ||
+              keyForScale === "<>" ||
+              keyForScale === "<>:"
+            ) {
               textLayer.textItem.horizontalScale = 90;
             }
           } catch (_hs) {}

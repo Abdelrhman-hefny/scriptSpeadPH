@@ -6,12 +6,12 @@ function requireActiveTextLayer() {
         var doc = app.activeDocument;
         var layer = doc.activeLayer;
         if (layer.typename != "ArtLayer" || layer.kind != LayerKind.TEXT) {
-            alert("⚠️ اختار طبقة نصية أولًا.");
+            alert(" اختار طبقة نصية أولًا.");
             return null;
         }
         return layer;
     } catch (e) {
-        alert("⚠️ افتح ملف واختار طبقة نصية.");
+        alert(" افتح ملف واختار طبقة نصية.");
         return null;
     }
 }

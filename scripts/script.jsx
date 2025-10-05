@@ -203,15 +203,15 @@ app.bringToFront();
 
     // ======= Run Python Script =======
     try {
-        var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
+        // var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
         var cmd = 'python "' + pythonScript + '" "' + param + '"';
         var runFile = new File(Folder.temp + "/runPython.bat");
         runFile.open("w");
         runFile.writeln("@echo off");
         runFile.writeln(cmd);
         runFile.close();
-        runFile.execute();
-    } catch(e){ alert("Python script failed: " + e); }
+        // runFile.execute();
+    } catch(e){   }
 
     // ======= Start processing =======
     processFolder(originalsFolder);
@@ -219,14 +219,15 @@ app.bringToFront();
 
     // ======= Run BAT file =======
     try {
-        var batFile = new File("C:\\Users\\abdoh\\Downloads\\testScript\\batch\\run_detext-bb-by-json.bat");
-        if(batFile.exists) batFile.execute();
+        // var batFile = new File("C:\\Users\\abdoh\\Downloads\\testScript\\batch\\run_detext-bb-by-json.bat");
+        // if(batFile.exists) batFile.execute();
     } catch(e){ alert("BAT execution failed: " + e); }
 
     // ======= Go to first document =======
     if(app.documents.length>0) app.activeDocument = app.documents[0];
 
     // ======= Ask for another folder =======
-    if(confirm("Do you want to select another folder?")) mainLoop();
+    // if(confirm("Do you want to select another folder?")) mainLoop();
+    $.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/read-bb-jsonfile.jsx");
 
 })();

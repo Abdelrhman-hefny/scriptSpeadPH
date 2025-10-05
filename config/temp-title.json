@@ -1,7 +1,12 @@
 {
-  "title": "52",
-  "folder_url": "C:\\Users\\abdoh\\Downloads\\52",
-  "team": "rezo",
+  "title": "01",
+  "folder_url": "C:/Users/abdoh/Downloads/01",
+  "team": "seren",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
-  "mangaType": "korian"
+  "mangaType": "korian",
+  "mode": "normal",
+  "fontSize": 45,
+  "stopAfterFirstPage": false,
+  "continueWithoutDialog": false,
+  "autoNext": false
 }

@@ -37,7 +37,7 @@ function samplePixel(doc, x, y) {
 // ===== اختيار ملف النصوص =====
 var file = File.openDialog("اختر ملف النصوص (TXT)");
 if (!file) {
-    alert("❌ لم يتم اختيار ملف النصوص!");
+    alert(" لم يتم اختيار ملف النصوص!");
 } else {
     // قراءة الأسطر
     var lines = [];
@@ -50,7 +50,7 @@ if (!file) {
     file.close();
 
     if (app.documents.length === 0) {
-        alert("❌ مفيش مستند مفتوح في فوتوشوب.");
+        alert(" مفيش مستند مفتوح في فوتوشوب.");
     } else {
         var doc = app.activeDocument;
 
@@ -109,7 +109,7 @@ if (!file) {
             } else if (textLayers.length > lines.length) {
                 alert("تم ملء " + n + " طبقة.\n⚠ عندك " + (textLayers.length - lines.length) + " طبقات نص زيادة بدون محتوى.");
             } else {
-                alert("✅ تم توزيع النصوص + ضبط اللون حسب الخلفية على " + n + " طبقة.");
+                alert(" تم توزيع النصوص + ضبط اللون حسب الخلفية على " + n + " طبقة.");
             }
         }
     }

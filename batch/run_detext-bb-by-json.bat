@@ -18,13 +18,13 @@ if "!folderName:~-1!"==" " (
 
 :: python script path
 @REM set "pythonScript=C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_from_mask.py"
-set "pythonScript=C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py"
+@REM set "pythonScript=C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py"
 
 :: cleaned folder
 set "cleanedFolder=C:\Users\abdoh\Downloads\!folderName!\cleaned"
 
 cd /d "!cleanedFolder!" || (
-    echo ❌ Invalid path: "!cleanedFolder!"
+    echo  Invalid path: "!cleanedFolder!"
     pause
     exit /b
 )
@@ -38,7 +38,7 @@ set "psApp=C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
 if exist "!psApp!" (
     start "" "!psApp!" "!psScript!"
 ) else (
-    echo ❌ Photoshop not found at "!psApp!"
+    echo  Photoshop not found at "!psApp!"
     pause
     exit /b
 )

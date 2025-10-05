@@ -5,7 +5,7 @@ var filePath = File("C:/Sandbox/abdoh/DefaultBox/user/current/Downloads/testScri
 
 // التحقق من وجود الملف
 if (!filePath.exists) {
-    alert("❌ الملف غير موجود: " + filePath.fsName);
+    alert(" الملف غير موجود: " + filePath.fsName);
 } else {
 
     // إنشاء نافذة ScriptUI
@@ -53,14 +53,14 @@ if (!filePath.exists) {
             if (filePath.open("w")) {
                 filePath.write(JSON.stringify(jsonData, null, 2));
                 filePath.close();
-                alert("✅ تم تعديل البيانات وحفظها!");
+                alert(" تم تعديل البيانات وحفظها!");
                 win.close();
             } else {
-                alert("❌ لم أستطع فتح الملف للكتابة. تحقق من الصلاحيات.");
+                alert(" لم أستطع فتح الملف للكتابة. تحقق من الصلاحيات.");
             }
 
         } catch(e) {
-            alert("❌ حدث خطأ أثناء الكتابة:\n" + e);
+            alert(" حدث خطأ أثناء الكتابة:\n" + e);
         }
     }
 

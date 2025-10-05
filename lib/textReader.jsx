@@ -12,8 +12,7 @@
         content = content.replace(/^(\s*)ot\s*:?\s*/gim, "$1OT: ");
         content = content.replace(/^(\s*)st\s*:?\s*/gim, "$1ST: ");
 
-        // توحيد علامات page
-        content = content.replace(/^\s*(?:=+|#+)?\s*page\b/gi, "page");
+         content = content.replace(/^\s*(?:=+|#+)?\s*page\b/gi, "page");
 
         return content;
     }

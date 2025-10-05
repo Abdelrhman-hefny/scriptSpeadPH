@@ -27,7 +27,7 @@ app.bringToFront();
     // فولدر الملفات المحوَّلة [stitched]
     var stitchedFolder = new Folder(saveFolder.fsName + "\\" + saveFolder.name + "_JPG [stitched]");
     if (!stitchedFolder.exists) {
-        alert("⚠️ فولدر التحويل غير موجود: " + stitchedFolder.fsName);
+        alert(" فولدر التحويل غير موجود: " + stitchedFolder.fsName);
         return;
     }
 
@@ -43,10 +43,10 @@ try {
     rarBat.writeln('"C:\\Program Files\\WinRAR\\WinRAR.exe" a -afzip "' + zipFile + '" "*"');
     rarBat.close();
     rarBat.execute();
-    $.writeln("✅ تم الضغط باستخدام WinRAR: " + zipFile);
+    $.writeln(" تم الضغط باستخدام WinRAR: " + zipFile);
 } catch (e) {
     $.writeln("WinRAR فشل: " + e);
-    alert("❌ فشل الضغط. تحقق من مسار WinRAR والفولدر.");
+    alert(" فشل الضغط. تحقق من مسار WinRAR والفولدر.");
 }
 
 

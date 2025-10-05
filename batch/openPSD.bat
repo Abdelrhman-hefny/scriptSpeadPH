@@ -1,5 +1,5 @@
 @echo off
-echo ===== Starting Batch Script =====
+@REM echo ===== Starting Batch Script =====
 
 REM 1️⃣ Close Photoshop 2015
 echo Closing Photoshop 2015...

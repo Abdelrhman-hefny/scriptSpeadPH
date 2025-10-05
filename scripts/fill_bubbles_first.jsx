@@ -1,6 +1,6 @@
 #target photoshop
 
-// ✅ جلب المستند الحالي
+//  جلب المستند الحالي
 var doc = app.activeDocument;
 
 // رقم الصفحة من اسم الملف
@@ -19,13 +19,13 @@ for (var i = 0; i < doc.layers.length; i++) {
     }
 }
 
-// ✅ لو الطبقة مش موجودة أو مش صالحة → دور على أول ArtLayer شغالة
+//  لو الطبقة مش موجودة أو مش صالحة → دور على أول ArtLayer شغالة
 if (!targetLayer || !(targetLayer instanceof ArtLayer)) {
-    $.writeln("⚠️ Layer '" + layerName + "' not found or not valid. Searching fallback...");
+    $.writeln(" Layer '" + layerName + "' not found or not valid. Searching fallback...");
     for (var j = 0; j < doc.layers.length; j++) {
         if (doc.layers[j] instanceof ArtLayer) {
             targetLayer = doc.layers[j];
-            $.writeln("✅ Fallback layer found: " + targetLayer.name);
+            $.writeln(" Fallback layer found: " + targetLayer.name);
             break;
         }
     }
@@ -33,7 +33,7 @@ if (!targetLayer || !(targetLayer instanceof ArtLayer)) {
 
 // لو لسه مفيش أي لاير شغال → وقف السكربت
 if (!targetLayer) {
-    $.writeln("❌ No valid layer found in this document, skipping...");
+    $.writeln(" No valid layer found in this document, skipping...");
 } else {
     doc.activeLayer = targetLayer;
     $.writeln("🎯 Using active layer: " + targetLayer.name);
@@ -49,7 +49,7 @@ if (!targetLayer) {
 // === Function to check if layer is all white ===
 function isLayerEmpty(layer) {
     if (!layer || !(layer instanceof ArtLayer)) {
-        $.writeln("❌ isLayerEmpty: invalid layer");
+        $.writeln(" isLayerEmpty: invalid layer");
         return true; // اعتبره فاضي
     }
 
@@ -79,7 +79,7 @@ function isLayerEmpty(layer) {
                 return false; // فيه محتوى
             }
         } catch (e) {
-            $.writeln("❌ Sampler failed at point " + i + ": " + e);
+            $.writeln(" Sampler failed at point " + i + ": " + e);
             return false;
         }
     }
@@ -95,9 +95,9 @@ function runActionOnPath(doc, pathItem) {
         pathItem.makeSelection();
         app.doAction("FILL", "path");
         doc.selection.deselect();
-        $.writeln("✅ Action done on: " + pathItem.name + " in " + doc.name);
+        $.writeln(" Action done on: " + pathItem.name + " in " + doc.name);
     } catch (e) {
-        $.writeln("❌ Failed on path " + pathItem.name + " in " + doc.name + ": " + e);
+        $.writeln(" Failed on path " + pathItem.name + " in " + doc.name + ": " + e);
     }
 }
 
@@ -108,7 +108,7 @@ function processDocument(doc) {
 
     // لو مفيش طبقة صالحة → تجاهل المستند
     if (!targetLayer || !(targetLayer instanceof ArtLayer)) {
-        $.writeln("❌ No valid target layer for " + doc.name + ", skipping...");
+        $.writeln(" No valid target layer for " + doc.name + ", skipping...");
         return;
     }
 
@@ -131,7 +131,7 @@ function processDocument(doc) {
     $.writeln("=== Completed document: " + doc.name + " ===\n");
 }
 
-// ✅ مر على كل المستندات المفتوحة
+//  مر على كل المستندات المفتوحة
 for (var d = 0; d < app.documents.length; d++) {
     var doc = app.documents[d];
     processDocument(doc);
@@ -145,7 +145,7 @@ function deleteAllPaths(doc) {
         try {
             doc.pathItems[i].remove();
         } catch (e) {
-            $.writeln("❌ Failed to remove path " + i + ": " + e);
+            $.writeln(" Failed to remove path " + i + ": " + e);
         }
     }
     $.writeln("🗑️ All paths deleted in document: " + doc.name);

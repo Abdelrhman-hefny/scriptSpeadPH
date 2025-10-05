@@ -34,13 +34,13 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/teamLoader.jsx");
     
     // عرض النتائج
     var message = "نتائج فحص الخطوط:\n\n";
-    message += "✅ الخطوط المتاحة (" + availableFonts.length + "):\n";
+    message += " الخطوط المتاحة (" + availableFonts.length + "):\n";
     for (var j = 0; j < availableFonts.length; j++) {
         message += "• " + availableFonts[j] + "\n";
     }
     
     if (missingFonts.length > 0) {
-        message += "\n❌ الخطوط المفقودة (" + missingFonts.length + "):\n";
+        message += "\n الخطوط المفقودة (" + missingFonts.length + "):\n";
         for (var k = 0; k < missingFonts.length; k++) {
             message += "• " + missingFonts[k] + "\n";
         }

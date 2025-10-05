@@ -60,7 +60,7 @@ echo You entered: %folder_url%
 
 :: ===== Check if local folder exists =====
 if exist "%folder_url%" (
-    echo Local folder detected: %folder_url%
+    echo Local folder detected: %folde  r_url%
     for %%F in ("%folder_url%") do set "title=%%~nxF"
 ) else (
     echo Google Drive URL detected, extracting title...
@@ -69,7 +69,7 @@ if exist "%folder_url%" (
     ') do set "title=%%A"
 )
 
-echo 📌 Folder/Title: %title%
+echo  Folder/Title: %title%
 set "cleanTitle=%title:?=%"
 
 :: ===== Save to TXT =====

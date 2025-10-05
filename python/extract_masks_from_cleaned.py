@@ -46,13 +46,13 @@ def ensure_masks_in_cleaned(original_folder: str) -> bool:
     cleaned_path = original_path / "cleaned"
     
     if not cleaned_path.exists():
-        print(f"❌ cleaned folder not found: {cleaned_path}")
+        print(f" cleaned folder not found: {cleaned_path}")
         return False
     
     # Check if masks already exist in cleaned folder
     existing_masks = find_mask_files_in_cleaned(str(cleaned_path))
     if existing_masks:
-        print(f"✅ Found {len(existing_masks)} mask files already in cleaned folder")
+        print(f" Found {len(existing_masks)} mask files already in cleaned folder")
         for mask in existing_masks:
             print(f"  - {os.path.basename(mask)}")
         return True
@@ -62,10 +62,10 @@ def ensure_masks_in_cleaned(original_folder: str) -> bool:
     original_masks = find_mask_files_in_cleaned(str(original_path))
     
     if not original_masks:
-        print("❌ No mask files found in original folder either")
+        print(" No mask files found in original folder either")
         return False
     
-    print(f"📁 Found {len(original_masks)} mask files in original folder")
+    print(f" Found {len(original_masks)} mask files in original folder")
     
     # Copy masks to cleaned folder
     copied_count = 0
@@ -76,16 +76,16 @@ def ensure_masks_in_cleaned(original_folder: str) -> bool:
             
             # Skip if file already exists in destination
             if dest_path.exists():
-                print(f"⚠️  Mask already exists, skipping: {mask_path.name}")
+                print(f"  Mask already exists, skipping: {mask_path.name}")
                 continue
             
             # Copy the mask file
             shutil.copy2(mask_file, str(dest_path))
-            print(f"✅ Copied: {mask_path.name}")
+            print(f" Copied: {mask_path.name}")
             copied_count += 1
             
         except Exception as e:
-            print(f"❌ Failed to copy {mask_path.name}: {e}")
+            print(f" Failed to copy {mask_path.name}: {e}")
     
     print(f"🎉 Successfully copied {copied_count} mask files to cleaned folder")
     return True
@@ -109,14 +109,14 @@ def main():
     # Remove quotes if present
     original_folder = original_folder.strip('"')
     
-    print(f"📂 Original folder: {original_folder}")
+    print(f" Original folder: {original_folder}")
     
     success = ensure_masks_in_cleaned(original_folder)
     
     if success:
-        print("✅ Mask ensurance completed successfully!")
+        print(" Mask ensurance completed successfully!")
     else:
-        print("❌ Mask ensurance failed!")
+        print(" Mask ensurance failed!")
         sys.exit(1)
 
 if __name__ == "__main__":
