@@ -1,4 +1,4 @@
-//#target photoshop
+//// #target photoshop
 app.bringToFront();
 
 (function () {
@@ -33,15 +33,15 @@ app.bringToFront();
   try {
     // أمر باورشيل لتشغيل AHK
     var psCommand =
-      'powershell -Command "Start-Process -FilePath \'' +
+      "powershell -Command \"Start-Process -FilePath '" +
       ahkExe +
-      '\' -ArgumentList \'' +
+      "' -ArgumentList '" +
       ahkScript +
-      '\'"';
+      "'\"";
 
     // استدعاء الباورشيل
     var result = app.system(psCommand); // في Photoshop 2015 الكائن اسمه app.system مش System.callSystem
-   } catch (e) {
+  } catch (e) {
     alert("حصل خطأ: " + e);
   }
 })();

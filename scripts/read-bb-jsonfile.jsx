@@ -1,4 +1,4 @@
-// #target photoshop
+//// // #target photoshop
 var folderName;
 var parentFolder;
 
@@ -200,7 +200,7 @@ for (var d = 0; d < app.documents.length; d++) {
       " separate, sorted Path Items."
   );
   // ======= Go to first document =======
-//   if (app.documents.length > 0) app.activeDocument = app.documents[0];
+  //   if (app.documents.length > 0) app.activeDocument = app.documents[0];
 
   // ======= Ask for another folder =======
   // if(confirm("Do you want to select another folder?")) mainLoop();

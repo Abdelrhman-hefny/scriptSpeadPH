@@ -1,4 +1,4 @@
-//#target photoshop
+//// #target photoshop
 app.bringToFront();
 
 (function () {

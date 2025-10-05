@@ -1,4 +1,4 @@
-//#target photoshop
+//// #target photoshop
 
 app.bringToFront();
 $.evalFile("C:/Users/abdoh/Downloads/testScript/config/json2.js");

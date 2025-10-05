@@ -3,35 +3,33 @@
    مع نافذة GUI أنيقة وذاكرة آخر قيمة مستخدمة
 */
 
-#target photoshop
+// #target photoshop
 app.bringToFront();
-
-
 
 var memoryFile = new File(Folder.userData + "/ps_fontSizeMemory.txt");
 
 // دالة قراءة آخر قيمة
 function loadLastValue() {
-    if (memoryFile.exists) {
-        try {
-            memoryFile.open("r");
-            var val = memoryFile.read();
-            memoryFile.close();
-            if (!isNaN(parseFloat(val))) {
-                return parseFloat(val);
-            }
-        } catch (e) {}
-    }
-    return 14; // القيمة الافتراضية
+  if (memoryFile.exists) {
+    try {
+      memoryFile.open("r");
+      var val = memoryFile.read();
+      memoryFile.close();
+      if (!isNaN(parseFloat(val))) {
+        return parseFloat(val);
+      }
+    } catch (e) {}
+  }
+  return 14; // القيمة الافتراضية
 }
 
 // دالة حفظ القيمة
 function saveLastValue(val) {
-    try {
-        memoryFile.open("w");
-        memoryFile.write(val);
-        memoryFile.close();
-    } catch (e) {}
+  try {
+    memoryFile.open("w");
+    memoryFile.write(val);
+    memoryFile.close();
+  } catch (e) {}
 }
 
 // -------- واجهة المستخدم --------
@@ -53,47 +51,48 @@ input.characters = 10;
 var btnGroup = win.add("group");
 btnGroup.alignment = "center";
 var okBtn = btnGroup.add("button", undefined, "تشغيل");
-var cancelBtn = btnGroup.add("button", undefined, "إلغاء", {name:"cancel"});
+var cancelBtn = btnGroup.add("button", undefined, "إلغاء", { name: "cancel" });
 
 // -------- الأكشن --------
-okBtn.onClick = function() {
-    var newSize = parseFloat(input.text);
-    if (isNaN(newSize) || newSize <= 0) {
-        alert("من فضلك ادخل رقم صحيح أكبر من صفر.");
-        return;
+okBtn.onClick = function () {
+  var newSize = parseFloat(input.text);
+  if (isNaN(newSize) || newSize <= 0) {
+    alert("من فضلك ادخل رقم صحيح أكبر من صفر.");
+    return;
+  }
+
+  saveLastValue(newSize);
+
+  var totalChanged = 0;
+
+  function processLayers(layers) {
+    for (var i = 0; i < layers.length; i++) {
+      var layer = layers[i];
+      if (layer.typename === "ArtLayer" && layer.kind == LayerKind.TEXT) {
+        try {
+          layer.textItem.size = newSize;
+          totalChanged++;
+        } catch (e) {}
+      } else if (layer.typename === "LayerSet") {
+        processLayers(layer.layers);
+      }
     }
+  }
 
-    saveLastValue(newSize);
+  for (var d = 0; d < app.documents.length; d++) {
+    var doc = app.documents[d];
+    app.activeDocument = doc;
+    processLayers(doc.layers);
+  }
 
-    var totalChanged = 0;
-
-    function processLayers(layers) {
-        for (var i = 0; i < layers.length; i++) {
-            var layer = layers[i];
-            if (layer.typename === "ArtLayer" && layer.kind == LayerKind.TEXT) {
-                try {
-                    layer.textItem.size = newSize;
-                    totalChanged++;
-                } catch (e) {}
-            } else if (layer.typename === "LayerSet") {
-                processLayers(layer.layers);
-            }
-        }
-    }
-
-    for (var d = 0; d < app.documents.length; d++) {
-        var doc = app.documents[d];
-        app.activeDocument = doc;
-        processLayers(doc.layers);
-    }
-
-    alert("تم تغيير حجم الخط لـ " + totalChanged + " طبقة نص.");
-    win.close();
+  alert("تم تغيير حجم الخط لـ " + totalChanged + " طبقة نص.");
+  win.close();
 };
 
-cancelBtn.onClick = function() { win.close(); };
+cancelBtn.onClick = function () {
+  win.close();
+};
 
 // إظهار النافذة
 win.center();
 win.show();
-    
