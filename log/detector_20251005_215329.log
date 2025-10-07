@@ -1,8 +1,0 @@
-2025-10-05 21:53:38,204 [INFO] ✅ Using MangaOCR for text validation.
-2025-10-05 21:53:38,344 [INFO] 🔍 Found 2 images in C:\Users\abdoh\Downloads\01
-2025-10-05 21:53:42,048 [INFO] ✅ 01.jpg: 4 valid bubbles found.
-2025-10-05 21:53:45,373 [INFO] ✅ 02.jpg: 4 valid bubbles found.
-2025-10-05 21:53:45,374 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\01\cleaned\all_bubbles.json
-2025-10-05 21:53:45,374 [INFO] 🚀 Launching Photoshop for text writing...
-2025-10-05 21:53:45,623 [ERROR] ❌ Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
-2025-10-05 21:53:45,624 [INFO] === 🏁 Finished detector script ===
