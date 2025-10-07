@@ -26,30 +26,29 @@ manga_type = config.get("mangaType", "korian")
 bat_file = r"C:\Users\abdoh\Downloads\testScript\batch\watch_clean.bat"
 
 def run_panel_cleaner(target_folder: str) -> None:
-    """Run Panel Cleaner with text extraction and ensure masks."""
+    """Run Panel Cleaner with inpainting profile."""
     cleaned_folder = os.path.join(target_folder, "cleaned")
-    print("Running Panel Cleaner...")
-    logging.info("Running Panel Cleaner with text extraction...")
+    print("Running Panel Cleaner with inpainting...")
+    logging.info("Running Panel Cleaner with inpainting...")
 
     try:
         subprocess.run(
             [
-                "powershell",
-                "-Command",
-                f"pcleaner-cli clean '{target_folder}' --extract-text --cache-masks",
+                "pcleaner",
+                "clean",
+                target_folder,
+                "--output_dir", cleaned_folder,
+                "--profile", "inpaint_profile",
             ],
             check=True,
         )
-        # Wait until cleaned folder appears
-        while not os.path.exists(cleaned_folder):
-            time.sleep(1)
-
-        print("Cleaning done, cleaned folder created.")
-        logging.info("Panel Cleaner finished successfully.")
-    except Exception as e:
+        print("✅ Cleaning + inpainting done successfully.")
+    except subprocess.CalledProcessError as e:
         logging.error(f"Panel Cleaner failed: {e}")
         print(f"[ERROR] Panel Cleaner failed: {e}")
-        return
+
+
+
 
     # Ensure mask files exist
     print("Ensuring mask files are available in cleaned folder...")

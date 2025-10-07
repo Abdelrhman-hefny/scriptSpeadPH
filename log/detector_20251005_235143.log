@@ -1,0 +1,13 @@
+2025-10-05 23:52:04,123 [ERROR] Traceback (most recent call last):
+  File "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py", line 217, in <module>
+    if has_text(image, box):
+       ~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py", line 168, in has_text
+    result = ocr.ocr(gray, cls=True)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\warnings.py", line 637, in wrapper
+    return arg(*args, **kwargs)
+  File "C:\Users\abdoh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\paddleocr\_pipelines\ocr.py", line 231, in ocr
+    return self.predict(img, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+TypeError: PaddleOCR.predict() got an unexpected keyword argument 'cls'
+

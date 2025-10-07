@@ -1,0 +1,6 @@
+2025-10-06 08:52:00,026 [INFO] ✅ Using MangaOCR for text validation.
+2025-10-06 08:52:00,026 [INFO] 🔍 Found 1 images in C:\Users\abdoh\Downloads\461_rezo
+2025-10-06 08:52:04,197 [INFO] ✅ 01.jpg: 2 valid bubbles found.
+2025-10-06 08:52:04,198 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\461_rezo\cleaned\all_bubbles.json
+2025-10-06 08:52:04,198 [INFO] ⏭️ Skipped running Photoshop JSX because openAfterClean is True.
+2025-10-06 08:52:04,199 [INFO] === 🏁 Finished detector script ===

@@ -771,7 +771,7 @@ function openNotepad() {
     __prevHistoryStates = undefined;
   }
   try {
-    app.preferences.numberOfHistoryStates = 1;
+    app.preferences.numberOfHistoryStates = 20;
   } catch (_hs2) {}
 
   // ====== نلف على المستندات المرتبة ======
@@ -1445,4 +1445,4 @@ function openNotepad() {
     if (__prevHistoryStates !== undefined)
       app.preferences.numberOfHistoryStates = __prevHistoryStates;
   } catch (_rh) {}
-})();
+})(); 

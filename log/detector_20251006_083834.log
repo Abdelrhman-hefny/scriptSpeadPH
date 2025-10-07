@@ -1,0 +1,14 @@
+2025-10-06 08:38:47,669 [WARNING] ⚠️ Using EasyOCR.
+2025-10-06 08:38:47,670 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-06 08:38:50,362 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-06 08:38:52,709 [INFO] 🔍 Found 7 images in C:\Users\abdoh\Downloads\461_rezo
+2025-10-06 08:38:57,736 [INFO] ✅ 01.jpg: 2 valid bubbles found.
+2025-10-06 08:39:10,270 [INFO] ✅ 02.jpg: 9 valid bubbles found.
+2025-10-06 08:39:23,147 [INFO] ✅ 03.jpg: 10 valid bubbles found.
+2025-10-06 08:39:33,941 [INFO] ✅ 04.jpg: 8 valid bubbles found.
+2025-10-06 08:40:01,232 [INFO] ✅ 05.jpg: 11 valid bubbles found.
+2025-10-06 08:40:08,053 [INFO] ✅ 06.jpg: 4 valid bubbles found.
+2025-10-06 08:40:33,057 [INFO] ✅ 07.jpg: 14 valid bubbles found.
+2025-10-06 08:40:33,060 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\461_rezo\cleaned\all_bubbles.json
+2025-10-06 08:40:33,060 [INFO] ⏭️ Skipped running Photoshop JSX because openAfterClean is True.
+2025-10-06 08:40:33,060 [INFO] === 🏁 Finished detector script ===

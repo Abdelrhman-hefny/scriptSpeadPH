@@ -1,0 +1,10 @@
+2025-10-05 23:33:32,570 [ERROR] Traceback (most recent call last):
+  File "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py", line 51, in <module>
+    ocr = PaddleOCR(use_angle_cls=True, lang=lang, use_gpu=False)
+  File "C:\Users\abdoh\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\paddleocr\_pipelines\ocr.py", line 107, in __init__
+    raise ValueError(
+        f"No models are available for the language {repr(lang)} and OCR version {repr(ocr_version)}."
+    )
+ValueError: No models are available for the language 'ko' and OCR version None.
+
+2025-10-05 23:33:32,571 [INFO] === 🏁 Finished detector script ===

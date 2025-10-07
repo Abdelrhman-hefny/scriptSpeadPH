@@ -235,16 +235,16 @@ app.bringToFront();
   }
 
   // ======= Run Python Script =======
-  try {
-    // var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
-    var cmd = 'python "' + pythonScript + '" "' + param + '"';
-    var runFile = new File(Folder.temp + "/runPython.bat");
-    runFile.open("w");
-    runFile.writeln("@echo off");
-    runFile.writeln(cmd);
-    runFile.close();
-    // runFile.execute();
-  } catch (e) {}
+  // try {
+  //   // var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
+  //   var cmd = 'python "' + pythonScript + '" "' + param + '"';
+  //   var runFile = new File(Folder.temp + "/runPython.bat");
+  //   runFile.open("w");
+  //   runFile.writeln("@echo off");
+  //   runFile.writeln(cmd);
+  //   runFile.close();
+  //   // runFile.execute();
+  // } catch (e) {}
 
   // ======= Start processing =======
   processFolder(originalsFolder);

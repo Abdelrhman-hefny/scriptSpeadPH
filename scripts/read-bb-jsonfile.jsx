@@ -200,9 +200,9 @@ for (var d = 0; d < app.documents.length; d++) {
       " separate, sorted Path Items."
   );
   // ======= Go to first document =======
-  //   if (app.documents.length > 0) app.activeDocument = app.documents[0];
 
   // ======= Ask for another folder =======
   // if(confirm("Do you want to select another folder?")) mainLoop();
-  $.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/scriptSPead.jsx");
 }
+if (app.documents.length > 0) app.activeDocument = app.documents[0];
+$.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/scriptSPead.jsx");

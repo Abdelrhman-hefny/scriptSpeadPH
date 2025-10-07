@@ -1,0 +1,11 @@
+2025-10-05 21:26:32,463 [INFO] ✅ Using MangaOCR for text validation (specialized for manga).
+2025-10-05 21:26:32,463 [INFO] image_folder: C:\Users\abdoh\Downloads\01
+2025-10-05 21:26:32,464 [INFO] output_path: C:\Users\abdoh\Downloads\01\cleaned\all_bubbles.json
+2025-10-05 21:26:32,590 [INFO] ✅ Model loaded: comic-speech-bubble-detector.pt
+2025-10-05 21:26:36,532 [INFO] ✅ MangaOCR loaded successfully.
+2025-10-05 21:26:36,533 [INFO] Found 2 image(s) in C:\Users\abdoh\Downloads\01
+2025-10-05 21:26:41,150 [INFO] ✅ Processed 01.jpg, found 4 valid bubbles with text.
+2025-10-05 21:26:44,729 [INFO] ✅ Processed 02.jpg, found 4 valid bubbles with text.
+2025-10-05 21:26:44,730 [INFO] Saved results to C:\Users\abdoh\Downloads\01\cleaned\all_bubbles.json
+2025-10-05 21:26:44,942 [ERROR] Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-05 21:26:44,942 [INFO] === ✅ Finished detector script ===

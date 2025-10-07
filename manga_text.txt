@@ -1,6 +1,272 @@
 page 1
-"" …Your Majesty.
+
+"": Juwoon…!
+
+"": …I’ve been searching for you all this time,
+
+"": There’s so much I want to say… 
+
+//: but first I have to say this.
+
+<> …!
+
+"": I really missed you, Yun Seon-ah.
+
+ 
+
+"": You could have just written me off as dead…
+
+<> ?!
+
+"": Why did you come all the way out here?
+
+
+
 
 page 2
-"" What are you doing? I told you not to get up.
-u going out for?
+
+<> …Yun Seon-ah, you don’t have to struggle like this!!
+
+<> I know—how kind you are…!
+
+<> I don’t want to hear it!!
+
+<> If you keep getting in the way of my revenge like this…!
+
+<> Don’t ever come looking for me again!!!
+
+"": Wha…
+
+<> How can you say that…!
+
+"": …What is that sound?
+
+
+
+
+page 3
+
+"": No way…!
+
+(): It’s Master’s aura!
+
+ 
+
+ 
+
+ 
+
+<> Die!
+
+<> Once we take this old man down, the tide of battle will turn!!
+
+<> Kill him by any means!!
+
+<> How dare you…!
+
+"": ...?!
+
+
+
+
+page 4
+
+<> Who do you think you’re grabbing?!
+
+OT: Sanggang (Frost Descent)
+
+"": What is this…?!
+
+<> …He’s above!!
+
+"": Foot soldiers should act like foot soldiers…
+ 	
+
+<> Bury him in the dirt!
+
+
+
+
+page 5
+
+OT: Sanggang-un Gi (Frost Descent Cloud)
+
+<> Gahk…!
+
+<> Ugh!
+
+<> Gahk…!
+
+(): Damn, I shouldn’t have tried using a tasking technique while injured…!
+
+(): If I don’t get to 'Un-gi Jo-sik' quickly…
+
+
+
+
+page 6
+
+<> Die, Ma Sae-pung!!
+
+<> Guhk...?!
+
+<> At last, your disgusting presence ends!!!
+
+<> The Hwangseok Sect will take a great new step forward!!
+
+<> Bu… Neungpa…!
+
+(): …From that day on, was fate already sealed?
+
+"": We are martial men, not politicians;
+
+"": State affairs are none of our concern, so Hwasan Sect will abstain from this matter.
+
+
+
+
+page 7
+
+"": …What?!
+
+<> Sect Master, this is for the good of the country!
+
+//:  I wish to join forces with the Odaesan Sword and share in the nation’s glory!
+
+"": Do you value ‘glory stained with blood on your hands’?
+
+"": Isn’t saving innocent civilians amidst war a more honorable deed?
+
+"": …Ma Sect Master, I understand your position.
+
+"": Then Hwangseok Sect declares it will not take part in the Ryeo Country subjugation…
+
+<> !!
+
+"": Shall we relay that directly to the royal court?
+
+<> Se-Sect Master! Shouldn’t you consider us as well?!
+
+<> If this marks us in the eyes of the court… 
+
+// how can we walk the streets under the name Hwangseok Sect?!
+
+"": …
+
+
+
+
+page 8
+
+"": …If you do not wish to see blood,
+
+//: How about Hwangseok Sect only take part in operations that prevent meaningless slaughter?
+
+"": If so, the royal court won’t make a huge issue of it.
+
+"": What do you think of this course, Ma Sect Master?
+
+"": Haa….
+
+"": …Then so be it. Do as you propose.
+
+OT: Yes… if it could not be avoided anyway….
+
+OT: I tried to prevent the worst outcome.
+
+OT: However….
+
+
+
+
+page 9
+
+"": ...Oh!
+
+"": Are you here, Sect Master?
+
+OT: It was but an empty hope.
+
+<> Bu-Neungpa, you bastard…!
+
+<> Guhp!
+
+<> What are you doing right now!!
+
+
+
+
+page 10
+
+<> …Please, Sect Master, have some restraint!!!
+
+<> This is war!!
+
+<> In war, what is righteousness and what is ideal?!
+
+//: Slaughter! War is nothing but killing and being killed.
+
+<> Didn’t you foresee and permit this from the start?!
+
+"": I... I...!!
+
+<> Stop this nauseating pretense of virtue!!!
+
+"": Then I shall be leaving!
+
+(): …Yes, it’s all my fault. I led them astray,
+
+(): I gave them false hopes…
+
+
+
+
+page 11
+
+(): It’s my fault!!
+
+"": Ah… ahh….
+
+"": …?
+
+"": Ah….
+
+"": Sa…ve… me…
+
+"": Please… save me….
+
+<> Alright!! I’ll take you to the physician right now!!
+
+"": Ah….
+
+"": To steal even the eyes of a child…
+
+<> I… I will surely save you… I’m sorry, I am so sorry…!
+
+"": Don’t worry, child. I’ll help you get vengeance…
+
+
+
+
+page 12
+
+(): So… first, live. You must live…!
+
+<> …Don’t thrash about in vain, you dying old man…!
+
+(): C-could this energy be…?
+
+"": Yu I-jeong… On Seok-ah…
+
+"": I’m sorry I didn’t finish your vengeance for you…!
+
+"": A ministerial execution…?
+
+
+
+
+page 13
+
+OT: Yeongmyeongdaehwa (Grand Dialogue of the Heroic Name)
+
+
