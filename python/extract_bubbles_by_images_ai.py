@@ -74,14 +74,14 @@ try:
         ocr_ko = easyocr.Reader(["en", "ko"], gpu=False)
 
     # ===== إعدادات الكشف =====
-    CONFIDENCE_THRESHOLD = 0.05
-    IOU_THRESHOLD = 0.6
+    CONFIDENCE_THRESHOLD = 0.04  # أقل رقم = حساسية أعلى
+    IOU_THRESHOLD = 0.5  # دمج أقل = فواصل أكثر بين الفقاعات
     SLICE_OVERLAP = 300
-    SLICE_HEIGHT = 2500
-    MIN_BUBBLE_AREA = 2000
+    SLICE_HEIGHT = 4000
+    MIN_BUBBLE_AREA = 2000  # اكتشاف فقاعات صغيرة
     CONTAINMENT_THRESHOLD = 0.95
     MIN_DIM_THRESHOLD = 100
-    YOLO_IMG_SIZE = 640
+    YOLO_IMG_SIZE = 672  # وضوح أعلى = حساسية أعلى (أبطأ قليلاً) اكبر
 
     # ===== دوال مساعدة =====
     def preprocess_image(img):
@@ -103,19 +103,38 @@ try:
         final = cv2.addWeighted(enhanced_lab, 0.6, enhanced_hsv, 0.4, 0)
         return final
 
-    def slice_image(image, slice_height=SLICE_HEIGHT, overlap=SLICE_OVERLAP):
+    def smart_slice_image(image, target_h, overlap, delta=200):
         h, w = image.shape[:2]
         slices = []
         y_start = 0
         while y_start < h:
-            y_end = min(y_start + slice_height, h)
-            if y_end == h and y_start < h - slice_height + overlap:
-                y_start = max(0, h - slice_height)
-                y_end = h
-            slices.append((image[y_start:y_end, :].copy(), y_start))
-            if y_end == h:
+            # نقطة اقتطاع مقترحة
+            y_cut = min(y_start + target_h, h)
+            # إذا هذا القطع هو نهاية الصورة، اكتمِل
+            if y_cut == h:
+                slices.append((image[y_start:h, :].copy(), y_start))
                 break
-            y_start += slice_height - overlap
+
+            # ابحث حول y_cut في نطاق delta لأعلى ولأسفل
+            best_cut = y_cut
+            best_score = float("inf")
+            for dy in range(-delta, delta + 1):
+                yc = y_cut + dy
+                if yc <= y_start + overlap or yc >= h:
+                    continue
+                # احسب “تكلفة” القطع هنا، مثلاً عدد الحواف أو شدة التباين في السطر yc
+                # استخدم مثلاً cv2.Sobel أو كَن استخدام grayscale gradient
+                line = cv2.cvtColor(image[yc : yc + 1, :], cv2.COLOR_BGR2GRAY)
+                cost = np.sum(
+                    np.abs(np.diff(line[0].astype(np.int32)))
+                )  # كمثال بسيط على التكلفة
+                # يمكن أيضاً إضافة تكلفة إضافية إذا تمر الصناديق عند yc
+                if cost < best_score:
+                    best_score = cost
+                    best_cut = yc
+            # استخدم best_cut كخط واقعي للقطع
+            slices.append((image[y_start:best_cut, :].copy(), y_start))
+            y_start = best_cut - overlap  # التداخل على أن تبدأ قليلاً قبل النقطة
         return slices
 
     def box_iou(box1, box2):
@@ -212,7 +231,7 @@ try:
         all_boxes, all_scores = [], []
         h = image.shape[0]
 
-        slices = slice_image(enhanced) if h > SLICE_HEIGHT else [(enhanced, 0)]
+        slices = smart_slice_image(enhanced, SLICE_HEIGHT, SLICE_OVERLAP, delta=200)
         for slice_img, offset_y in slices:
             results = model(
                 slice_img, imgsz=YOLO_IMG_SIZE, conf=CONFIDENCE_THRESHOLD, verbose=False

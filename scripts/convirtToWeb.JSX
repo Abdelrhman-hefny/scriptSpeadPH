@@ -3,10 +3,11 @@ app.bringToFront();
 
 function main() {
   if (app.documents.length === 0) {
-    alert("لا يوجد مستند مفتوح في الفوتوشوب.");
+    alert("⚠️ No document is currently open in Photoshop.");
     return;
   }
 
+  // Path of the current opened document
   var docPath = app.activeDocument.path.fsName;
   var currentFolderName = new Folder(docPath).name;
   var parentFolder = new Folder(docPath).fsName;
@@ -14,68 +15,54 @@ function main() {
   var jpgFolder = new Folder(jpgFolderPath);
 
   if (!jpgFolder.exists) {
-    alert("المجلد غير موجود:\n" + jpgFolderPath);
+    alert("❌ Folder not found:\n" + jpgFolderPath);
     return;
   }
 
+  // SmartStitch directory
   var smartStitchDir =
     "C:\\Users\\abdoh\\Downloads\\testScript\\SmartStitch-3.1";
   var ssFile = new File(smartStitchDir + "\\SmartStitchConsole.py");
   if (!ssFile.exists) {
-    alert("لم أجد SmartStitchConsole.py:\n" + ssFile.fsName);
+    alert("❌ SmartStitchConsole.py not found:\n" + ssFile.fsName);
     return;
   }
 
-  var batPath = parentFolder + "\\run_smartstitch_temp.bat";
-  var batFile = new File(batPath);
-
-  function esc(p) {
-    return p.replace(/\\/g, "\\\\");
+  function norm(p) {
+    return p.replace(/\\/g, "/");
   }
-  var escapedSmart = esc(ssFile.fsName);
-  var escapedJpg = esc(jpgFolderPath);
 
-  var psCmd =
-    "" +
-    "if (Get-Command py -ErrorAction SilentlyContinue) {" +
-    "  & py -3 '" +
-    escapedSmart +
-    "' -i '" +
-    escapedJpg +
-    "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5" +
-    "} elseif (Get-Command python -ErrorAction SilentlyContinue) {" +
-    "  & python '" +
-    escapedSmart +
-    "' -i '" +
-    escapedJpg +
-    "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5" +
-    "} elseif (Get-Command python3 -ErrorAction SilentlyContinue) {" +
-    "  & python3 '" +
-    escapedSmart +
-    "' -i '" +
-    escapedJpg +
-    "' -sh 14000 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5" +
-    "} else { Write-Error 'No Python found.'; }";
+  var smartPath = norm(ssFile.fsName);
+  var inputPath = norm(jpgFolderPath);
+  var runDir = norm(smartStitchDir); // ✅ Run from SmartStitch folder
 
-  // إنشاء BAT مؤقت
-  batFile.open("w");
-  batFile.writeln("@echo off");
-  batFile.writeln("chcp 65001>nul");
-  batFile.writeln('pushd "' + esc(smartStitchDir) + '"');
-  // هنا استدعاء PowerShell عادي وهيقفل بعد التنفيذ
-  batFile.writeln(
-    'powershell -NoProfile -ExecutionPolicy Bypass -Command "' + psCmd + '"'
-  );
-  batFile.writeln("popd");
-  batFile.writeln('del "%~f0"'); // يحذف نفسه بعد الانتهاء
-  batFile.close();
+  // ✅ Added "-cw 800" to enforce width = 800 pixels
+  var cmd =
+    'cmd /k "cd /d ' +
+    '"' +
+    runDir +
+    '"' +
+    " && echo ================================" +
+    " && echo 🚀 Starting SmartStitch..." +
+    " && echo ================================" +
+    ' && python "' +
+    smartPath +
+    '" -i "' +
+    inputPath +
+    '" -sh 14000 -cw 800 -t .webp -lq 95 -dt pixel -s 90 -ip 5 -sl 5 2>&1' +
+    " && echo." +
+    " && echo ✅ All images processed successfully." +
+    " && echo CMD will close automatically in 10 seconds..." +
+    " && timeout /t 1 /nobreak >nul" +
+    ' && exit"';
 
-  // تشغيله
   try {
-    batFile.execute();
+    app.system(cmd);
   } catch (e) {
-    alert("خطأ عند تشغيل SmartStitch:\n" + e);
+    alert("⚠️ Error while running Python:\n" + e);
   }
 }
 
 main();
+
+$.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/COMPOS2-ZIP.JSX");

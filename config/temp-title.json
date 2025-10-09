@@ -1,7 +1,7 @@
 {
-  "title": "52_REZO_BOOLM",
-  "folder_url": "C:/Users/abdoh/Downloads/52_REZO_BOOLM",
-  "team": "rezo",
+  "title": "01",
+  "folder_url": "C:/Users/abdoh/Downloads/01",
+  "team": "ez",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
   "mangaType": "korian",
   "mode": "fast",
@@ -9,6 +9,6 @@
   "stopAfterFirstPage": false,
   "continueWithoutDialog": false,
   "autoNext": false,
-  "ocr_model": "easy",
+  "ocr_model": "manga",
   "openAfterClean": false
 }

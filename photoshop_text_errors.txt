@@ -1,0 +1,6 @@
+File=10.psd | BubbleIndex=3 | SmartIndex=3 | PathName=page_10_bubble7 | LineIndex=105 : EXCEPTION : Error: User cancelled the operation at line 1257
+File=10.psd | BubbleIndex=4 | SmartIndex=4 | PathName=page_10_bubble8 | LineIndex=106 : EXCEPTION : Error: User cancelled the operation at line 1066
+File=10.psd | BubbleIndex=5 | SmartIndex=5 | PathName=page_10_bubble3 | LineIndex=107 : EXCEPTION : Error: User cancelled the operation at line 1066
+File=10.psd | BubbleIndex=6 | SmartIndex=6 | PathName=page_10_bubble4 | LineIndex=108 : EXCEPTION : Error: User cancelled the operation at line 1066
+File=10.psd | BubbleIndex=7 | SmartIndex=7 | PathName=page_10_bubble5 | LineIndex=109 : EXCEPTION : Error: User cancelled the operation at line 1066
+File=10.psd | BubbleIndex=8 | SmartIndex=8 | PathName=page_10_bubble6 | LineIndex=110 : EXCEPTION : Error: User cancelled the operation at line 1066

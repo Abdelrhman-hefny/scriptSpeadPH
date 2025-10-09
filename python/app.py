@@ -607,7 +607,7 @@ class MangaApp(QMainWindow):
 
     def done(self, ok, msg):
         self.start_btn.setEnabled(True)
-        self.cancel_btn.setEnabled(True)
+        self.cancel_btn.setEnabled(True)    
         self.force_stop_btn.setEnabled(False)
         self.bar.hide()
         if ok:

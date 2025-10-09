@@ -1,0 +1,7 @@
+2025-10-08 18:24:21,580 [INFO] ✅ Using MangaOCR for text validation.
+2025-10-08 18:24:21,581 [INFO] 🔍 Found 1 images in C:\Users\abdoh\Downloads\10_rezo_reborn - Copy
+2025-10-08 18:24:30,979 [INFO] ✅ 01.jpg: 11 valid bubbles found.
+2025-10-08 18:24:30,982 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\10_rezo_reborn - Copy\cleaned\all_bubbles.json
+2025-10-08 18:24:30,982 [INFO] 🚀 Launching Photoshop for text writing...
+2025-10-08 18:24:31,323 [ERROR] ❌ Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-08 18:24:31,324 [INFO] === 🏁 Finished detector script ===

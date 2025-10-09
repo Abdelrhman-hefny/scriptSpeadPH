@@ -1,0 +1,18 @@
+2025-10-08 09:30:58,550 [WARNING] ⚠️ Using EasyOCR.
+2025-10-08 09:30:58,551 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-08 09:31:02,175 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-08 09:31:07,369 [INFO] 🔍 Found 10 images in C:\Users\abdoh\Downloads\38_ken_swordMan - Copy
+2025-10-08 09:31:29,663 [INFO] ✅ 01.jpg: 7 valid bubbles found.
+2025-10-08 09:31:35,466 [INFO] ✅ 02.jpg: 3 valid bubbles found.
+2025-10-08 09:31:49,830 [INFO] ✅ 03.jpg: 8 valid bubbles found.
+2025-10-08 09:32:02,405 [INFO] ✅ 04.jpg: 4 valid bubbles found.
+2025-10-08 09:32:15,188 [INFO] ✅ 05.jpg: 5 valid bubbles found.
+2025-10-08 09:32:35,604 [INFO] ✅ 06.jpg: 11 valid bubbles found.
+2025-10-08 09:32:49,951 [INFO] ✅ 07.jpg: 5 valid bubbles found.
+2025-10-08 09:33:04,361 [INFO] ✅ 08.jpg: 5 valid bubbles found.
+2025-10-08 09:33:24,434 [INFO] ✅ 09.jpg: 9 valid bubbles found.
+2025-10-08 09:33:32,749 [INFO] ✅ 10.jpg: 2 valid bubbles found.
+2025-10-08 09:33:32,754 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\38_ken_swordMan - Copy\cleaned\all_bubbles.json
+2025-10-08 09:33:32,754 [INFO] 🚀 Launching Photoshop for text writing...
+2025-10-08 09:33:33,080 [ERROR] ❌ Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-08 09:33:33,086 [INFO] === 🏁 Finished detector script ===

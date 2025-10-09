@@ -1,272 +1,277 @@
 page 1
-
-"": Juwoon…!
-
-"": …I’ve been searching for you all this time,
-
-"": There’s so much I want to say… 
-
-//: but first I have to say this.
-
-<> …!
-
-"": I really missed you, Yun Seon-ah.
-
- 
-
-"": You could have just written me off as dead…
-
-<> ?!
-
-"": Why did you come all the way out here?
+"" Master, Viscount Deelon has arrived.
+"" Tell him to come another day…
 
 
+<> How are you, Craig?!
 
 
+() N-no! Master and the Baron are still…!
+
+
+= G-good day! But Craig is still…
+
+
+"" What are you doing, you’re in the way.
+
+
+"" …Who are you?
 page 2
-
-<> …Yun Seon-ah, you don’t have to struggle like this!!
-
-<> I know—how kind you are…!
-
-<> I don’t want to hear it!!
-
-<> If you keep getting in the way of my revenge like this…!
-
-<> Don’t ever come looking for me again!!!
-
-"": Wha…
-
-<> How can you say that…!
-
-"": …What is that sound?
+"" It’s me! Arnold Deelon, Helena’s younger brother!
+() He transformed before I even noticed… as expected.
+** Even Barlosh isn’t here…
 
 
+() This man still doesn’t bother greeting anyone.
 
 
+"" You really don’t recognize me?
+"" It’s truly unfortunate that your memory hasn’t returned yet.
+
+
+"" Did you come here to check how much of my memory has come back?
+
+
+"" Of course not! I just wanted to see your face and talk for the first time in a while!
+** hahaha
+"" For that, your behavior is rather selfish though.
+
+
+"" Wh-what did you just say…?
+
+
+"" When a Viscount meets a Countess, he should greet her first…
+
+
+"" Isn’t that common sense?
+
+"" …
 page 3
+= C–Cordelia… it’s been a while…
 
-"": No way…!
 
-(): It’s Master’s aura!
+= …Yes…
+"" More importantly, I have something personal to discuss.
 
+
+** Just a formality of greeting...
+"" So if I tell you not to greet her, you really won’t?
+
+
+"" Your way of speaking has changed a bit, hasn’t it? I am your uncle, you know...
+ 
+"" If you’re my uncle, shouldn’t you have come to visit me at least once?
+
+
+"" I–I was busy with work…
  
 
+
+"" Since you collapsed, the Abrams family couldn’t run without me, you know.
+
+
+"" Just get to the point.
+
+
+"" It’s about your succession… I thought it’d be hard to manage alone, so I came to help.
+
+
+"" You know well there are many who oppose you, right?
+"" If you’re not careful, Jared might even take it away from you.
+
+
+"" That’s for me to decide. You don’t need to meddle.
+
+ page 4
+"" What? Don’t say such cold things…
+
+
+"" We’re family, aren’t we? No one wishes for your succession more than we do!
+
+
+"" Family? Who are you talking about?
+
+
+"" Who else… Helena and me, of course.
+
+
+"" Right! I also heard about Helena’s matter. It’s unfortunate, but…
+"" She’s still your mother, isn’t she?
+
+
+"" So don’t worry about such a trivial thing…
  
-
- 
-
-<> Die!
-
-<> Once we take this old man down, the tide of battle will turn!!
-
-<> Kill him by any means!!
-
-<> How dare you…!
-
-"": ...?!
+"" Embezzling the family’s funds is a trivial thing?
 
 
+"" That’s a terrible misunderstanding! I never did such a thing!
 
 
-page 4
-
-<> Who do you think you’re grabbing?!
-
-OT: Sanggang (Frost Descent)
-
-"": What is this…?!
-
-<> …He’s above!!
-
-"": Foot soldiers should act like foot soldiers…
- 	
-
-<> Bury him in the dirt!
+() Ugh, seriously! He’s still the head of the house, he should really adjust his attitude…
 
 
+"" Hey, Viscount Deelon.
 
 
+() …And right when I thought that!!
 page 5
-
-OT: Sanggang-un Gi (Frost Descent Cloud)
-
-<> Gahk…!
-
-<> Ugh!
-
-<> Gahk…!
-
-(): Damn, I shouldn’t have tried using a tasking technique while injured…!
-
-(): If I don’t get to 'Un-gi Jo-sik' quickly…
+= H-h-how dare you!! I am your—
 
 
+"" Don’t pretend to be family when we don’t even share a drop of blood.
 
 
+"" It makes me sick.
+
+
+= …Ridic…
+
+
+"" If you’re done talking, then leave.
+
+
+"" I have no intention of asking for your help.
+
+
+<> You’ll regret this! Craig!
+
+
+"" I said I understand, now get out.
 page 6
-
-<> Die, Ma Sae-pung!!
-
-<> Guhk...?!
-
-<> At last, your disgusting presence ends!!!
-
-<> The Hwangseok Sect will take a great new step forward!!
-
-<> Bu… Neungpa…!
-
-(): …From that day on, was fate already sealed?
-
-"": We are martial men, not politicians;
-
-"": State affairs are none of our concern, so Hwasan Sect will abstain from this matter.
+"" W-will everything be alright?
 
 
+"" What if Viscount Deelon joins the opposition…
 
 
+"" It doesn’t matter.
+
+
+"" Do you really think I can’t even protect my title as Count in this remote place?
+
+
+"" That’s true, but still...
+
+
+** Hmm...
+() …Something just doesn’t sit right with me.
+
+
+<> Insolent brat!!
+
+
+"" What are you doing… Arnold!
+"" What on earth happened to you?
 page 7
-
-"": …What?!
-
-<> Sect Master, this is for the good of the country!
-
-//:  I wish to join forces with the Odaesan Sword and share in the nation’s glory!
-
-"": Do you value ‘glory stained with blood on your hands’?
-
-"": Isn’t saving innocent civilians amidst war a more honorable deed?
-
-"": …Ma Sect Master, I understand your position.
-
-"": Then Hwangseok Sect declares it will not take part in the Ryeo Country subjugation…
-
-<> !!
-
-"": Shall we relay that directly to the royal court?
-
-<> Se-Sect Master! Shouldn’t you consider us as well?!
-
-<> If this marks us in the eyes of the court… 
-
-// how can we walk the streets under the name Hwangseok Sect?!
-
-"": …
+"" Do you know what Craig dared to say to me?!
 
 
+"" He told me not to meddle in his business!
+"" “Pretending to be family makes me sick,” that’s what he said!
 
 
+"" How could he say something so cruel?!
+
+"" And on top of that, he even told me to greet Cordelia…!
+
+
+"" What did you say?!
+"" Unbelievable! To bow my head to a woman bought with money!
+
+
+"" No matter how I think about it, something’s wrong…
+
+
+"" Yes, clearly he’s lost his mind!
+
+
+"" No, this can’t be Craig’s idea alone.
+
+
+"" That woman must be plotting something for sure.
+
+
+"" …That Vasquez woman?
+
+
+"" Don’t you feel it too? He’s completely different from the Craig we knew.
+
+
+"" True… even without his memories, a person’s core nature shouldn’t change…
 page 8
-
-"": …If you do not wish to see blood,
-
-//: How about Hwangseok Sect only take part in operations that prevent meaningless slaughter?
-
-"": If so, the royal court won’t make a huge issue of it.
-
-"": What do you think of this course, Ma Sect Master?
-
-"": Haa….
-
-"": …Then so be it. Do as you propose.
-
-OT: Yes… if it could not be avoided anyway….
-
-OT: I tried to prevent the worst outcome.
-
-OT: However….
+"" He used to be such a womanizer, but after waking up, he’s shown no interest at all.
 
 
+"" And lately, he’s been strangely concerned about that woman, hasn’t he?
+"" The old Craig would never do that.
 
 
+"" Could it be that staying by his side since he woke up is part of her plan?
+
+
+"" When someone’s lost their memories, a few lies are enough to make them dance in your    palm.
+
+
+"" And yet he somehow knows how the funds are being moved...
+
+
+"" The only explanation is that she’s manipulating him.
+
+
+"" She plans to use this opportunity to raise Craig up and drive us out,
+"" and take the Abrams family for herself.
+
+
+"" I should’ve thrown away that useless woman who couldn’t even bear an heir long ago!
+
+
+"" If not for that cursed bloodline, I could’ve chosen a far better woman.
+** haa…
+"" !
 page 9
-
-"": ...Oh!
-
-"": Are you here, Sect Master?
-
-OT: It was but an empty hope.
-
-<> Bu-Neungpa, you bastard…!
-
-<> Guhp!
-
-<> What are you doing right now!!
+"" …Then we’ll just have to get rid of her.
 
 
+"" Eh?
 
 
+"" There’s no need to keep someone who’s completely useless, is there?
+
+
+"" We’ll dispose of that troublesome woman and bring in a more suitable lady for us.
+
+
+** hahaha
+"" Sister, what method do you think would be best?
+
+
+"" She’s such a careless woman after all...
+
+
+"" Even if she eats something off the ground and gets food poisoning,
+
+
+"" no one would be surprised.
+
+
+"" And sometimes a cook might accidentally put in something… they shouldn’t, right?
+
+
+"" Let’s start preparing at once.
 page 10
-
-<> …Please, Sect Master, have some restraint!!!
-
-<> This is war!!
-
-<> In war, what is righteousness and what is ideal?!
-
-//: Slaughter! War is nothing but killing and being killed.
-
-<> Didn’t you foresee and permit this from the start?!
-
-"": I... I...!!
-
-<> Stop this nauseating pretense of virtue!!!
-
-"": Then I shall be leaving!
-
-(): …Yes, it’s all my fault. I led them astray,
-
-(): I gave them false hopes…
+** haaaa
+() I’d love to skip class just for a day.
+ 
+** Eeeek!
+** So tired...
+() I’m always exhausted after my master’s lessons…
 
 
+() No! I can’t give up now! This is the chance I’ve worked so hard for!
 
 
-page 11
-
-(): It’s my fault!!
-
-"": Ah… ahh….
-
-"": …?
-
-"": Ah….
-
-"": Sa…ve… me…
-
-"": Please… save me….
-
-<> Alright!! I’ll take you to the physician right now!!
-
-"": Ah….
-
-"": To steal even the eyes of a child…
-
-<> I… I will surely save you… I’m sorry, I am so sorry…!
-
-"": Don’t worry, child. I’ll help you get vengeance…
+() I’ll do my best! I can do this!
 
 
-
-
-page 12
-
-(): So… first, live. You must live…!
-
-<> …Don’t thrash about in vain, you dying old man…!
-
-(): C-could this energy be…?
-
-"": Yu I-jeong… On Seok-ah…
-
-"": I’m sorry I didn’t finish your vengeance for you…!
-
-"": A ministerial execution…?
-
-
-
-
-page 13
-
-OT: Yeongmyeongdaehwa (Grand Dialogue of the Heroic Name)
-
-
+"" Good day, Countess!
+# to be continued

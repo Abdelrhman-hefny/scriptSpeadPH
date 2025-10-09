@@ -1,7 +1,7 @@
 // #target photoshop
 app.bringToFront();
 
-var url = "https://coda.io/d/Work_dhT8XA1rThZ/rezo_supN5Ws5#_luDJkH25";
+var url = "https://coda.io/d/Work_dhT8XA1rThZ/rezo_suC-1TGX#_luJ-qOAn";
 //var chrome = '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"';
 var chrome =
   '"C:\\Users\\abdoh\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"';
@@ -99,6 +99,10 @@ try {
       deleteRecursive(tempFolder);
     }
   }
+  // ======= Go to first document =======
+  if (app.documents.length > 0) app.activeDocument = app.documents[0];
 } catch (err) {
   alert("حصل خطأ أثناء تنظيف ملفات Temp: " + err.message);
 }
+
+$.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/convirtToWeb.JSX");

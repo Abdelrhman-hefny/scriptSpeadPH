@@ -1,0 +1,19 @@
+2025-10-08 18:41:43,662 [INFO] ✅ Using MangaOCR for text validation.
+2025-10-08 18:41:43,663 [INFO] 🔍 Found 13 images in C:\Users\abdoh\Downloads\08_ez_jp
+2025-10-08 18:41:52,385 [INFO] ✅ 01.jpg: 11 valid bubbles found.
+2025-10-08 18:42:04,818 [INFO] ✅ 02.jpg: 14 valid bubbles found.
+2025-10-08 18:42:10,827 [INFO] ✅ 03.jpg: 8 valid bubbles found.
+2025-10-08 18:42:17,118 [INFO] ✅ 04.jpg: 8 valid bubbles found.
+2025-10-08 18:42:24,413 [INFO] ✅ 05.jpg: 11 valid bubbles found.
+2025-10-08 18:42:38,729 [INFO] ✅ 06.jpg: 19 valid bubbles found.
+2025-10-08 18:42:45,567 [INFO] ✅ 07.jpg: 12 valid bubbles found.
+2025-10-08 18:42:55,558 [INFO] ✅ 08.jpg: 15 valid bubbles found.
+2025-10-08 18:43:02,852 [INFO] ✅ 09.jpg: 10 valid bubbles found.
+2025-10-08 18:43:11,085 [INFO] ✅ 10.jpg: 12 valid bubbles found.
+2025-10-08 18:43:16,505 [INFO] ✅ 11.jpg: 8 valid bubbles found.
+2025-10-08 18:43:21,080 [INFO] ✅ 12.jpg: 8 valid bubbles found.
+2025-10-08 18:43:26,162 [INFO] ✅ 13.jpg: 12 valid bubbles found.
+2025-10-08 18:43:26,167 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\08_ez_jp\cleaned\all_bubbles.json
+2025-10-08 18:43:26,168 [INFO] 🚀 Launching Photoshop for text writing...
+2025-10-08 18:43:26,382 [ERROR] ❌ Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-08 18:43:26,383 [INFO] === 🏁 Finished detector script ===
