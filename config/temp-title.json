@@ -1,14 +1,13 @@
 {
   "title": "01",
   "folder_url": "C:/Users/abdoh/Downloads/01",
-  "team": "ez",
+  "team": "ken",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
-  "mangaType": "korian",
   "mode": "fast",
   "fontSize": 35,
   "stopAfterFirstPage": false,
   "continueWithoutDialog": false,
   "autoNext": false,
-  "ocr_model": "manga",
+  "ocr_model": "easy",
   "openAfterClean": false
 }

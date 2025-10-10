@@ -41,8 +41,6 @@ class WorkerThread(QThread):
         self,
         folder_url,
         team,
-        pspath,
-        manga_type,
         mode,
         font_size,
         stop_after_first,
@@ -55,8 +53,7 @@ class WorkerThread(QThread):
         super().__init__()
         self.folder_url = folder_url.strip()
         self.team = team
-        self.pspath = pspath
-        self.manga_type = manga_type
+        self.pspath = DEFAULT_PSPATH
         self.mode = mode
         self.font_size = font_size
         self.stop_after_first = stop_after_first
@@ -122,16 +119,13 @@ class WorkerThread(QThread):
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
             with open(TXT_PATH, "w", encoding="utf-8") as f:
-                f.write(
-                    f"{title}\n{self.folder_url}\n{self.team}\n{self.pspath}\n{self.manga_type}\n"
-                )
+                f.write(f"{title}\n{self.folder_url}\n{self.team}\n{self.pspath}\n")
 
             cfg_obj = {
                 "title": title,
                 "folder_url": self.folder_url,
                 "team": self.team,
                 "pspath": self.pspath,
-                "mangaType": self.manga_type,
                 "mode": self.mode,
                 "fontSize": int(self.font_size),
                 "stopAfterFirstPage": bool(self.stop_after_first),
@@ -218,17 +212,6 @@ class MangaApp(QMainWindow):
         path_layout.addWidget(QLabel("Folder or Google Drive URL:"))
         path_layout.addLayout(url_layout)
 
-        # اختيار مسار Photoshop
-        ps_layout = QHBoxLayout()
-        self.ps_path = QLineEdit(DEFAULT_PSPATH)
-        self.ps_path.setPlaceholderText("Path to Photoshop executable")
-        ps_layout.addWidget(self.ps_path, stretch=3)
-        btn_browse_ps = QPushButton("Browse")
-        btn_browse_ps.clicked.connect(self.browse_photoshop)
-        ps_layout.addWidget(btn_browse_ps, stretch=1)
-        path_layout.addWidget(QLabel("Photoshop Path:"))
-        path_layout.addLayout(ps_layout)
-
         main_layout.addWidget(path_group)
 
         # --- مجموعة إعدادات المانجا ---
@@ -242,20 +225,6 @@ class MangaApp(QMainWindow):
         self.team = QComboBox()
         self.team.addItems(self.TEAMS)
         manga_layout.addWidget(self.team)
-
-        # نوع المانجا
-        manga_layout.addWidget(QLabel("Manga Type:"))
-        manga_type_layout = QHBoxLayout()
-        self.rb_korian = QRadioButton("Korean")
-        self.rb_japan = QRadioButton("Japanese")
-        self.rb_korian.setChecked(True)
-        grp_type = QButtonGroup(self)
-        grp_type.addButton(self.rb_korian)
-        grp_type.addButton(self.rb_japan)
-        manga_type_layout.addWidget(self.rb_korian)
-        manga_type_layout.addWidget(self.rb_japan)
-        manga_type_layout.addStretch()
-        manga_layout.addLayout(manga_type_layout)
 
         # Mode
         manga_layout.addWidget(QLabel("Mode:"))
@@ -433,13 +402,8 @@ class MangaApp(QMainWindow):
                 with open(CFG_PATH, encoding="utf-8") as f:
                     cfg = json.load(f)
                 self.url.setText(cfg.get("folder_url", ""))
-                self.ps_path.setText(cfg.get("pspath", DEFAULT_PSPATH))
                 if cfg.get("team") in self.TEAMS:
                     self.team.setCurrentText(cfg["team"])
-                if cfg.get("mangaType", "korian").lower().startswith("j"):
-                    self.rb_japan.setChecked(True)
-                else:
-                    self.rb_korian.setChecked(True)
                 mode = cfg.get("mode", "normal")
                 if mode == "fast":
                     self.rb_fast.setChecked(True)
@@ -498,7 +462,6 @@ class MangaApp(QMainWindow):
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
 
-            manga_type = "korian" if self.rb_korian.isChecked() else "japanese"
             mode = (
                 "fast"
                 if self.rb_fast.isChecked()
@@ -514,8 +477,7 @@ class MangaApp(QMainWindow):
                 "title": title,
                 "folder_url": folder_url,
                 "team": self.team.currentText(),
-                "pspath": self.ps_path.text().strip(),
-                "mangaType": manga_type,
+                "pspath": DEFAULT_PSPATH,
                 "mode": mode,
                 "fontSize": int(self.font_spin.value()),
                 "stopAfterFirstPage": bool(self.stop_chk.isChecked()),
@@ -539,8 +501,7 @@ class MangaApp(QMainWindow):
             QMessageBox.warning(self, "Error", "Please enter a URL or folder path.")
             return
 
-        pspath = self.ps_path.text().strip()
-        if not os.path.exists(pspath):
+        if not os.path.exists(DEFAULT_PSPATH):
             QMessageBox.warning(self, "Error", "Photoshop executable path is invalid.")
             return
 
@@ -549,7 +510,6 @@ class MangaApp(QMainWindow):
         self.force_stop_btn.setEnabled(True)
         self.bar.show()
 
-        manga_type = "korian" if self.rb_korian.isChecked() else "japanese"
         mode = (
             "fast"
             if self.rb_fast.isChecked()
@@ -566,8 +526,6 @@ class MangaApp(QMainWindow):
         self.worker = WorkerThread(
             url,
             self.team.currentText(),
-            pspath,
-            manga_type,
             mode,
             self.font_spin.value(),
             self.stop_chk.isChecked(),
@@ -607,7 +565,7 @@ class MangaApp(QMainWindow):
 
     def done(self, ok, msg):
         self.start_btn.setEnabled(True)
-        self.cancel_btn.setEnabled(True)    
+        self.cancel_btn.setEnabled(True)
         self.force_stop_btn.setEnabled(False)
         self.bar.hide()
         if ok:

@@ -297,3 +297,4 @@ finally:
     logger.info("=== 🏁 Finished detector script ===")
     if not success:
         time.sleep(2)
+    os._exit(0)  # ← دا بيقفل السكريبت فورا

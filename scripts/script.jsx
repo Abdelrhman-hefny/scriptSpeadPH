@@ -106,7 +106,8 @@ app.bringToFront();
     var layer = placeFileAsSmartObject(doc, watermarkFile);
     if (!layer) return;
     layer.name = "Watermark";
-    layer.opacity = 50;
+    if (chosenTeam.toLowerCase() === "ken") layer.opacity = 100;
+    else layer.opacity = 50;
 
     try {
       var docW = doc.width.as("px");

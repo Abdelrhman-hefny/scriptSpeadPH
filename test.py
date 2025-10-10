@@ -20,7 +20,7 @@ def clean_with_source(folder_path, repo_path):
         return
 
     # Define the path to the pcleaner main.py script
-    pcleaner_main_path = repo_path / "pcleaner" / "main.py"
+    pcleaner_main_path =   "pcleaner" / "main.py"
 
     if not pcleaner_main_path.exists():
         print(f"❌ pcleaner main.py not found at: {pcleaner_main_path}")

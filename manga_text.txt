@@ -1,277 +1,106 @@
-page 1
-"" Master, Viscount Deelon has arrived.
-"" Tell him to come another day…
+page 1  
+“” No?  
+“” ...You have to be gentle.  
+“” ...?  
+“” I'll let it slide this time because you're pretty.  
 
+page 2  
+() I'll have to take care of it in the bathroom.  
+“” Wait!  
+“” !  
+“” I'll put you to sleep.  
+“” Good night, honey.  
 
-<> How are you, Craig?!
+page 3  
+“” I'll get you back double for this when we're back in Seoul.  
+“” Hey, did Mr. Cha Dojin leave?  
+“” Yeah. Thank you for not asking anything even though you must've been flustered last night.  
+“” I came straight from work, so I'll be going ahead.  
+“” Okay, travel safe.  
+“” But are you alright?  
+“” Huh?! What do you mean?  
 
+page 4  
+“” Does your jaw hurt?  Or maybe your teeth?  
+“” I saw you keep holding that side of your face.  
+() How can I tell her it's because of a rough kiss we had yesterday...!!!  
+<> Ugh...!!  
+** Ahaha...  
+“” It's nothing! Maybe it's my wisdom tooth?? It just feels a little itchy!  
+() Anyone can understand it’s clearly an excuse...!!  
+“” Are you sure it's not an allergic reaction?  I think there's some medicine at the studio apartment...  
+“” No, it's not that...  
+“” More importantly, isn't it time for us to get back there soon?  
+“” Ah!  If we leave now, we'll probably make it on time!  
+“” Right?! Let's hurry!  
+() Thank goodness A-ri is so innocent...!  
+** I'm sorry, A-ri...  
 
-() N-no! Master and the Baron are still…!
+page 5  
+“” Wow~ It's been a while since I've been to a broadcasting station.  
+“” By the way, I haven't seen writer Wooseok at all since we were at the airport.  
+“” Huh? You're right.  
+() Come to think of it, I haven't seen him since yesterday...  
+“” Ah~ Wooseok?  
+“” He left.  
+“” Huh? Left? Where to?  
+“” Our drama's script is all done. He said he needed to rest and went on a trip. I think he said Hungary?  
+** I’m going.  
+“” Anyway, he went to Incheon airport this morning and got on a plane right away.  
 
-
-= G-good day! But Craig is still…
-
-
-"" What are you doing, you’re in the way.
-
-
-"" …Who are you?
-page 2
-"" It’s me! Arnold Deelon, Helena’s younger brother!
-() He transformed before I even noticed… as expected.
-** Even Barlosh isn’t here…
-
-
-() This man still doesn’t bother greeting anyone.
-
-
-"" You really don’t recognize me?
-"" It’s truly unfortunate that your memory hasn’t returned yet.
-
-
-"" Did you come here to check how much of my memory has come back?
-
-
-"" Of course not! I just wanted to see your face and talk for the first time in a while!
-** hahaha
-"" For that, your behavior is rather selfish though.
-
-
-"" Wh-what did you just say…?
-
-
-"" When a Viscount meets a Countess, he should greet her first…
-
-
-"" Isn’t that common sense?
-
-"" …
-page 3
-= C–Cordelia… it’s been a while…
-
-
-= …Yes…
-"" More importantly, I have something personal to discuss.
-
-
-** Just a formality of greeting...
-"" So if I tell you not to greet her, you really won’t?
-
-
-"" Your way of speaking has changed a bit, hasn’t it? I am your uncle, you know...
+page 6  
+() He did say he was going to disappear... but so suddenly?  
+“” What about the rest of our filming?  
+() I'm a little worried...  
+“” The script isn't changing, and we can still contact him.  
+“” If something comes up, we can use the internet or call him, so what does it matter?  
  
-"" If you’re my uncle, shouldn’t you have come to visit me at least once?
+** You're right about that.  
+“” Oh!  And now that I think about it, isn't  today our first episode on air?  
+“” Ah~ You're right? After I go home and wash up, I can watch it right away!  
+“” I'm so excited to see people's reactions~!  
+“” In our first episode, you and Jian have that deep kiss!  
+“” The deep kiss ending!  
+“” You're just spoiling things out in the open?  
+
+page 7  
+“” Aw, come on, man. It's fine, right?  
+() Was all of the kiss scenes in episode one?  
+** I kind of forgot!!!  
+[] Quiet~  
+  
+“” It doesn't look like Dojin's here.  
+“” Right... He was working even before coming to Udo, so.  
+() I did want to watch the drama I filmed with him...  
+() But watching the kiss scene with him is a bit much.  
+
+page 8  
+“” 100% juicy chicken thigh meat!  
+“” Hmm~ Hmmhmm~  
+“” Ah~ This is refreshing!  
+“” Is it good?  
+“” Yeah!  Of cour...  
+“” Dojin...?! 
+
+page 9  
+“” What are you doing here...  
+“” No, did you know today was the airing of my first episode?  
+“” Yeah.  I came to watch it together.  
+“” Oh... that's great! I wanted to watch it with you, too.  
+() This is a disaster...  
+“” Hahaha~  
+() Was this in episode 1, too? The TV is too big... 
+** Should I just get rid of it...?  
+() He must be so mad...  
+() He's going to stare a hole right through the screen...  
+“” Your face looks like you want to confess something.  
+
+page 10  
+# Guilt  
+“” ...if I confess, will you forgive me?  
+“” I said I'd get you back double for this, didn't I?  
+“” We can just pick up where we left off.  
+“” The interrupted bed scene right there.  
+“” Ah...  
+() It looks like I won't be sleeping tonight...  
 
-
-"" I–I was busy with work…
- 
-
-
-"" Since you collapsed, the Abrams family couldn’t run without me, you know.
-
-
-"" Just get to the point.
-
-
-"" It’s about your succession… I thought it’d be hard to manage alone, so I came to help.
-
-
-"" You know well there are many who oppose you, right?
-"" If you’re not careful, Jared might even take it away from you.
-
-
-"" That’s for me to decide. You don’t need to meddle.
-
- page 4
-"" What? Don’t say such cold things…
-
-
-"" We’re family, aren’t we? No one wishes for your succession more than we do!
-
-
-"" Family? Who are you talking about?
-
-
-"" Who else… Helena and me, of course.
-
-
-"" Right! I also heard about Helena’s matter. It’s unfortunate, but…
-"" She’s still your mother, isn’t she?
-
-
-"" So don’t worry about such a trivial thing…
- 
-"" Embezzling the family’s funds is a trivial thing?
-
-
-"" That’s a terrible misunderstanding! I never did such a thing!
-
-
-() Ugh, seriously! He’s still the head of the house, he should really adjust his attitude…
-
-
-"" Hey, Viscount Deelon.
-
-
-() …And right when I thought that!!
-page 5
-= H-h-how dare you!! I am your—
-
-
-"" Don’t pretend to be family when we don’t even share a drop of blood.
-
-
-"" It makes me sick.
-
-
-= …Ridic…
-
-
-"" If you’re done talking, then leave.
-
-
-"" I have no intention of asking for your help.
-
-
-<> You’ll regret this! Craig!
-
-
-"" I said I understand, now get out.
-page 6
-"" W-will everything be alright?
-
-
-"" What if Viscount Deelon joins the opposition…
-
-
-"" It doesn’t matter.
-
-
-"" Do you really think I can’t even protect my title as Count in this remote place?
-
-
-"" That’s true, but still...
-
-
-** Hmm...
-() …Something just doesn’t sit right with me.
-
-
-<> Insolent brat!!
-
-
-"" What are you doing… Arnold!
-"" What on earth happened to you?
-page 7
-"" Do you know what Craig dared to say to me?!
-
-
-"" He told me not to meddle in his business!
-"" “Pretending to be family makes me sick,” that’s what he said!
-
-
-"" How could he say something so cruel?!
-
-"" And on top of that, he even told me to greet Cordelia…!
-
-
-"" What did you say?!
-"" Unbelievable! To bow my head to a woman bought with money!
-
-
-"" No matter how I think about it, something’s wrong…
-
-
-"" Yes, clearly he’s lost his mind!
-
-
-"" No, this can’t be Craig’s idea alone.
-
-
-"" That woman must be plotting something for sure.
-
-
-"" …That Vasquez woman?
-
-
-"" Don’t you feel it too? He’s completely different from the Craig we knew.
-
-
-"" True… even without his memories, a person’s core nature shouldn’t change…
-page 8
-"" He used to be such a womanizer, but after waking up, he’s shown no interest at all.
-
-
-"" And lately, he’s been strangely concerned about that woman, hasn’t he?
-"" The old Craig would never do that.
-
-
-"" Could it be that staying by his side since he woke up is part of her plan?
-
-
-"" When someone’s lost their memories, a few lies are enough to make them dance in your    palm.
-
-
-"" And yet he somehow knows how the funds are being moved...
-
-
-"" The only explanation is that she’s manipulating him.
-
-
-"" She plans to use this opportunity to raise Craig up and drive us out,
-"" and take the Abrams family for herself.
-
-
-"" I should’ve thrown away that useless woman who couldn’t even bear an heir long ago!
-
-
-"" If not for that cursed bloodline, I could’ve chosen a far better woman.
-** haa…
-"" !
-page 9
-"" …Then we’ll just have to get rid of her.
-
-
-"" Eh?
-
-
-"" There’s no need to keep someone who’s completely useless, is there?
-
-
-"" We’ll dispose of that troublesome woman and bring in a more suitable lady for us.
-
-
-** hahaha
-"" Sister, what method do you think would be best?
-
-
-"" She’s such a careless woman after all...
-
-
-"" Even if she eats something off the ground and gets food poisoning,
-
-
-"" no one would be surprised.
-
-
-"" And sometimes a cook might accidentally put in something… they shouldn’t, right?
-
-
-"" Let’s start preparing at once.
-page 10
-** haaaa
-() I’d love to skip class just for a day.
- 
-** Eeeek!
-** So tired...
-() I’m always exhausted after my master’s lessons…
-
-
-() No! I can’t give up now! This is the chance I’ve worked so hard for!
-
-
-() I’ll do my best! I can do this!
-
-
-"" Good day, Countess!
-# to be continued
