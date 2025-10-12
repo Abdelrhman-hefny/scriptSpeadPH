@@ -126,7 +126,7 @@ try:
     # ===== إعدادات الكشف =====
     CONFIDENCE_THRESHOLD = 0.04
     IOU_THRESHOLD = 0.5
-    SLICE_OVERLAP = 300
+    SLICE_OVERLAP = 500  # زيادة التداخل لتجنب قطع الفقاعات
     SLICE_HEIGHT = 4000
     MIN_BUBBLE_AREA = 2000
     CONTAINMENT_THRESHOLD = 0.95
@@ -153,7 +153,7 @@ try:
         final = cv2.addWeighted(enhanced_lab, 0.6, enhanced_hsv, 0.4, 0)
         return final
 
-    def smart_slice_image(image, target_h, overlap, delta=200):
+    def smart_slice_image(image, target_h, overlap, delta=400):  # زيادة delta لنطاق بحث أوسع
         h, w = image.shape[:2]
         slices = []
         y_start = 0
@@ -169,8 +169,15 @@ try:
                 yc = y_cut + dy
                 if yc <= y_start + overlap or yc >= h:
                     continue
-                line = cv2.cvtColor(image[yc : yc + 1, :], cv2.COLOR_BGR2GRAY)
-                cost = np.sum(np.abs(np.diff(line[0].astype(np.int32))))
+                # استخدام نافذة أوسع (5 خطوط) بدلاً من خط واحد لقياس التباين، لتجنب الفقاعات
+                window_start = max(0, yc - 2)
+                window_end = min(h, yc + 3)
+                window = cv2.cvtColor(image[window_start:window_end, :], cv2.COLOR_BGR2GRAY)
+                # استخدام Sobel لكشف الحواف بدلاً من diff البسيط، لقياس التغيرات بشكل أفضل
+                sobelx = cv2.Sobel(window, cv2.CV_64F, 1, 0, ksize=3)
+                sobely = cv2.Sobel(window, cv2.CV_64F, 0, 1, ksize=3)
+                abs_sobel = np.abs(sobelx) + np.abs(sobely)
+                cost = np.mean(abs_sobel)  # متوسط قيمة الحواف في النافذة (أقل = منطقة هادئة أفضل للقطع)
                 if cost < best_score:
                     best_score = cost
                     best_cut = yc
@@ -261,7 +268,7 @@ try:
         all_boxes, all_scores = [], []
         h = image.shape[0]
 
-        slices = smart_slice_image(enhanced, SLICE_HEIGHT, SLICE_OVERLAP, delta=200)
+        slices = smart_slice_image(enhanced, SLICE_HEIGHT, SLICE_OVERLAP, delta=400)
         for slice_img, offset_y in slices:
             results = model(
                 slice_img, imgsz=YOLO_IMG_SIZE, conf=CONFIDENCE_THRESHOLD, verbose=False
