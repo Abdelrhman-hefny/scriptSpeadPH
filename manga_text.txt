@@ -1,255 +1,280 @@
- 
-PAGE 1
+page 1 
+
+"": Your Grace. A messenger sent by the Paladin is requesting an audience.
+
+SFX: Knock knock
+
+"": Ruv?
+
+"": Yes. He said he urgently needs permission for something.
+
+"": Tell him I’m transferring full authority over the site to him, so he doesn’t need to request permission every time.
+
+//: He can just report to me afterward once everything’s done.
+
+"": Yes, understood.
+
+"": You’re granting permission without even hearing the details?
+
+//: You must trust him a lot.
+
+"": Of course.
+
+"": Ruv is my oldest and closest friend.
+
+"": And… you must also know this.
+
+//: The weight that comes with the name of a Paladin.
+
+"": Ruv will be the most helpful friend when the time comes for me to rule this country.
+
+"": Well, I also enjoy just having him around.
+
+SFX: Chuckle
+
+"": He’s the kind of man who’s stayed in love with one woman for years, with that face of his.
+
+
+
+
+page 2 
+
+(): As I thought… What I saw in Cardillon’s attitude back then wasn’t an act, it was genuine.
+
+"": More importantly, Delilah.
+
+//: Why did you send the carriage back empty last time?
+
+"": I thought something had happened.
+
+OT: Since that day, Kirion and I have continued to meet.
+
+[]: He contacted me several times, summoning me to the Senilo mansion…
+
+[]: …with a confident attitude that showed no fear at all.
+
+"": I sent the best carriage so you could come comfortably.
+
+"": Your Grace, please don’t keep sending carriages without notice. It’s troubling.
+
+"": Why? Did Giyorn say something?
+
+"": Lord Giyorn isn’t exactly an oblivious man, you know.
+
+"": Why does Lord Kirion keep calling for you?
+
+[]: I thought Giyorn was dense, but surprisingly, he could read the situation.
+
+
+
+
+page 3 
+
+"": Your Grace must have really liked my singing.
+
+//: Don’t worry. Nothing bad will happen.
+
+[]: I suppose it’s uncomfortable for him, with his mistress being constantly summoned by another man and all.
+
+OT: In the first place, the reason Giyorn took me in wasn’t so different.
+
+OT: He used his status and power to snatch away someone else’s patron’s mistress.
+
+OT: He must fear the same thing would happen to him.
+
+"": If Giyorn’s possessiveness bothers you, you can just leave him.
+
+"": Your Grace, you truly don’t consider my position at all, do you?
+
+"": So you sent my carriage back just because of something so trivial?
+
+"": …Are you angry?
+
+"": Of course not. If anything, it’s amusing.
+
+"": You really are something.
+
+"": Just like a woman bold enough to demand my time.
+
+[]: Arrogant, as if he’s standing above all things, but it didn’t feel out of place.
+
+
+
+
+page 4 
+
+[]: Born of the Pope’s bloodline, he was raised as an archbishop from birth.
+
+//: This man carries both confidence and pride that he will one day succeed the Papal throne.
+
+[]: To show stubbornness or pride against such a person would be foolish.
+
+[]: Meeting Giyorn made me realize my position even more clearly.
+
+OT: For now, he’s a man blinded by love who acts like he’d give me his very life,
+
+OT: but in the end, my place is merely that of a passing mistress.
+
+OT: I’ll live a life like floating duckweed, never knowing when I’ll sink again.
+
+OT: Even the position I’ve fought tooth and nail to reach…
+
+OT: …is one where I must bow to those higher than me just to survive.
+
+[]: No matter how much I polish my looks or refine my skills…
+
+[]: …if I lack noble birth, I can never truly stand at the top.
+
+
+
+
+page 5 
+
+OT: Then….
+
+"": Come to think of it, a friend once told me this.
+
+"": Delilah, you’re a dangerous woman.
+
+"": I wonder what he meant by that?
+
+//: Did he mean no man could handle you?
+
+"": I somewhat agree. You do have a dangerously alluring scent about you.
+
+"": A woman too much even for a man of the Sentinel family to handle…
+
+"": Then what about me?
+
+"": …Your Grace, I’d say you’re the dangerous one.
+
+//: You hold the key that could change my entire life, dangerous, but irresistible.
+
+OT: That’s right.
+
+OT: If I must live as someone’s mistress, then I’ll become the mistress of the next Pope.
+
+OT: The mistress of the highest man in the land.
+
+
+
+
+page 6 
+
+[]: I’ll stand beside the one they bow their heads to.
+
+[]: What I can’t achieve with my own power, I’ll fill it using another’s.
+
+OT: I’ll become the one and only woman who’s been with both
+
+OT: the Sentinel family and the Pope himself.
+
+(): I can’t sleep…
+
+OT: The question that’s been clouding my head was simpler than I thought.
+
+[]: Because I liked you, and I wanted to live with you.
+
+OT: That answer was so simple and clear, it almost made things awkward.
+
+
+
+
+page 7 
+
+(): It’s been what… three months now? Since I started living with Rublier?
+
+[]: If you asked whether it’s been unbearable, not really.
+
+[]: Sometimes it’s awkward being suddenly so close,
+[]: but I appreciated how he’d listen and help me solve my problems.
+
+OT: To me, a husband is…
+
+OT: …someone who lives under the same roof and shares daily life,
+
+OT: who’ll have and raise the heir to Del Mare with me,
+
+OT: someone I can trust.
+
+[]: Can Rublier really be that person?
+
+
+
+
+page 8 
+
+(): I don’t know… I can’t find a clear answer.
+
+OT: But at some point,
+
+OT: I started feeling uncomfortable bringing up divorce in front of Rublier.
+
+[]: The person who looked at me with the saddest eyes in the world at the word “divorce.”
+
+OT: I didn’t want to hurt someone who expressed such unconditional affection any longer.
+
+[]: If Rublier really had loved me all this time,
+
+[]: and if my childhood memories were all just my misunderstanding…
+
+OT: Then how were you feeling…
+OT: …when you saw me openly avoiding you?
+
+SFX: Murmur
+
+"": …There’s no point in worrying, huh…
+
+ST: Haa…
+
+
+
+
+page 9 
+
+"": I should just go to bed.
+
+"": …Huh?
+
+"": Just now…
+
+"": …I feel like something was watching from over there.
+
+"": Was it just my imagination…?
+
+"": No, no! There’s definitely something there!!!
+
+SFX: Thud!
+pr/ed sfx in(?) bubble
+
+
+
+page 10 
 
  
 
+(): The gaze was one thing, but that strange energy I felt along with it…
 
+(): I’ve never felt anything like it before, but I’m certain.
 
-page 2
+"": Whatever’s outside… It’s definitely not human.
 
-** Wait a moment.
+"": It’s different from a ghost, much more evil….
 
-“” Before that, don’t we have something to discuss, just the us?
+SFX: Shiver
 
-“” Because of what you did,
+SFX: Tremble…
 
-“” I ended up in a very troublesome situation.
+(): I-I have to tell someone!
 
-“” This doesn’t do either of us any good.
+SFX: Dash
 
-“” …My apologies, Lady.
 
-“” I never meant to cause you any trouble.
 
-“” It’s all my responsibility.
 
-“” …
+page 11 
 
-() …Yeah, I know. Licht wouldn’t have done that on purpose.
+(): I have to tell Rublier that something unholy has entered this house—
 
-# Imprint   Effect
-
-# Staring in front of everyone
-
-# The flirtatious young lord Knocking him out
-
-# Complaining about the Spring Festival’s outcome
-
-() All of this because of the imprint…
-
-() But was that really the best way to handle it?!
-
-
-
-PAGE 3
-
-“” …Young Lord Dmitri. Why did you, of all people, step in?
-
-“” That’s, um…
-
-“” Of course, I’m grateful for your help, but…
-
-“” There were people around us.
-
-“” It could’ve easily spread as a pointless rumor.
-
-“” …That young lord and I.
-
-“” Had a personal grudge.
-
-“” A grudge?
-
-() …Just how bad could that grudge even be?!
-
-() Of all times, why resolve it when it’s perfect for rumors about me?!
-
-[] I was just sitting on the log bridge,
-
-[] And suddenly, a duel broke out.
-
-“” You didn’t have to do that at the Spring Festival.
-
-“” …But didn’t it clearly make you uncomfortable?
-
-“” What?!
-
-
-
-PAGE 4
-
-“” That bastard was leeching onto you like a parasite,
-
-“” How could I just stand by!
-
-“” The moment I saw him being rude to you, my body moved on its own.
-
-“” Why would you care if Young Lord Dmitri was being rude to me…
-
-“” You were worried about the Duke, weren't you?
-
-“” I swear. I absolutely… didn’t do it on purpose.
-
-“” Even declaring the festival void just slipped out.
-
-“” What… did you say?
-
-“” I was there at the same place, you know.
-
-“” I heard every bit of nonsense they were saying about you.
-
-
-
-PAGE 5
-
-“” I didn’t need to hear more to get angry.
-
-“” Because I truly believed you were the most beautiful one there.
-
-() That was… truly what you thought?
-
-“” More importantly, are you alright? Are you hurt anywhere?
-
-() When he’s this gentle, it really feels like he…
-
-() …Ah, I almost forgot for a moment.
-
-() It’s just the effect of the imprint.
-
-“” Why are you worrying about that?
-
-
-
-PAGE 6
-
-“” What? Well, of course I…
-
-“” Do you even realize you’re acting
-
-“” Like we’re lovers right now?
-
-() Ah, again without even realizing it…
-
-“” I think I should go for today.
-
-() I need to break the imprint as soon as possible.
-
-“” My eldest son’s refusal to marry is such a headache.
-
-“” Speaking of which, isn’t Marquis Leslie’s second son turning twenty-eight soon?
-
-
-
-PAGE 7
-
-“” You know children never go the way their parents wish.
-
-“” He must have his own intentions, I’m sure.
-
-“” Still, you must be relieved you don’t have to worry about your daughter.
-
-“” …Pardon?
-
-“” What do you mean by that?
-
-** Huh?
-
-“” Haven’t you heard?
-
-“” There’s talk that she and Duke Cassio are lovers.
-
-“” O-Our Luci? You mean her?!
-
-“” Wait, who did you just say?
-
-“” It’s been all the talk since the Spring Festival.
-
-** Huhhh?!
-
-“” Rumors tend to grow on their own, of course,
-
-“” But there are quite a few nobles who claim they’ve seen your daughter
-
-“” Together with the Duke.
-
-
-
-PAGE 8
-
-“” Duke Cassio, huh? How enviable!
-
-() What did I just hear…?
-
-“” Dear, that thing we heard earlier today,
-
-“” What on earth was that about?
-
-“” …Ah, come to think of it.
-
-“” …Duke Cassio did come by the house once.
-
-“” What? To our house?
-
-“” Not intentionally, his carriage had stopped for a moment…
-
-“” But he spoke to me first, and I thought that was strange.
-
-() It honestly felt like he was trying to call for Luciana…
-
-“” …So that happened, huh.
-
-
-
-PAGE 9
-
-“” Sorry I’m late.
-
-“” Ah, Lucy. Come, sit down.
-
-“” You look tired. Haven’t you been sleeping well?
-
-“” Ah… I’ve just had a lot to do lately.
-
-() She doesn’t look like someone in love, though…
-
-[] Looks the same as she did before graduating from the academy.
-
-[] Someone in love should look…
-
-() So it really is a false rumor, huh.
-
-() Still, I’d better ask to be sure.
-
-“” Oh, Lucy.
-
-“” There’s a rumor going around that you're Duke Cassio’s lover.
-
-“” Lucy, are you alright?
-
-“” Yes, why wouldn’t I be.
-
-() It’s only been two days, just how far has this rumor spread?
-
-
-
-PAGE 10
-
-“” From that reaction, I take it you hadn’t heard yet.
-
-“” Don’t worry, it’s nothing serious.
-
-“” I only asked because people are talking,
-
-“” About you and Duke Cassio being seen together.
-
-“” It’s just nonsense, right?
-
- 
-** I knew it…!
-
-“” ...It’s true.
-
-“” I was with Duke Cassio.
-
-<> What?!
-
+"": Kyaaahh!!!
 
