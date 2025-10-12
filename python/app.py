@@ -93,6 +93,7 @@ class WorkerThread(QThread):
         if os.path.exists(self.folder_url):
             title = os.path.basename(self.folder_url) or self.folder_url
             self.log(f"Local folder detected: {title}")
+            self.log(f"Team detected: {self.team}")
         else:
             self.log("Google Drive URL detected — extracting title...")
             try:
@@ -114,7 +115,7 @@ class WorkerThread(QThread):
                 return
 
         title = title.replace("?", "").replace(":", "_")
-        self.log(f"Title: {title}")
+       
 
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
@@ -152,7 +153,7 @@ class WorkerThread(QThread):
                     r"C:\Users\abdoh\Downloads\testScript\python\download_and_unzip.py",
                 ],
                 check=True,
-                timeout=300,
+                timeout=1000,
             )
             self.log("✅ Processing completed.")
             self.finished.emit(True, "Success")
@@ -435,7 +436,6 @@ class MangaApp(QMainWindow):
 
         if os.path.exists(folder_url):
             title = os.path.basename(folder_url) or folder_url
-            self.append_log(f"Local folder detected: {title}")
         else:
             self.append_log("Google Drive URL detected — extracting title...")
             try:
@@ -457,7 +457,7 @@ class MangaApp(QMainWindow):
                 return
 
         title = title.replace("?", "").replace(":", "_")
-        self.append_log(f"Title: {title}")
+        
 
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)

@@ -1,0 +1,22 @@
+2025-10-11 18:59:48,205 [WARNING] ⚠️ Using EasyOCR.
+2025-10-11 18:59:48,206 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-11 18:59:50,656 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-11 18:59:53,090 [INFO] 🔍 Found 14 images in C:\Users\abdoh\Downloads\17_SEREN_SR
+2025-10-11 19:00:04,938 [INFO] ✅ 01.jpg: 12 valid bubbles found.
+2025-10-11 19:00:21,611 [INFO] ✅ 02.jpg: 13 valid bubbles found.
+2025-10-11 19:00:40,741 [INFO] ✅ 03.jpg: 13 valid bubbles found.
+2025-10-11 19:01:00,866 [INFO] ✅ 04.jpg: 11 valid bubbles found.
+2025-10-11 19:01:31,259 [INFO] ✅ 05.jpg: 17 valid bubbles found.
+2025-10-11 19:01:48,320 [INFO] ✅ 06.jpg: 13 valid bubbles found.
+2025-10-11 19:02:09,628 [INFO] ✅ 07.jpg: 11 valid bubbles found.
+2025-10-11 19:02:30,653 [INFO] ✅ 08.jpg: 10 valid bubbles found.
+2025-10-11 19:02:52,439 [INFO] ✅ 09.jpg: 16 valid bubbles found.
+2025-10-11 19:03:02,161 [INFO] ✅ 10.jpg: 6 valid bubbles found.
+2025-10-11 19:03:17,424 [INFO] ✅ 11.jpg: 12 valid bubbles found.
+2025-10-11 19:03:27,254 [INFO] ✅ 12.jpg: 7 valid bubbles found.
+2025-10-11 19:03:45,397 [INFO] ✅ 13.jpg: 11 valid bubbles found.
+2025-10-11 19:03:55,410 [INFO] ✅ 14.jpg: 2 valid bubbles found.
+2025-10-11 19:03:55,415 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\17_SEREN_SR\cleaned\all_bubbles.json
+2025-10-11 19:03:55,416 [INFO] 🚀 Launching Photoshop for text writing...
+2025-10-11 19:03:55,728 [ERROR] ❌ Failed to run Photoshop JSX: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-11 19:03:55,728 [INFO] === 🏁 Finished detector script ===

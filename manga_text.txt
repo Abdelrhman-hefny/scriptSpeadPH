@@ -1,106 +1,255 @@
-page 1  
-“” No?  
-“” ...You have to be gentle.  
-“” ...?  
-“” I'll let it slide this time because you're pretty.  
-
-page 2  
-() I'll have to take care of it in the bathroom.  
-“” Wait!  
-“” !  
-“” I'll put you to sleep.  
-“” Good night, honey.  
-
-page 3  
-“” I'll get you back double for this when we're back in Seoul.  
-“” Hey, did Mr. Cha Dojin leave?  
-“” Yeah. Thank you for not asking anything even though you must've been flustered last night.  
-“” I came straight from work, so I'll be going ahead.  
-“” Okay, travel safe.  
-“” But are you alright?  
-“” Huh?! What do you mean?  
-
-page 4  
-“” Does your jaw hurt?  Or maybe your teeth?  
-“” I saw you keep holding that side of your face.  
-() How can I tell her it's because of a rough kiss we had yesterday...!!!  
-<> Ugh...!!  
-** Ahaha...  
-“” It's nothing! Maybe it's my wisdom tooth?? It just feels a little itchy!  
-() Anyone can understand it’s clearly an excuse...!!  
-“” Are you sure it's not an allergic reaction?  I think there's some medicine at the studio apartment...  
-“” No, it's not that...  
-“” More importantly, isn't it time for us to get back there soon?  
-“” Ah!  If we leave now, we'll probably make it on time!  
-“” Right?! Let's hurry!  
-() Thank goodness A-ri is so innocent...!  
-** I'm sorry, A-ri...  
-
-page 5  
-“” Wow~ It's been a while since I've been to a broadcasting station.  
-“” By the way, I haven't seen writer Wooseok at all since we were at the airport.  
-“” Huh? You're right.  
-() Come to think of it, I haven't seen him since yesterday...  
-“” Ah~ Wooseok?  
-“” He left.  
-“” Huh? Left? Where to?  
-“” Our drama's script is all done. He said he needed to rest and went on a trip. I think he said Hungary?  
-** I’m going.  
-“” Anyway, he went to Incheon airport this morning and got on a plane right away.  
-
-page 6  
-() He did say he was going to disappear... but so suddenly?  
-“” What about the rest of our filming?  
-() I'm a little worried...  
-“” The script isn't changing, and we can still contact him.  
-“” If something comes up, we can use the internet or call him, so what does it matter?  
  
-** You're right about that.  
-“” Oh!  And now that I think about it, isn't  today our first episode on air?  
-“” Ah~ You're right? After I go home and wash up, I can watch it right away!  
-“” I'm so excited to see people's reactions~!  
-“” In our first episode, you and Jian have that deep kiss!  
-“” The deep kiss ending!  
-“” You're just spoiling things out in the open?  
+PAGE 1
 
-page 7  
-“” Aw, come on, man. It's fine, right?  
-() Was all of the kiss scenes in episode one?  
-** I kind of forgot!!!  
-[] Quiet~  
-  
-“” It doesn't look like Dojin's here.  
-“” Right... He was working even before coming to Udo, so.  
-() I did want to watch the drama I filmed with him...  
-() But watching the kiss scene with him is a bit much.  
+ 
 
-page 8  
-“” 100% juicy chicken thigh meat!  
-“” Hmm~ Hmmhmm~  
-“” Ah~ This is refreshing!  
-“” Is it good?  
-“” Yeah!  Of cour...  
-“” Dojin...?! 
 
-page 9  
-“” What are you doing here...  
-“” No, did you know today was the airing of my first episode?  
-“” Yeah.  I came to watch it together.  
-“” Oh... that's great! I wanted to watch it with you, too.  
-() This is a disaster...  
-“” Hahaha~  
-() Was this in episode 1, too? The TV is too big... 
-** Should I just get rid of it...?  
-() He must be so mad...  
-() He's going to stare a hole right through the screen...  
-“” Your face looks like you want to confess something.  
 
-page 10  
-# Guilt  
-“” ...if I confess, will you forgive me?  
-“” I said I'd get you back double for this, didn't I?  
-“” We can just pick up where we left off.  
-“” The interrupted bed scene right there.  
-“” Ah...  
-() It looks like I won't be sleeping tonight...  
+page 2
+
+** Wait a moment.
+
+“” Before that, don’t we have something to discuss, just the us?
+
+“” Because of what you did,
+
+“” I ended up in a very troublesome situation.
+
+“” This doesn’t do either of us any good.
+
+“” …My apologies, Lady.
+
+“” I never meant to cause you any trouble.
+
+“” It’s all my responsibility.
+
+“” …
+
+() …Yeah, I know. Licht wouldn’t have done that on purpose.
+
+# Imprint   Effect
+
+# Staring in front of everyone
+
+# The flirtatious young lord Knocking him out
+
+# Complaining about the Spring Festival’s outcome
+
+() All of this because of the imprint…
+
+() But was that really the best way to handle it?!
+
+
+
+PAGE 3
+
+“” …Young Lord Dmitri. Why did you, of all people, step in?
+
+“” That’s, um…
+
+“” Of course, I’m grateful for your help, but…
+
+“” There were people around us.
+
+“” It could’ve easily spread as a pointless rumor.
+
+“” …That young lord and I.
+
+“” Had a personal grudge.
+
+“” A grudge?
+
+() …Just how bad could that grudge even be?!
+
+() Of all times, why resolve it when it’s perfect for rumors about me?!
+
+[] I was just sitting on the log bridge,
+
+[] And suddenly, a duel broke out.
+
+“” You didn’t have to do that at the Spring Festival.
+
+“” …But didn’t it clearly make you uncomfortable?
+
+“” What?!
+
+
+
+PAGE 4
+
+“” That bastard was leeching onto you like a parasite,
+
+“” How could I just stand by!
+
+“” The moment I saw him being rude to you, my body moved on its own.
+
+“” Why would you care if Young Lord Dmitri was being rude to me…
+
+“” You were worried about the Duke, weren't you?
+
+“” I swear. I absolutely… didn’t do it on purpose.
+
+“” Even declaring the festival void just slipped out.
+
+“” What… did you say?
+
+“” I was there at the same place, you know.
+
+“” I heard every bit of nonsense they were saying about you.
+
+
+
+PAGE 5
+
+“” I didn’t need to hear more to get angry.
+
+“” Because I truly believed you were the most beautiful one there.
+
+() That was… truly what you thought?
+
+“” More importantly, are you alright? Are you hurt anywhere?
+
+() When he’s this gentle, it really feels like he…
+
+() …Ah, I almost forgot for a moment.
+
+() It’s just the effect of the imprint.
+
+“” Why are you worrying about that?
+
+
+
+PAGE 6
+
+“” What? Well, of course I…
+
+“” Do you even realize you’re acting
+
+“” Like we’re lovers right now?
+
+() Ah, again without even realizing it…
+
+“” I think I should go for today.
+
+() I need to break the imprint as soon as possible.
+
+“” My eldest son’s refusal to marry is such a headache.
+
+“” Speaking of which, isn’t Marquis Leslie’s second son turning twenty-eight soon?
+
+
+
+PAGE 7
+
+“” You know children never go the way their parents wish.
+
+“” He must have his own intentions, I’m sure.
+
+“” Still, you must be relieved you don’t have to worry about your daughter.
+
+“” …Pardon?
+
+“” What do you mean by that?
+
+** Huh?
+
+“” Haven’t you heard?
+
+“” There’s talk that she and Duke Cassio are lovers.
+
+“” O-Our Luci? You mean her?!
+
+“” Wait, who did you just say?
+
+“” It’s been all the talk since the Spring Festival.
+
+** Huhhh?!
+
+“” Rumors tend to grow on their own, of course,
+
+“” But there are quite a few nobles who claim they’ve seen your daughter
+
+“” Together with the Duke.
+
+
+
+PAGE 8
+
+“” Duke Cassio, huh? How enviable!
+
+() What did I just hear…?
+
+“” Dear, that thing we heard earlier today,
+
+“” What on earth was that about?
+
+“” …Ah, come to think of it.
+
+“” …Duke Cassio did come by the house once.
+
+“” What? To our house?
+
+“” Not intentionally, his carriage had stopped for a moment…
+
+“” But he spoke to me first, and I thought that was strange.
+
+() It honestly felt like he was trying to call for Luciana…
+
+“” …So that happened, huh.
+
+
+
+PAGE 9
+
+“” Sorry I’m late.
+
+“” Ah, Lucy. Come, sit down.
+
+“” You look tired. Haven’t you been sleeping well?
+
+“” Ah… I’ve just had a lot to do lately.
+
+() She doesn’t look like someone in love, though…
+
+[] Looks the same as she did before graduating from the academy.
+
+[] Someone in love should look…
+
+() So it really is a false rumor, huh.
+
+() Still, I’d better ask to be sure.
+
+“” Oh, Lucy.
+
+“” There’s a rumor going around that you're Duke Cassio’s lover.
+
+“” Lucy, are you alright?
+
+“” Yes, why wouldn’t I be.
+
+() It’s only been two days, just how far has this rumor spread?
+
+
+
+PAGE 10
+
+“” From that reaction, I take it you hadn’t heard yet.
+
+“” Don’t worry, it’s nothing serious.
+
+“” I only asked because people are talking,
+
+“” About you and Duke Cassio being seen together.
+
+“” It’s just nonsense, right?
+
+ 
+** I knew it…!
+
+“” ...It’s true.
+
+“” I was with Duke Cassio.
+
+<> What?!
+
 

@@ -1,0 +1,24 @@
+2025-10-10 15:47:07,867 [WARNING] ⚠️ Using EasyOCR.
+2025-10-10 15:47:07,868 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-10 15:47:10,122 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-10 15:47:12,337 [INFO] 🔍 Found 16 images in C:\Users\abdoh\Downloads\KEN_75
+2025-10-10 15:47:13,936 [INFO] ✅ 01.jpg: 0 valid bubbles found.
+2025-10-10 15:47:21,247 [INFO] ✅ 02.jpg: 6 valid bubbles found.
+2025-10-10 15:47:38,287 [INFO] ✅ 03.jpg: 14 valid bubbles found.
+2025-10-10 15:47:46,698 [INFO] ✅ 04.jpg: 8 valid bubbles found.
+2025-10-10 15:47:48,921 [INFO] ✅ 05.jpg: 2 valid bubbles found.
+2025-10-10 15:47:56,205 [INFO] ✅ 06.jpg: 5 valid bubbles found.
+2025-10-10 15:48:05,456 [INFO] ✅ 07.jpg: 8 valid bubbles found.
+2025-10-10 15:48:14,200 [INFO] ✅ 08.jpg: 6 valid bubbles found.
+2025-10-10 15:48:21,374 [INFO] ✅ 09.jpg: 6 valid bubbles found.
+2025-10-10 15:48:28,651 [INFO] ✅ 10.jpg: 5 valid bubbles found.
+2025-10-10 15:48:33,787 [INFO] ✅ 11.jpg: 5 valid bubbles found.
+2025-10-10 15:48:45,663 [INFO] ✅ 12.jpg: 9 valid bubbles found.
+2025-10-10 15:48:49,928 [INFO] ✅ 13.jpg: 3 valid bubbles found.
+2025-10-10 15:49:02,311 [INFO] ✅ 14.jpg: 12 valid bubbles found.
+2025-10-10 15:49:18,135 [INFO] ✅ 15.jpg: 11 valid bubbles found.
+2025-10-10 15:49:20,285 [INFO] ✅ 16.jpg: 1 valid bubbles found.
+2025-10-10 15:49:20,289 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\KEN_75\cleaned\all_bubbles.json
+2025-10-10 15:49:20,289 [INFO] 🚀 Launching Photoshop for text writing...
+2025-10-10 16:08:26,775 [INFO] ✅ Photoshop script executed successfully.
+2025-10-10 16:08:26,775 [INFO] === 🏁 Finished detector script ===
