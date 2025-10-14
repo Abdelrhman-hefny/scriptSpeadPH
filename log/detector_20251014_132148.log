@@ -1,0 +1,13 @@
+2025-10-14 13:21:50,987 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-14 13:21:53,308 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-14 13:21:55,566 [WARNING] ⚠️ Using EasyOCR.
+2025-10-14 13:21:55,566 [INFO] 🔍 Found 3 images in C:\Users\abdoh\Downloads\44
+2025-10-14 13:21:55,658 [ERROR] Traceback (most recent call last):
+  File "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py", line 207, in <module>
+    enhanced = preprocess_image(image)
+  File "C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py", line 114, in preprocess_image
+    h, s, v = cv2.split(h); v = cv2.equalizeHist(v)
+                        ^
+UnboundLocalError: cannot access local variable 'h' where it is not associated with a value
+
+2025-10-14 13:21:55,662 [INFO] === 🏁 Finished detector script ===

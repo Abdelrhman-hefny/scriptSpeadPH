@@ -570,7 +570,7 @@ class MangaApp(QMainWindow):
         self.bar.hide()
         if ok:
             self.append_log("✅ Done. Closing application...")
-            QTimer.singleShot(700, QApplication.instance().quit)
+            # QTimer.singleShot(700, QApplication.instance().quit)
         else:
             self.append_log(f"❌ {msg}")
             QMessageBox.critical(self, "Error", msg)
