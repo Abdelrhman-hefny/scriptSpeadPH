@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Speech-bubble detector (no-cut, aligned coords)
-- Edge guard لمنع قصّ عند حدود الشرائح
-- NMS + دمج احتواء للصناديق المتجاورة
+- Edge guard لمنع قصّ عند حدود الشرائح (مُعطّل عمليًا بالقيمة 0)
+- NMS + دمج احتواء للصناديق المتجاورة + حذف الصغير داخل الكبير
+- فصل توسعة الـOCR عن توسعة الباث (PATH_PAD_PX)
 - توسيع الباث PATH_PAD_PX + محاولة fitEllipse/rect
 - EasyOCR فقط
 - بدون حفظ لوج في ملف خارجي (Console فقط)
@@ -74,8 +75,7 @@ try:
 
     DEBUG_SAVE          = bool(cfg.get("debug_save", False))
     EDGE_GUARD          = int(cfg.get("edge_guard", 0))        # عدم حذف صناديق الحواف (نعتمد على التداخل + NMS)
-    # ↓↓↓ التعديل هنا ↓↓↓
-    MERGE_CONTAINMENT   = float(cfg.get("merge_containment", 0.75))  # دمج محتوى-داخل-محتوى أسهل
+    MERGE_CONTAINMENT   = float(cfg.get("merge_containment", 0.75))  # دمج أسهل للصناديق المحتواة
 
     # لتغطية الفقاعة بالكامل
     PATH_PAD_PX       = int(cfg.get("path_pad_px", 4))         # توسيع الباث قبل التصدير
@@ -162,10 +162,6 @@ try:
         if pad <= 0: return [x1, y1, x2, y2]
         return [max(0, x1 - pad), max(0, y1 - pad), min(w_max, x2 + pad), min(h_max, y2 + pad)]
 
-    def inflate_and_clip(box, w_max, h_max, pad):
-        x1, y1, x2, y2 = map(int, box)
-        return [max(0, x1 - pad), max(0, y1 - pad), min(w_max, x2 + pad), min(h_max, y2 + pad)]
-
     def ellipse_from_white(image_bgr, box, points_n=64):
         """إرجاع نقاط إهليلج يغطي أكبر مساحة بيضاء داخل الصندوق؛ أو None."""
         x1, y1, x2, y2 = map(int, box)
@@ -196,11 +192,14 @@ try:
     def has_text(image: np.ndarray, box, backend: str) -> bool:
         x1, y1, x2, y2 = map(int, box)
         h_img, w_img = image.shape[:2]
+        # توسعة OCR فقط
         x1e, y1e, x2e, y2e = expand_box([x1, y1, x2, y2], w_img, h_img, pad=EXPAND_FOR_OCR)
         crop = image[y1e:y2e, x1e:x2e]
         if crop.size == 0 or (x2e - x1e) <= 1 or (y2e - y1e) <= 1:
             return False
         gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+        # تعزيز تباين بسيط يساعد مع النص الأسود على الرمادي
+        gray = cv2.convertScaleAbs(gray, alpha=1.4, beta=10)
         # EasyOCR فقط
         return bool(ocr_ja.readtext(gray, detail=0) or ocr_ko.readtext(gray, detail=0))
 
@@ -234,7 +233,7 @@ try:
         # تقطيع ذكي
         slices = smart_slice_image(enhanced, SLICE_HEIGHT, SLICE_OVERLAP, delta=200)
 
-        # كشف + حراسة حواف الشريحة
+        # كشف (لا نحذف عند الحواف لأن EDGE_GUARD=0)
         raw_boxes, raw_scores = [], []
         for sid, (slice_img, offset_y) in enumerate(slices):
             sh = slice_img.shape[0]
@@ -244,7 +243,6 @@ try:
                 boxes_np = r.boxes.xyxy.cpu().numpy()
                 scores_np = r.boxes.conf.cpu().numpy()
                 for (x1, y1, x2, y2), sc in zip(boxes_np, scores_np):
-                    if y1 < EDGE_GUARD or (sh - y2) < EDGE_GUARD: continue
                     y1f, y2f = y1 + offset_y, y2 + offset_y
                     raw_boxes.append([float(x1), float(y1f), float(x2), float(y2f)])
                     raw_scores.append(float(sc))
@@ -252,7 +250,7 @@ try:
         key = f"{idx:02d}_mask"
         if not raw_boxes:
             all_bubbles[key] = []
-            logger.info(f"ℹ️ {img_file}: no boxes after edge guard.")
+            logger.info(f"ℹ️ {img_file}: no YOLO boxes.")
             continue
 
         boxes_arr = np.array(raw_boxes, dtype=np.float32)
@@ -276,7 +274,7 @@ try:
         keep_idx = nms_numpy(boxes_arr, scores_arr, NMS_IOU_THRESHOLD)
         boxes_arr, scores_arr = boxes_arr[keep_idx], scores_arr[keep_idx]
 
-        # ---------------- دمج احتواء + فلترة التداخل الكامل ----------------
+        # دمج احتواء
         def containment(a, b):
             ax1, ay1, ax2, ay2 = a; bx1, by1, bx2, by2 = b
             ix1, iy1, ix2, iy2 = max(ax1, bx1), max(ay1, by1), min(ax2, bx2), min(ay2, by2)
@@ -292,7 +290,6 @@ try:
             for j in range(i + 1, len(boxes_arr)):
                 if used[j]: continue
                 bj = boxes_arr[j]
-                # دمج أسهل (0.75)
                 if containment(bi, bj) >= MERGE_CONTAINMENT or containment(bj, bi) >= MERGE_CONTAINMENT:
                     x1 = min(bi[0], bj[0]); y1 = min(bi[1], bj[1])
                     x2 = max(bi[2], bj[2]); y2 = max(bi[3], bj[3])
@@ -300,49 +297,54 @@ try:
                     si = max(si, scores_arr[j]); used[j] = True
             merged_boxes.append(bi); merged_scores.append(si); used[i] = True
 
-        # فلترة: احذف أي صندوق مُحتوى بنسبة >0.90 داخل صندوق آخر
-        keep_mask = [True] * len(merged_boxes)
-        for i in range(len(merged_boxes)):
-            if not keep_mask[i]: continue
-            for j in range(len(merged_boxes)):
-                if i == j or not keep_mask[j]: continue
-                if containment(merged_boxes[i], merged_boxes[j]) > 0.90:
-                    keep_mask[i] = False
+        # حذف أي صندوق محتوى بالكامل تقريبًا داخل صندوق آخر (>90%)
+        filtered_boxes, filtered_scores = [], []
+        for i, a in enumerate(merged_boxes):
+            keep_it = True
+            for j, b in enumerate(merged_boxes):
+                if i == j: continue
+                if containment(a, b) > 0.90:   # a داخل b
+                    keep_it = False
                     break
-        merged_boxes  = [b for b, k in zip(merged_boxes, keep_mask) if k]
-        merged_scores = [s for s, k in zip(merged_scores, keep_mask) if k]
+            if keep_it:
+                filtered_boxes.append(a)
+                filtered_scores.append(merged_scores[i])
 
-        boxes_nms  = np.array(merged_boxes, dtype=np.float32)
-        scores_nms = np.array(merged_scores, dtype=np.float32)
-        # -------------------------------------------------------------------
+        boxes_nms  = np.array(filtered_boxes, dtype=np.float32)
+        scores_nms = np.array(filtered_scores, dtype=np.float32)
 
         # OCR + بناء الباث
         valid_bubbles = []
 
         def ocr_job(i):
             b = boxes_nms[i].tolist()
-            b_pad = expand_box(b, W, H, pad=PATH_PAD_PX)  # وسّع قبل OCR والباث
-            if has_text(image, b_pad, OCR_TYPE):
-                cx, cy = get_box_center(b_pad)
 
-                poly = None
-                if FIT_ELLIPSE_TRY:
-                    poly = ellipse_from_white(image, b_pad, points_n=ELLIPSE_POINTS)
-                if poly is None:
-                    poly = [
-                        [int(b_pad[0]), int(b_pad[1])],
-                        [int(b_pad[2]), int(b_pad[1])],
-                        [int(b_pad[2]), int(b_pad[3])],
-                        [int(b_pad[0]), int(b_pad[3])],
-                    ]
+            # أولاً: توسعة خاصة بالـOCR فقط علشان قرار وجود نص
+            b_ocr = expand_box(b, W, H, pad=EXPAND_FOR_OCR)
+            if not has_text(image, b_ocr, OCR_TYPE):
+                return None
 
-                return {
-                    "box": [int(b_pad[0]), int(b_pad[1]), int(b_pad[2]), int(b_pad[3])],
-                    "center": [float(cx), float(cy)],
-                    "score": float(scores_nms[i]),
-                    "points": poly
-                }
-            return None
+            # ثانيًا: نجهّز الباث النهائي (توسعة PATH_PAD_PX فقط للشكل)
+            b_for_path = expand_box(b_ocr, W, H, pad=PATH_PAD_PX)
+            cx, cy = get_box_center(b_for_path)
+
+            poly = None
+            if FIT_ELLIPSE_TRY:
+                poly = ellipse_from_white(image, b_for_path, points_n=ELLIPSE_POINTS)
+            if poly is None:
+                poly = [
+                    [int(b_for_path[0]), int(b_for_path[1])],
+                    [int(b_for_path[2]), int(b_for_path[1])],
+                    [int(b_for_path[2]), int(b_for_path[3])],
+                    [int(b_for_path[0]), int(b_for_path[3])],
+                ]
+
+            return {
+                "box": [int(b_ocr[0]), int(b_ocr[1]), int(b_ocr[2]), int(b_ocr[3])],
+                "center": [float(cx), float(cy)],
+                "score": float(scores_nms[i]),
+                "points": poly
+            }
 
         if OCR_MAX_WORKERS > 0:
             with ThreadPoolExecutor(max_workers=OCR_MAX_WORKERS) as ex:
@@ -354,6 +356,7 @@ try:
                 r = ocr_job(i)
                 if r is not None: valid_bubbles.append(r)
 
+        # ترتيب القراءة
         valid_bubbles.sort(key=lambda b: (b["center"][1], b["center"][0]))
 
         if DEBUG_SAVE:
@@ -394,7 +397,7 @@ try:
 except Exception:
     logger.error(traceback.format_exc())
     success = False
-finally:        
+finally:
     logger.info("=== 🏁 Finished detector script ===")
     if not success: time.sleep(2)
     sys.exit(0 if success else 1)
