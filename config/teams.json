@@ -116,38 +116,7 @@
       "Ot:": "CCPrinceOfDarkness-Regular  historical"
     }
   }, 
-  "violet": {
-    "defaultFont": "Bang-Zoom!-Regular",
-    "baseFontSize": 29,
-    "minFontSize": 20,
-    "boxPaddingRatio": 0.18,
-    "fontMap": {
-      "\"\":": "Bang-Zoom!-Regular",
-      "\"\"": "Bang-Zoom!-Regular",
-      "\u201c\u201d:": "Bang-Zoom!-Regular",
-      "\u201c\u201d": "Bang-Zoom!-Regular",
-         "\u201c\u201c:": "Bang-Zoom!-Regular",
-      "\u201c\u201c": "Bang-Zoom!-Regular",
-      "\u2018\u2018:": "Bang-Zoom!-Regular",
-      "\u2018\u2018": "Bang-Zoom!-Regular",
-      "``:": "Bang-Zoom!-Regular",
-      "``": "Bang-Zoom!-Regular",
-      "ST:": "CCScoundrel-Regular",
-      "st:": "CCScoundrel-Regular",
-      "St:": "CCScoundrel-Regular",
-      "()": "Bang-Zoom!-Italic",
-      "():": "Bang-Zoom!-Italic",
-      "[]:": "SSRosehip-Regular",
-      "[]": "SSRosehip-Regular",
-      "[]::": "FriendorFoeTallBB",
-      "<>": "CCShoutOutGSN",
-      "$:": "FriendorFoeTallBB",
-      "$": "FriendorFoeTallBB",
-      "OT:": "SSRosehip-bold",
-      "OT": "SSRosehip-Regular",
-      "Ot:": "SSRosehip-Regular"
-    }
-  },
+
   "ez japan": {
     "defaultFont": "CCMightyMouth-Regular",
     "baseFontSize": 29,
@@ -180,6 +149,37 @@
       "OTH": "CCPrinceOfDarkness-Regular",
       "Ot:": "CCTallTales-Regular",
       "ot": "CCTallTales-Regular"
+    }
+  },  "violet": {
+    "defaultFont": "Bang-Zoom!-Regular",
+    "baseFontSize": 29,
+    "minFontSize": 20,
+    "boxPaddingRatio": 0.18,
+    "fontMap": {
+      "\"\":": "Bang-Zoom!-Regular",
+      "\"\"": "Bang-Zoom!-Regular",
+      "\u201c\u201d:": "Bang-Zoom!-Regular",
+      "\u201c\u201d": "Bang-Zoom!-Regular",
+         "\u201c\u201c:": "Bang-Zoom!-Regular",
+      "\u201c\u201c": "Bang-Zoom!-Regular",
+      "\u2018\u2018:": "Bang-Zoom!-Regular",
+      "\u2018\u2018": "Bang-Zoom!-Regular",
+      "``:": "Bang-Zoom!-Regular",
+      "``": "Bang-Zoom!-Regular",
+      "ST:": "CCScoundrel-Regular",
+      "st:": "CCScoundrel-Regular",
+      "St:": "CCScoundrel-Regular",
+      "()": "Bang-Zoom!-Italic",
+      "():": "Bang-Zoom!-Italic",
+      "[]:": "SSRosehip-Regular",
+      "[]": "SSRosehip-Regular",
+      "[]::": "FriendorFoeTallBB",
+      "<>": "CCShoutOutGSN",
+      "$:": "FriendorFoeTallBB",
+      "$": "FriendorFoeTallBB",
+      "OT:": "SSRosehip-bold",
+      "OT": "SSRosehip-Regular",
+      "Ot:": "SSRosehip-Regular"
     }
   },
   "nyx": {

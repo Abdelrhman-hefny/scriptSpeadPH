@@ -14,7 +14,7 @@ import traceback
 log_file = rf"C:\Users\abdoh\Downloads\testScript\log\detector_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
+    format="%(asctime)s [%(levelname)s] %(message)s",   
     handlers=[logging.FileHandler(log_file, encoding="utf-8"), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ try:
     folder = cfg["title"]
     base = os.path.join(r"C:\Users\abdoh\Downloads", folder)
     image_folder = base
-    output_path = os.path.join(base, "cleaned", "all_bubbles.json")
+    output_path = os.path.join(base,  "all_bubbles.json")
 
     pspath = cfg.get(
         "pspath", r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
@@ -80,7 +80,7 @@ try:
     SLICE_HEIGHT = 4000
     MIN_BUBBLE_AREA = 2000  # اكتشاف فقاعات صغيرة
     CONTAINMENT_THRESHOLD = 0.95
-    MIN_DIM_THRESHOLD = 100
+    MIN_DIM_THRESHOLD = 100     
     YOLO_IMG_SIZE = 672  # وضوح أعلى = حساسية أعلى (أبطأ قليلاً) اكبر
 
     # ===== دوال مساعدة =====

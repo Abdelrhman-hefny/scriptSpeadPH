@@ -51,6 +51,32 @@ if exist "%cleanFolder%" (
     )
 )
 
+
+
+
+
+:: === Check for all_bubble.json ===
+set "bubbleJson=%folder%\all_bubbles.json"
+
+if exist "%bubbleJson%" (
+    echo [INFO] all_bubble.json found in cleaned folder.
+    echo Running Photoshop script directly...
+
+    :: run Photoshop script
+    set "psScript=C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
+    set "psApp=C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
+
+    if exist "!psApp!" (
+        start "" "!psApp!" "!psScript!"
+    ) else (
+        echo [ERROR] Photoshop not found at "!psApp!"
+        pause
+        exit /b
+    )
+
+    goto :done
+)
+
 :: === Run detector script ===
 set "py=C:\Users\abdoh\Downloads\testScript\python\extract_bubbles_by_images_ai.py"
 if not exist "%py%" (
@@ -65,5 +91,6 @@ if errorlevel 1 (
     exit /b
 )
 
+:done
 echo Done.
 exit /b

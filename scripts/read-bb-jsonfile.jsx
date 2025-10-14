@@ -12,7 +12,7 @@ if (app.documents.length > 0) {
 }
 
 // ==== JSON file path ====
-var jsonFile = new File(parentFolder + "/cleaned/all_bubbles.json");
+var jsonFile = new File(parentFolder + "/all_bubbles.json");
 
 // ==== Open and read JSON ====
 if (!jsonFile.exists || !jsonFile.open("r")) {
