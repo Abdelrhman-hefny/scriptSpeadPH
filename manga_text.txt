@@ -1,78 +1,249 @@
-page 1
-
-# I wandered through the forest all night, hunting beasts…
-
-# She’s the woman who consciously decided to leave me. There’s no reason, nor any need for me to care anymore…
-
-page 2
-
-= Pathetic beyond words.
-
-# Let’s return to the estate…
+page 1   
 
  
-“” …Fog?
 
-page 3
+“”: Immortal King.  
 
-= …Juli—
+“”: I will never live as your slave again.  
 
-“” There you are!
+“”: ...Come in.  
 
-“” I’m pregnant.
+“”: Lady Siana!  
 
-page 4
+[]: The Vow of Rebellion — Andrew Weaver  
 
-“” So let’s run away together, far away.
+“”: You look beautiful as always today!  
 
- 
-= Ha… hahaha…
+“”: Enough with the small talk, Mr. Andrew.  
+//: Did you find out who the new head of the Varcoslach Clan is?  
 
-= Have I started losing my mind…?
+“”: Of course.  
 
-= To be captivated by a mere illusion of her smiling blissfully in another man’s arms…
+“”: The opponent is a true blood vampire.  
 
-page 5
+“”: His name is “Heinz.”  
 
-= As long as that man is by her side, Juliet will never return.
 
-= …If I want to get Juliet back, I’ll have to permanently take care of him.
+page 2   
 
-# First, I need to find out who that bastard is.
-
-# If I go to the Monad Estate, I might figure out some clues.
-
-# …I’ll never let her go again!
-
-page 6
-
-“” The Monad Estate is located on the outskirts of the capital.
-
-“” Hardly anyone ever comes here.
-
-page 7
-
-= Oh, w-welcome, Your Grace, Duke Carlisle.
-
-“” Has no gardener been hired here?
-
-= I beg your pardon for showing you such a sight, Your Grace.
-
-= We couldn’t afford to keep a gardener…
+“”: Even if he’s true blood,
+//: how could he possibly swallow up an entire vampire clan?  
 
  
-= …My deepest apologies, Your Grace,
-= but the young lady is currently away.
 
-“” I know.
-“” Which way is Juliet’s room?
+ST: Haa…
 
-“” The west side of the third floor.
+“”: W-Well, that part is still…  
 
-“” This is the room.
+<> What was that?!  
 
-“” She’s used it ever since she took her first steps.
+<> Lady! Your horns are showing, horns!!!  
 
-page 8
+“”: …I told you already.  
 
- 
+“”: My skill, “Trajectory Observation,” might be like a clairvoyant ability,  
+
+“”: but to examine things more closely, I need to upgrade it with Karma….  
+
+“”: Enough! I don’t need excuses.  
+
+(): Tch…!  
+
+ST: Just give me the data, then talk.  
+
+(): No matter how good the long-range surveillance skill is,  
+
+(): without intel, all I get is a blurry view!  
+
+“”: Anyway, it’s good that the new lord of Varcoslach isn’t of pure blood.
+// That makes him easier to take down.  
+
+“”: Will you personally handle it, Lady Siana?  
+
+“”: As if I would.  
+
+
+page 3   
+
+“”: The strongest vampire clan on the continent,  
+
+“”: “Yufersh,” will wage a conquest war.  
+
+“”: You gathered the data fast.  
+
+“”: Of course. 
+//: It was a special order from the Lord in a long time.  
+
+“”: I mobilized all of Heterosis’s resources!  
+
+(): Metal properties,  
+
+(): how to grip a hammer, and real combat.  
+
+(): I can’t fully grasp it from just reading the materials but…  
+
+(): As expected, dwarves are dwarves.  
+
+ST: Oh ho…  
+
+ST: Hmhm!  
+
+(): Howard gets it right away, doesn’t he?  
+
+(): Once the teleportation cooldown ends, 
+//: I’ll send him to Hubert Trading Company’s workshop.  
+
+
+page 4   
+
+“”: Oh right,
+//: there’s one more thing to report to the Lord.  
+
+“”: What is it?  
+
+“”: We found signs that the Vancheon Society is interacting with other factions.  
+
+“”: Other factions?  
+
+“”: I plan to dig a little deeper into their identities.  
+
+(): The Vancheon Society… what are they scheming?  
+
+(): …Well, there’s no rush.  
+//: As long as we handle it thoroughly.  
+
+(): Time is on our side.  
+
+(): While my personas trained and grew for ten months,  
+
+(): only a single month passed on Earth.  
+
+“”: Yes, I’ll be going now!  
+
+(): A child?  
+
+
+page 5   
+
+“”: May I ask what business brings you here…?  
+
+“”: I’ve come to see Mullo.  
+
+“”: Lead the way.  
+
+() H-How dare you speak so casually to Lord Mullo…!  
+
+“”: Did you have an appointment in advance?  
+
+“”: Do I need to have one?  
+//: Just tell him Briki is here, he’ll understand.  
+
+“”: What an insolent thing to say.  
+//: I’ll inform Lord Mullo, so return at once.  
+
+“”: That won’t be necessary.  
+
+“”: Welcome.  
+
+“”: Lord Varcoslach.  
+
+“”: It’s been a while, Mullo.  
+
+“” L-Lord Varcoslach?!  
+
+“”: Then could this person be the founder of the clan—  
+
+“”: You mean… pure blood “Lord Varcoslach” himself?!  
+
+
+page 6   
+
+“”: I deeply apologize for not welcoming you properly, Lord Varcoslach.  
+//: Frigia must have stepped out…
+
+“”: Hey now! I told you to call me Briki.  
+
+“”: “Varcoslach” sounds way too stiff.  
+
+“”: Yes, Lord Briki.  
+
+(): This is troublesome.  
+
+(): There should’ve been at least twenty years left before the scheduled visit.  
+
+(): For you to suddenly show up like this…  
+
+ST: Hmmm…  
+
+“”: But something’s really strange.  
+
+“”: That kid at the door earlier.  
+
+“”: His essence hasn’t changed, and yet,  
+//: there are too many incomprehensible changes.  
+
+
+page 7   
+
+“”: He didn’t even recognize his own master.  
+
+“”: I-Is that so?  
+
+ST: I… I was just…  
+
+“”: Don’t try to make excuses.  
+
+“”: You’re the same.  
+
+(): …I can’t fight against Lord Briki.  
+//: Nor do I want to.  
+
+(): Of all times, this had to happen while Lord Heinz is away…  
+
+“”: He definitely carries my blood, but…  
+
+ST: Can it really change this much?  
+
+“”: Well, anyway…  
+
+“”: Where is the one who made you like this?  
+
+() You knew everything and were just testing us!  
+
+(): So this is how it ends…  
+
+“”: …He’s stepped away for now.  
+
+“”: Then I suppose I can stay here while I wait?  
+
+ST: I didn’t really prepare a place to rest.  
+
+“”: Of course.  
+
+
+page 8   
+
+“”: ...  
+
+(): This is truly fascinating.  
+
+(): I’ve always dreamed of it.  
+
+(): Strengthening the bloodline through evolution and passing down a superior lineage… 
+//: If that were truly possible,  
+
+(): we vampires could step into the light.  
+
+OT: And yet…  
+
+(): When I woke up from my slumber, someone had actually opened that possibility.  
+
+(): Let’s see.  
+
+(): You admirable descendant,  
+
+(): and the bold rebel who dared defy my blood…
+
+
+
+
