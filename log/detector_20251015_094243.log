@@ -1,9 +1,0 @@
-2025-10-15 09:42:43,332 [INFO] CUDA: False
-2025-10-15 09:42:46,452 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-15 09:42:48,844 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-15 09:42:51,108 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-15 09:42:53,549 [INFO] 🔍 Found 3 images in C:\Users\abdoh\Downloads\21_seren_shes
-2025-10-15 09:43:44,015 [INFO] ✅ 01.jpg: bubbles=6 (extra=0)
-2025-10-15 09:44:50,968 [INFO] ✅ 02.jpg: bubbles=13 (extra=2)
-2025-10-15 09:46:01,471 [INFO] ✅ 03.jpg: bubbles=15 (extra=0)
-2025-10-15 09:46:01,577 [INFO] 💾 Saved JSON to: C:\Users\abdoh\Downloads\21_seren_shes\all_bubbles.json

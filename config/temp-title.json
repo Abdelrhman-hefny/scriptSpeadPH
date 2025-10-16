@@ -9,6 +9,6 @@
   "continueWithoutDialog": false,
   "autoNext": false,
   "ocr_model": "easy",
-  "dont_Open_After_Clean": false,
+  "dont_Open_After_Clean": true,
   "ai_clean": true
 }

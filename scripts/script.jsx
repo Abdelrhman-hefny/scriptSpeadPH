@@ -2,7 +2,8 @@
 app.bringToFront();
 
 (function mainLoop() {
-  // ======= Helpers =======
+  // 1. Helpers
+
   function arrayIndexOf(arr, val) {
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] === val) return i;
@@ -14,7 +15,8 @@ app.bringToFront();
     return str.replace(/^\s+|\s+$/g, "");
   }
 
-  // ======= Teams array =======
+  // 2. Initial Setup & Config Reading
+
   var teams = [
     "arura",
     "ez",
@@ -28,7 +30,6 @@ app.bringToFront();
     "nyx",
   ];
 
-  // ======= Read temp file =======
   var tempFile = new File("C:/Users/abdoh/Downloads/testScript/temp-title.txt");
   var chosenTeam, originalsFolder, param;
 
@@ -51,7 +52,8 @@ app.bringToFront();
     }
   }
 
-  // ======= Validate inputs =======
+  // 3. Validation
+
   if (!originalsFolder || !originalsFolder.exists) {
     alert("Originals folder not found or invalid");
     return;
@@ -68,7 +70,8 @@ app.bringToFront();
     return;
   }
 
-  // ======= Find files helper =======
+  // 4. Find Watermark/End Page Files
+
   function findByRegex(folder, regex) {
     try {
       var items = folder.getFiles(function (f) {
@@ -77,7 +80,7 @@ app.bringToFront();
       for (var i = 0; i < items.length; i++) {
         if (regex.test(items[i].name)) return items[i];
       }
-    } catch (e) {}
+    } catch (e) { }
     return null;
   }
 
@@ -89,7 +92,8 @@ app.bringToFront();
     return;
   }
 
-  // ======= Place file as smart object =======
+  // 5. Photoshop Layer Operations
+
   function placeFileAsSmartObject(targetDoc, fileToPlace) {
     try {
       app.activeDocument = targetDoc;
@@ -106,12 +110,10 @@ app.bringToFront();
     var layer = placeFileAsSmartObject(doc, watermarkFile);
     if (!layer) return;
     layer.name = "Watermark";
-    if (chosenTeam.toLowerCase() === "ken") layer.opacity = 100;
-    else layer.opacity = 50;
+    layer.opacity = chosenTeam.toLowerCase() === "ken" ? 100 : 50;
 
     try {
       var docW = doc.width.as("px");
-      var docH = doc.height.as("px");
 
       var b = layer.bounds;
       var curW = b[2].as("px") - b[0].as("px");
@@ -122,9 +124,9 @@ app.bringToFront();
       var curH = b[3].as("px") - b[1].as("px");
 
       var targetX = 10 - b[0].as("px");
-      var targetY = docH - 1000 - curH - b[1].as("px");
+      var targetY = doc.height.as("px") - 1000 - curH - b[1].as("px");
       layer.translate(targetX, targetY);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function addEndPage(doc) {
@@ -150,10 +152,11 @@ app.bringToFront();
       var offsetX = (docW - curW) / 2 - b[0].as("px");
       var offsetY = docH + curH - curH - b[1].as("px");
       layer.translate(offsetX, offsetY);
-    } catch (e) {}
+    } catch (e) { }
   }
 
-  // ======= Process folder =======
+  // 6. Main Processing Logic
+
   function processFolder(folder) {
     if (!folder.exists) return;
     var cleanedFolder = new Folder(folder + "/cleaned");
@@ -164,6 +167,7 @@ app.bringToFront();
     });
 
     for (var i = 0; i < files.length; i++) {
+       var docOriginal, docCleaned;
       try {
         var originalFile = files[i];
         var baseName = originalFile.name.replace(/\.(jpe?g|png|psd)$/i, "");
@@ -177,8 +181,8 @@ app.bringToFront();
 
         if (cleanedFiles.length === 0) continue;
 
-        var docOriginal = open(originalFile);
-        var docCleaned = open(cleanedFiles[0]);
+        docOriginal = open(originalFile);
+        docCleaned = open(cleanedFiles[0]);
 
         docCleaned.selection.selectAll();
         docCleaned.selection.copy();
@@ -198,20 +202,22 @@ app.bringToFront();
         docOriginal.saveAs(saveFile, psdOptions, true, Extension.LOWERCASE);
         docOriginal.close(SaveOptions.DONOTSAVECHANGES);
       } catch (e) {
-        if (app.documents.length > 0)
+        if (app.documents.length > 0) {
           try {
             app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
-          } catch (ignore) {}
+          } catch (ignore) { }
+        }
       }
     }
   }
 
-  // ======= Reopen processed PSDs =======
   function reopenProcessedPSDs(folder) {
     if (!folder.exists) return;
+
     var psdFiles = folder.getFiles(function (f) {
       return f instanceof File && f.name.match(/\.psd$/i);
     });
+
     psdFiles.sort(function (a, b) {
       return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
     });
@@ -219,39 +225,26 @@ app.bringToFront();
     for (var i = 0; i < psdFiles.length; i++) {
       try {
         open(psdFiles[i]);
-      } catch (e) {}
+      } catch (e) { }
     }
 
-    // افتح صفحات إضافية حسب الفريق
     try {
-      if (chosenTeam.toLowerCase() === "rezo")
+      var team = chosenTeam.toLowerCase();
+      if (team === "rezo")
         open(new File("C:/Users/abdoh/Documents/waterMark/rezo/00.psd"));
-      else if (chosenTeam.toLowerCase() === "ez")
+      else if (team === "ez")
         open(new File("C:/Users/abdoh/Documents/waterMark/ez/00.psd"));
-      else if (chosenTeam.toLowerCase() === "nyx")
+      else if (team === "nyx")
         open(new File("C:/Users/abdoh/Documents/waterMark/nyx/00.png"));
-      else if (chosenTeam.toLowerCase() === "seren")
+      else if (team === "seren")
         open(new File("C:/Users/abdoh/Documents/waterMark/seren/00.psd"));
-    } catch (e) {}
+    } catch (e) { }
   }
+  // 7. Execution Flow
 
-  // ======= Run Python Script =======
-  // try {
-  //   // var pythonScript = "C:\\Users\\abdoh\\Downloads\\testScript\\python\\extract_bubbles_from_mask.py";
-  //   var cmd = 'python "' + pythonScript + '" "' + param + '"';
-  //   var runFile = new File(Folder.temp + "/runPython.bat");
-  //   runFile.open("w");
-  //   runFile.writeln("@echo off");
-  //   runFile.writeln(cmd);
-  //   runFile.close();
-  //   // runFile.execute();
-  // } catch (e) {}
-
-  // ======= Start processing =======
   processFolder(originalsFolder);
   reopenProcessedPSDs(originalsFolder);
 
-  // ======= Run BAT file =======
   try {
     // var batFile = new File("C:\\Users\\abdoh\\Downloads\\testScript\\batch\\run_detext-bb-by-json.bat");
     // if(batFile.exists) batFile.execute();
@@ -259,11 +252,8 @@ app.bringToFront();
     alert("BAT execution failed: " + e);
   }
 
-  // ======= Go to first document =======
   if (app.documents.length > 0) app.activeDocument = app.documents[0];
 
-  // ======= Ask for another folder =======
-  // if(confirm("Do you want to select another folder?")) mainLoop();
   $.evalFile(
     "C:/Users/abdoh/Downloads/testScript/scripts/read-bb-jsonfile.jsx"
   );

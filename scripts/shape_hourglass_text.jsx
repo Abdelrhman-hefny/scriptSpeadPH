@@ -4,9 +4,6 @@
 // 2) Select a text layer with the bubble text
 // 3) Run this script
 
-#include "../lib/speadUtils.jsx"
-#include "../lib/bubble_text_centering_solution.jsx"
-
 (function(){
   try {
     if (!documents.length) {

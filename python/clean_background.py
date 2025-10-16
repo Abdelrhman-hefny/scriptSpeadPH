@@ -101,7 +101,7 @@ def find_clean_image_for_mask(mask_path: Path) -> Path | None:
         if cand.exists(): return cand
     return None
 
-def clean_one(mask_path: Path, mode="auto", erode_iters=1, telea_radius=3):
+def clean_one(mask_path: Path, mode="auto", erode_iters=1, telea_radius=4):
     img_path = find_clean_image_for_mask(mask_path)
     if not img_path:
         print(f"لا توجد صورة مقابلة للماسك: {mask_path.name}")

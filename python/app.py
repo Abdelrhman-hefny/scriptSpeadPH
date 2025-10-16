@@ -22,6 +22,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
 from urllib.parse import urlparse
+from glob import glob
+from pathlib import Path
+import time # تم إضافة import time
 
 # ----- المسارات -----
 CFG_PATH = r"C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
@@ -49,7 +52,7 @@ class WorkerThread(QThread):
         enable_log=False,
         ocr_model="manga",
         dont_Open_After_Clean=False,
-        ai_clean=False,               # <<< NEW
+        ai_clean=False,             # <<< NEW
     ):
         super().__init__()
         self.folder_url = folder_url.strip()
@@ -63,7 +66,7 @@ class WorkerThread(QThread):
         self.enable_log = enable_log
         self.ocr_model = ocr_model
         self.dont_Open_After_Clean = dont_Open_After_Clean
-        self.ai_clean = ai_clean     # <<< NEW
+        self.ai_clean = ai_clean      # <<< NEW
 
         if enable_log:
             today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -136,7 +139,7 @@ class WorkerThread(QThread):
                 "autoNext": bool(self.auto_next),
                 "ocr_model": self.ocr_model,
                 "dont_Open_After_Clean": bool(self.dont_Open_After_Clean),
-                "ai_clean": bool(self.ai_clean),        # <<< NEW
+                "ai_clean": bool(self.ai_clean),      # <<< NEW
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -270,7 +273,7 @@ class MangaApp(QMainWindow):
         self.auto_next_chk = QCheckBox("Auto Next")
         self.enable_log_chk = QCheckBox("Enable Log")
         self.dont_Open_After_Clean = QCheckBox("don't Open After Clean")
-        self.ai_clean_chk = QCheckBox("AI Clean")     # <<< NEW
+        self.ai_clean_chk = QCheckBox("AI Clean")      # <<< NEW
 
         # ترتيب العناصر في الجريد
         options_layout.addWidget(self.stop_chk,        0, 0)
@@ -324,7 +327,7 @@ class MangaApp(QMainWindow):
         control_layout.addWidget(self.cancel_btn, stretch=1)
         self.force_stop_btn = QPushButton("Force Stop")
         self.force_stop_btn.clicked.connect(self.force_stop)
-        self.force_stop_btn.setEnabled(False)
+        # self.force_stop_btn.setEnabled(False) # <--- هذا السطر يقوم بتعطيل الزر
         control_layout.addWidget(self.force_stop_btn, stretch=1)
         main_layout.addLayout(control_layout)
 
@@ -400,8 +403,14 @@ class MangaApp(QMainWindow):
             return False
 
     def append_log(self, text):
+        # 1. إضافة النص الجديد
         self.log.append(text)
+        
+        # 2. طباعة النص في الكونسول (للمتابعة)
         print(text)
+        
+        # 3. 🚨 السطر الجديد الذي يقوم بالتمرير إلى الأسفل 🚨
+        self.log.ensureCursorVisible()
 
     def load_config_if_exists(self):
         if os.path.exists(CFG_PATH):
@@ -423,7 +432,7 @@ class MangaApp(QMainWindow):
                 self.continue_chk.setChecked(cfg.get("continueWithoutDialog", False))
                 self.auto_next_chk.setChecked(cfg.get("autoNext", False))
                 self.dont_Open_After_Clean.setChecked(cfg.get("dont_Open_After_Clean", False))
-                self.ai_clean_chk.setChecked(cfg.get("ai_clean", False))   # <<< NEW
+                self.ai_clean_chk.setChecked(cfg.get("ai_clean", False))    # <<< NEW
                 ocr_model = cfg.get("ocr_model", "manga")
                 if ocr_model == "paddle":
                     self.rb_paddle.setChecked(True)
@@ -491,7 +500,7 @@ class MangaApp(QMainWindow):
                 "autoNext": bool(self.auto_next_chk.isChecked()),
                 "ocr_model": ocr_model,
                 "dont_Open_After_Clean": bool(self.dont_Open_After_Clean.isChecked()),
-                "ai_clean": bool(self.ai_clean_chk.isChecked()),   # <<< NEW
+                "ai_clean": bool(self.ai_clean_chk.isChecked()),    # <<< NEW
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -514,7 +523,7 @@ class MangaApp(QMainWindow):
 
         self.start_btn.setEnabled(False)
         self.cancel_btn.setEnabled(True)
-        self.force_stop_btn.setEnabled(True)
+        # self.force_stop_btn.setEnabled(True)
         self.bar.show()
 
         mode = (
@@ -541,7 +550,7 @@ class MangaApp(QMainWindow):
             enable_log,
             ocr_model,
             self.dont_Open_After_Clean.isChecked(),
-            self.ai_clean_chk.isChecked(),     # <<< NEW
+            self.ai_clean_chk.isChecked(),      # <<< NEW
         )
         self.worker.status.connect(self.append_log)
         self.worker.finished.connect(self.done)
@@ -553,35 +562,94 @@ class MangaApp(QMainWindow):
             self.append_log("⛔ Process cancelled.")
             self.done(False, "Cancelled")
 
+    # 🔄 الدالة المُعدَّلة: إغلاق إجباري، انتظار 3 ثوانٍ، وإعادة تشغيل مع فتح ملفات PSD
+# 🆕 الدالة الجديدة لفتح الفوتوشوب وملفات PSD بعد التأخير
+    def restart_ps_and_open_psds(self):
+        """
+        تقوم هذه الدالة بالبحث عن ملفات PSD في المسار المحفوظ وإعادة تشغيل 
+        Photoshop وفتح هذه الملفات بالترتيب.
+        """
+        try:
+            # 1. قراءة مسار المجلد من ملف الإعدادات
+            try:
+                # CFG_PATH هو مسار الإعدادات (temp-title.json)
+                with open(CFG_PATH, "r", encoding="utf-8") as f:
+                    cfg = json.load(f)
+                folder_path = cfg.get("folder_url", "").strip()
+            except Exception as e:
+                self.append_log(f"❌ لم يتم العثور على مسار المجلد في الإعدادات: {e}")
+                return
+
+            if not os.path.isdir(folder_path):
+                self.append_log(f"❌ المسار المحدد ({folder_path}) ليس مجلدًا صالحًا.")
+                return
+
+            # 2. العثور على ملفات PSD وترتيبها أبجدياً
+            # glob للبحث عن جميع الملفات التي تنتهي بـ .psd
+            psd_files = sorted(glob(os.path.join(folder_path, "*.psd")))
+            if not psd_files:
+                self.append_log(f"⚠ لم يتم العثور على ملفات PSD في المجلد: {folder_path}")
+                return
+
+            # 3. إعادة تشغيل Photoshop وفتح الملفات
+            self.append_log(f"⏱️ إعادة تشغيل Photoshop وفتح {len(psd_files)} ملف PSD...")
+            
+            # التأكد من صلاحية مسار Photoshop
+            if not os.path.exists(DEFAULT_PSPATH):
+                self.append_log("❌ فشل: مسار Photoshop غير صالح لإعادة التشغيل.")
+                return
+
+            # بناء أمر التشغيل: يتم تمرير المسارات كـ arguments لـ Photoshop
+            # يجب استخدام قائمة (list) كأمر تشغيل في Popen لفتح ملفات متعددة
+            command = [DEFAULT_PSPATH] + psd_files
+            
+            # استخدام subprocess.Popen لتشغيل عملية جديدة دون انتظار
+            # (shell=False هو الأكثر أمانًا)
+            subprocess.Popen(command, shell=False) 
+            self.append_log(f"✅ تم بدء تشغيل Photoshop وفتح {len(psd_files)} ملف. (في عملية جديدة)")
+
+        except Exception as e:
+            self.append_log(f"❌ فشل في إعادة تشغيل Photoshop وفتح الملفات: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to restart Photoshop: {e}")
+
+# ----------------------------------------------------------------------
+    
+    # 🔄 الدالة المُعدَّلة: إغلاق إجباري، انتظار 5 ثوانٍ، وإعادة تشغيل مع فتح ملفات PSD
     def force_stop(self):
         try:
-            subprocess.Popen("taskkill /F /IM python.exe /T", shell=True)
-            subprocess.Popen("taskkill /F /IM Photoshop.exe /T", shell=True)
-            subprocess.Popen("taskkill /F /IM cmd.exe /T", shell=True)
-            subprocess.Popen("taskkill /F /IM powershell.exe /T", shell=True)
-            self.append_log(
-                "🛑 Force stopped all processes (Python, Photoshop, cmd, powershell)."
-            )
-
+            # 1. إغلاق إجباري لـ Photoshop والعمليات ذات الصلة
+            self.append_log("🛑 إغلاق إجباري لـ Photoshop...")
+            
+            # إغلاق آمن لعملية العامل (Worker) إن كانت تعمل
             if self.worker and self.worker.isRunning():
                 self.worker.terminate()
+                self.append_log("تم إنهاء عملية العامل (Worker) بنجاح.")
 
-            self.done(False, "Force stopped all processes")
+            # قتل عمليات Photoshop بالقوة (F) وجميع العمليات الفرعية (T)
+            subprocess.Popen('taskkill /F /IM Photoshop.exe /T', shell=True) 
+            
+            self.done(False, "Force stopped Photoshop")
+            
+            # 2. استخدام QTimer لتأجيل عملية إعادة التشغيل
+            # 5000 ميلي ثانية = 5 ثوانٍ
+            self.append_log("⏳ الانتظار 5 ثوانٍ قبل إعادة تشغيل Photoshop...")
+            QTimer.singleShot(5000, self.restart_ps_and_open_psds) 
+
         except Exception as e:
-            self.append_log(f"❌ Error during force stop: {e}")
+            self.append_log(f"❌ خطأ غير متوقع أثناء الإيقاف الإجباري: {e}")
             QMessageBox.critical(self, "Error", f"Failed to force stop processes: {e}")
-
+            
     def done(self, ok, msg):
         self.start_btn.setEnabled(True)
         self.cancel_btn.setEnabled(True)
-        self.force_stop_btn.setEnabled(False)
+        # self.force_stop_btn.setEnabled(False)
         self.bar.hide()
         if ok:
             self.append_log("✅ Done. Closing application...")
             # QTimer.singleShot(700, QApplication.instance().quit)
         else:
             self.append_log(f"❌ {msg}")
-            QMessageBox.critical(self, "Error", msg)
+            # QMessageBox.critical(self, "Error", msg) # لا نعرض رسالة خطأ هنا لتجنب تكرار الرسائل
 
 
 if __name__ == "__main__":
