@@ -1,0 +1,6 @@
+2025-10-15 09:59:43,639 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-15 09:59:48,853 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-15 09:59:54,245 [INFO] ✅ Using EasyOCR (gpu=False).
+2025-10-15 09:59:54,246 [INFO] 🔍 Found 3 images in C:\Users\abdoh\Downloads\21_seren_shes
+2025-10-15 10:02:12,937 [INFO] ✅ 01.jpg: bubbles=4 (yolo=7 + extra=3)
+2025-10-15 10:03:17,425 [INFO] ✅ 02.jpg: bubbles=11 (yolo=14 + extra=7)

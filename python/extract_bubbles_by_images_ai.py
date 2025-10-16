@@ -11,6 +11,7 @@ from datetime import datetime
 import traceback
 import math 
 import gc 
+import sys
 
 # 🚨 استيراد torch للتحقق من وجود GPU بشكل آمن
 try:
@@ -384,16 +385,37 @@ try:
         json.dump(all_bubbles, f, indent=2, ensure_ascii=False)
     logger.info(f"💾 Saved all bubble data to: {output_path}")
 
-    open_after_clean = cfg.get("openAfterClean", True)
-    if not open_after_clean:
-        try:
-            logger.info("🚀 Launching Photoshop for text writing...")
-            subprocess.run(f'"{pspath}" -r "{jsx_script}"', shell=True, check=True)
-            logger.info("✅ Photoshop script executed successfully.")
-        except Exception as e:
-            logger.error(f"❌ Failed to run Photoshop JSX: {e}")
-    else:
-        logger.info("⏭️ Skipped running Photoshop JSX because openAfterClean is True.")
+    # ===== بعد حفظ النتائج: اختيار ما بعد المعالجة بناءً على dont_Open_After_Clean =====
+    ai_clean = bool(cfg.get("ai_clean", False))
+    dont_open_after_clean = bool(cfg.get("dont_Open_After_Clean", False))  # ← false = run, true = skip
+
+    python_cleaner = r"C:\Users\abdoh\Downloads\testScript\python\clean_background.py"
+    jsx_script = r"C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
+    pspath = cfg.get(
+        "pspath", r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
+    )
+
+    try:
+        if dont_open_after_clean:
+            logger.info("⏭️ dont_Open_After_Clean=True → Skipping all post-processing scripts.")
+        else:
+            if ai_clean:
+                logger.info("🧠 ai_clean=True → Running Python cleaner script...")
+                if not os.path.exists(python_cleaner):
+                    raise FileNotFoundError(f"Cleaner script not found: {python_cleaner}")
+                subprocess.run([sys.executable, python_cleaner], check=True)
+                logger.info("✅ Python cleaner executed successfully.")
+            else:
+                logger.info("🎨 ai_clean=False → Launching Photoshop JSX script...")
+                if not os.path.exists(pspath):
+                    raise FileNotFoundError(f"Photoshop not found: {pspath}")
+                if not os.path.exists(jsx_script):
+                    raise FileNotFoundError(f"JSX script not found: {jsx_script}")
+                subprocess.run(f'"{pspath}" -r "{jsx_script}"', shell=True, check=True)
+                logger.info("✅ Photoshop JSX executed successfully.")
+    except Exception as e:
+        logger.error(f"❌ Post-processing step failed: {e}")
+
 
 except Exception:
     logger.error(traceback.format_exc())

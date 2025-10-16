@@ -14,7 +14,10 @@ $.evalFile(
 );
 
 // استخدام الدوال المنظمة من ملفات lib/
-
+var __oldDialogs = app.displayDialogs;
+var __oldUnits = app.preferences.rulerUnits;
+app.displayDialogs = DialogModes.NO;
+try { app.preferences.rulerUnits = Units.PIXELS; } catch(_){}
 // دالة لاستخراج رقم الصفحة من اسم المستند
 function getPageNumberFromDocName(docName) {
   try {
@@ -27,41 +30,41 @@ function getPageNumberFromDocName(docName) {
     return null;
   }
 }
+function sampleRgbSafe(doc, x, y) {
+  var cs = doc.colorSamplers.add([x, y]);   // ما بيلعبش في الـSelection
+  var c = cs.color.rgb;
+  var out = [c.red, c.green, c.blue];
+  cs.remove();
+  return out;
+}
 
-// دالة للتحقق من وجود خط وتطبيق خط بديل
-function getValidFont(fontName, fallbackFont) {
+var __fontCache = {}; // name -> resolvedName
+
+function getValidFontCached(fontName, fallbackFont) {
+  var key = fontName + "||" + (fallbackFont || "");
+  if (__fontCache.hasOwnProperty(key)) return __fontCache[key];
+
+  // جرّب مباشرة على لير مؤقت في نفس الدوكيومنت الفعلي (أخف من فتح دوك جديد)
+  var tempLayer = app.activeDocument.artLayers.add();
+  tempLayer.kind = LayerKind.TEXT;
+  tempLayer.textItem.kind = TextType.POINTTEXT;
+  tempLayer.textItem.contents = "T";
+
+  var resolved = "Arial";
   try {
-    // إنشاء مستند مؤقت للاختبار
-    var testDoc = app.documents.add(
-      100,
-      100,
-      72,
-      "Font Test",
-      NewDocumentMode.RGB
-    );
-    var testLayer = testDoc.artLayers.add();
-    testLayer.kind = LayerKind.TEXT;
-    testLayer.textItem.contents = "Test";
-
+    tempLayer.textItem.font = fontName;
+    resolved = fontName;
+  } catch(_){
     try {
-      testLayer.textItem.font = fontName;
-      // إذا وصلنا هنا بدون خطأ، فالخط موجود
-      testDoc.close(SaveOptions.DONOTSAVECHANGES);
-      return fontName;
-    } catch (e) {
-      // الخط غير موجود، جرب الخط البديل
-      try {
-        testLayer.textItem.font = fallbackFont;
-        testDoc.close(SaveOptions.DONOTSAVECHANGES);
-        return fallbackFont;
-      } catch (e2) {
-        testDoc.close(SaveOptions.DONOTSAVECHANGES);
-        return "Arial"; // خط افتراضي
-      }
+      tempLayer.textItem.font = fallbackFont;
+      resolved = fallbackFont;
+    } catch(_){
+      resolved = "Arial";
     }
-  } catch (e) {
-    return fallbackFont || "Arial";
   }
+  try { tempLayer.remove(); } catch(_){}
+  __fontCache[key] = resolved;
+  return resolved;
 }
 
 // ====== بناء فهرس سريع لمفاتيح الخطوط ======
@@ -91,6 +94,20 @@ function buildFontIndex(fontMap) {
   }
   return { entries: entries, byFirst: byFirst };
 }
+
+
+function getSTFontFromMap(fontMap, defaultFont) {
+  try {
+    for (var k in fontMap) {
+      if (!fontMap.hasOwnProperty(k)) continue;
+      var kk = String(k).toLowerCase();
+      if (kk === "st" || kk === "st:") return fontMap[k];
+    }
+  } catch (_e) {}
+  return defaultFont;
+}
+
+
 
 function findFontInCompiledMap(lineText, compiled) {
   if (!lineText) return { found: false, font: null, key: null };
@@ -764,15 +781,17 @@ function openNotepad() {
   var pageCounter = 0;
 
   // تقليل/تعطيل الUndo: اجعل عدد حالات التاريخ 1 طيلة التنفيذ ثم أعِدها لاحقًا
-  var __prevHistoryStates;
-  try {
-    __prevHistoryStates = app.preferences.numberOfHistoryStates;
-  } catch (_hs) {
-    __prevHistoryStates = undefined;
-  }
-  try {
-    app.preferences.numberOfHistoryStates = 20;
-  } catch (_hs2) {}
+// قبل اللوب
+var __prevHistoryStates;
+try { __prevHistoryStates = app.preferences.numberOfHistoryStates; } catch(_){}
+try { app.preferences.numberOfHistoryStates = 1; } catch(_){}
+
+// .. وبالنهاية ارجع للقيمة القديمة
+try {
+  if (__prevHistoryStates !== undefined)
+    app.preferences.numberOfHistoryStates = __prevHistoryStates;
+} catch(_){}
+
 
   // ====== نلف على المستندات المرتبة ======
   for (var d = 0; d < documentsArray.length; d++) {
@@ -984,22 +1003,28 @@ function openNotepad() {
           curFontSize = lastFontSize || baseFontSize;
         } else {
           var wantedFont = defaultFont;
-
-          // فحص سريع للخطوط المطلوبة باستخدام الدالة الجديدة
-          var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
-          if (fontResult.found) {
-            wantedFont = fontResult.font;
-            matchedPrefixKey = fontResult.key;
-            if (!isOTTag) {
-              lineText = trimString(lineText.substring(fontResult.key.length));
+      
+          if (isSTTag) {
+            // WHY: parseStrokeTag شال ST: من lineText، فلازم نفرض خط ST هنا يدويًا
+            wantedFont = getSTFontFromMap(fontMap, defaultFont);
+            // لا تحاول أي مفاتيح تانية لسطر ST
+          } else {
+            // مفاتيح الخطوط الأخرى ("" , (), <> , ...etc)
+            var fontResult = findFontInCompiledMap(lineText, compiledFontIndex);
+            if (fontResult.found) {
+              wantedFont = fontResult.font;
+              matchedPrefixKey = fontResult.key;
+              if (!isOTTag) {
+                lineText = trimString(lineText.substring(fontResult.key.length));
+              }
             }
           }
-
-          usedFont = getValidFont(wantedFont, defaultFont);
-          curFontSize = baseFontSize; // استخدام الخط الثابت
+      
+          usedFont = getValidFontCached(wantedFont, defaultFont);
+          curFontSize = baseFontSize;
         }
       }
-
+      
       // خاصية خاصة لفريق rezo مع خط CCShoutOutGSN - زيادة حجم الخط بـ 10 نقاط
       if (currentTeam === "rezo" && usedFont === "CCShoutOutGSN") {
         curFontSize = curFontSize + 10;
@@ -1142,39 +1167,38 @@ function openNotepad() {
         textLayer.textItem.height = availableHeight;
         textLayer.textItem.position = [startLeft, startTop];
 
-        // ضبط لون النص بناءً على الخلفية (تخطي في Ultra Fast Mode)
-        if (!ultraFastMode) {
-          var tlWasVisible = textLayer.visible;
-          textLayer.visible = false;
-          var centerRgb = samplePixel(doc, centerX, centerY);
-          textLayer.visible = tlWasVisible;
-          var centerBright = luminance(
-            centerRgb[0],
-            centerRgb[1],
-            centerRgb[2]
-          );
-          var textColor = new SolidColor();
-          if (centerBright < 128) {
-            textColor.rgb.red = 255;
-            textColor.rgb.green = 255;
-            textColor.rgb.blue = 255;
-          } else {
-            textColor.rgb.red = 0;
-            textColor.rgb.green = 0;
-            textColor.rgb.blue = 0;
-          }
-          textLayer.textItem.color = textColor;
-          if (strokeInfo.needed) {
-            applyWhiteStroke3px(textLayer);
-          }
-        } else {
-          // لون افتراضي في Ultra Fast Mode
-          var defaultColor = new SolidColor();
-          defaultColor.rgb.red = 0;
-          defaultColor.rgb.green = 0;
-          defaultColor.rgb.blue = 0;
-          textLayer.textItem.color = defaultColor;
-        }
+        
+// ===== لون النص مع استثناء ST =====
+// ===== لون النص مع استثناء ST =====
+var black = new SolidColor();
+black.rgb.red = 0;
+black.rgb.green = 0;
+black.rgb.blue = 0;
+
+if (isSTTag) {
+  // ST: دايمًا أسود — تجاهل فحص الخلفية
+  textLayer.textItem.color = black;
+
+  // ✅ إضافة ستروك للـ ST في كل الأوضاع (حتى Ultra Fast)
+  try {
+    applyWhiteStroke3px(textLayer);
+  } catch (_e) {}
+} else {
+  if (!ultraFastMode) {
+    // باقي الأنواع: لون ذكي حسب الخلفية
+    var textColor = getOptimalTextColor(doc, centerX, centerY);
+    textLayer.textItem.color = textColor;
+    if (strokeInfo && strokeInfo.needed) {
+      applyWhiteStroke3px(textLayer);
+    }
+  } else {
+    // Ultra Fast: أسود افتراضي للجميع
+    textLayer.textItem.color = black;
+  }
+}
+ 
+
+
 
         // تطبيق التوسيط المحسن باستخدام دالة TyperTools
         // أولاً: التأكد من وجود selection على الباث
@@ -1314,6 +1338,36 @@ function openNotepad() {
         } catch (e2) {}
       }
     }
+// === 1) وسّط أولاً ===
+pathItem.makeSelection();
+var centered = false;
+try { centered = centerTextInBubbleWithTail(); } catch(_) {}
+if (!centered) {
+  var tb = textLayer.bounds;
+  var cx = (toNum(tb[0]) + toNum(tb[2]))/2;
+  var cy = (toNum(tb[1]) + toNum(tb[3]))/2;
+  var dxx = centerX - cx;
+  var dyy = centerY - cy - newFontSize * verticalCenterCompensationRatio;
+  if (Math.abs(dxx) > 0.1 || Math.abs(dyy) > 0.1) textLayer.translate(dxx, dyy);
+}
+
+// === 2) بعد ما اتوسّط.. لوّن بقى ===
+if (!ultraFastMode) {
+  var wasVisible = textLayer.visible; textLayer.visible = false;
+  var centerRgb = sampleRgbSafe(doc, centerX, centerY); // ← استخدم الدالة الجديدة
+  textLayer.visible = wasVisible;
+
+  var centerBright = luminance(centerRgb[0], centerRgb[1], centerRgb[2]);
+  var textColor = new SolidColor();
+  if (centerBright < 128) { textColor.rgb.red=255; textColor.rgb.green=255; textColor.rgb.blue=255; }
+  else { textColor.rgb.red=0; textColor.rgb.green=0; textColor.rgb.blue=0; }
+  textLayer.textItem.color = textColor;
+
+  if (strokeInfo && strokeInfo.needed) applyWhiteStroke3px(textLayer);
+} else {
+  var black = new SolidColor(); black.rgb.red=0; black.rgb.green=0; black.rgb.blue=0;
+  textLayer.textItem.color = black;
+}
 
     // حفظ المستند إذا لم يكن محفوظًا
     try {
@@ -1445,4 +1499,10 @@ function openNotepad() {
     if (__prevHistoryStates !== undefined)
       app.preferences.numberOfHistoryStates = __prevHistoryStates;
   } catch (_rh) {}
+  // .. وفي الآخر رجّعهم
+try { app.displayDialogs = __oldDialogs; } catch(_){}
+try { app.preferences.rulerUnits = __oldUnits; } catch(_){}
+
 })(); 
+
+// يسسيبينملالكيابميستب

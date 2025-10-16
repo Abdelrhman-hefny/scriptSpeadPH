@@ -48,7 +48,8 @@ class WorkerThread(QThread):
         auto_next,
         enable_log=False,
         ocr_model="manga",
-        open_after_clean=False,
+        dont_Open_After_Clean=False,
+        ai_clean=False,               # <<< NEW
     ):
         super().__init__()
         self.folder_url = folder_url.strip()
@@ -61,7 +62,8 @@ class WorkerThread(QThread):
         self.auto_next = auto_next
         self.enable_log = enable_log
         self.ocr_model = ocr_model
-        self.open_after_clean = open_after_clean
+        self.dont_Open_After_Clean = dont_Open_After_Clean
+        self.ai_clean = ai_clean     # <<< NEW
 
         if enable_log:
             today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -115,8 +117,8 @@ class WorkerThread(QThread):
                 return
 
         title = title.replace("?", "").replace(":", "_")
-       
 
+        # --- اكتب TXT + JSON بما فيهم ai_clean ---
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
             with open(TXT_PATH, "w", encoding="utf-8") as f:
@@ -133,7 +135,8 @@ class WorkerThread(QThread):
                 "continueWithoutDialog": bool(self.continue_no_dialog),
                 "autoNext": bool(self.auto_next),
                 "ocr_model": self.ocr_model,
-                "openAfterClean": bool(self.open_after_clean),
+                "dont_Open_After_Clean": bool(self.dont_Open_After_Clean),
+                "ai_clean": bool(self.ai_clean),        # <<< NEW
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -186,8 +189,8 @@ class MangaApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Manga Downloader (مبسط)")
-        self.setGeometry(300, 180, 550, 750)
-        self.setMinimumSize(400, 600)
+        self.setGeometry(300, 180, 550, 780)
+        self.setMinimumSize(400, 620)
 
         # الويدجت الرئيسي والتخطيط
         w = QWidget()
@@ -266,13 +269,16 @@ class MangaApp(QMainWindow):
         self.continue_chk = QCheckBox("Skip PS Dialog")
         self.auto_next_chk = QCheckBox("Auto Next")
         self.enable_log_chk = QCheckBox("Enable Log")
-        self.open_after_clean = QCheckBox("Open After Clean (ERROR)")
+        self.dont_Open_After_Clean = QCheckBox("don't Open After Clean")
+        self.ai_clean_chk = QCheckBox("AI Clean")     # <<< NEW
 
-        options_layout.addWidget(self.stop_chk, 0, 0)
-        options_layout.addWidget(self.continue_chk, 0, 1)
-        options_layout.addWidget(self.auto_next_chk, 1, 0)
-        options_layout.addWidget(self.enable_log_chk, 1, 1)
-        options_layout.addWidget(self.open_after_clean, 2, 0)
+        # ترتيب العناصر في الجريد
+        options_layout.addWidget(self.stop_chk,        0, 0)
+        options_layout.addWidget(self.continue_chk,    0, 1)
+        options_layout.addWidget(self.auto_next_chk,   1, 0)
+        options_layout.addWidget(self.enable_log_chk,  1, 1)
+        options_layout.addWidget(self.dont_Open_After_Clean,2, 0)
+        options_layout.addWidget(self.ai_clean_chk,    2, 1)  # <<< NEW
 
         main_layout.addWidget(options_group)
 
@@ -355,7 +361,7 @@ class MangaApp(QMainWindow):
 
     def open_after_clean_action(self):
         try:
-            if self.open_after_clean.isChecked():
+            if self.dont_Open_After_Clean.isChecked():
                 if not self.is_image_open():
                     os.startfile(LOG_DIR)
                 else:
@@ -416,7 +422,8 @@ class MangaApp(QMainWindow):
                 self.stop_chk.setChecked(cfg.get("stopAfterFirstPage", False))
                 self.continue_chk.setChecked(cfg.get("continueWithoutDialog", False))
                 self.auto_next_chk.setChecked(cfg.get("autoNext", False))
-                self.open_after_clean.setChecked(cfg.get("openAfterClean", False))
+                self.dont_Open_After_Clean.setChecked(cfg.get("dont_Open_After_Clean", False))
+                self.ai_clean_chk.setChecked(cfg.get("ai_clean", False))   # <<< NEW
                 ocr_model = cfg.get("ocr_model", "manga")
                 if ocr_model == "paddle":
                     self.rb_paddle.setChecked(True)
@@ -457,7 +464,6 @@ class MangaApp(QMainWindow):
                 return
 
         title = title.replace("?", "").replace(":", "_")
-        
 
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
@@ -484,7 +490,8 @@ class MangaApp(QMainWindow):
                 "continueWithoutDialog": bool(self.continue_chk.isChecked()),
                 "autoNext": bool(self.auto_next_chk.isChecked()),
                 "ocr_model": ocr_model,
-                "openAfterClean": bool(self.open_after_clean.isChecked()),
+                "dont_Open_After_Clean": bool(self.dont_Open_After_Clean.isChecked()),
+                "ai_clean": bool(self.ai_clean_chk.isChecked()),   # <<< NEW
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -533,7 +540,8 @@ class MangaApp(QMainWindow):
             self.auto_next_chk.isChecked(),
             enable_log,
             ocr_model,
-            self.open_after_clean.isChecked(),
+            self.dont_Open_After_Clean.isChecked(),
+            self.ai_clean_chk.isChecked(),     # <<< NEW
         )
         self.worker.status.connect(self.append_log)
         self.worker.finished.connect(self.done)
@@ -621,7 +629,6 @@ if __name__ == "__main__":
             color: #FFFFFF; 
             min-height: 10px; 
         }
-                                                                                                            
         QSpinBox { 
             background: #3A3F44; 
             border: 1px solid #555; 

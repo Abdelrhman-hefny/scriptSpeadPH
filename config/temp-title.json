@@ -1,6 +1,6 @@
 {
-  "title": "28",
-  "folder_url": "C:\\Users\\abdoh\\Downloads\\28",
+  "title": "222",
+  "folder_url": "C:/Users/abdoh/Downloads/222",
   "team": "rezo",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
   "mode": "fast",
@@ -9,5 +9,6 @@
   "continueWithoutDialog": false,
   "autoNext": false,
   "ocr_model": "easy",
-  "openAfterClean": false
+  "dont_Open_After_Clean": false,
+  "ai_clean": true
 }

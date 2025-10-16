@@ -1,0 +1,13 @@
+2025-10-15 09:38:22,715 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-15 09:38:25,310 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-15 09:38:27,647 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-15 09:38:27,841 [WARNING] Downloading recognition model, please wait. This may take several minutes depending upon your network connection.
+2025-10-15 09:38:37,211 [INFO] Download complete.
+2025-10-15 09:38:39,310 [INFO] 🔍 Found 3 images in C:\Users\abdoh\Downloads\21_seren_shes
+2025-10-15 09:39:30,385 [INFO] ✅ 01.jpg: bubbles=6 (incl. external=0) from 8 merged
+2025-10-15 09:40:36,565 [INFO] ✅ 02.jpg: bubbles=13 (incl. external=2) from 13 merged
+2025-10-15 09:41:42,483 [INFO] ✅ 03.jpg: bubbles=15 (incl. external=0) from 15 merged
+2025-10-15 09:41:42,569 [INFO] 💾 Saved JSON: C:\Users\abdoh\Downloads\21_seren_shes\all_bubbles.json
+2025-10-15 09:41:42,570 [INFO] 🚀 Launching Photoshop JSX ...
+2025-10-15 09:41:42,819 [ERROR] ❌ Photoshop JSX failed: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-15 09:41:42,820 [INFO] === 🏁 Finished detector script (Windows) ===
