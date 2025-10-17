@@ -1,7 +1,7 @@
 {
   "title": "222",
   "folder_url": "C:/Users/abdoh/Downloads/222",
-  "team": "rezo",
+  "team": "ez",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
   "mode": "fast",
   "fontSize": 35,
@@ -9,6 +9,6 @@
   "continueWithoutDialog": false,
   "autoNext": false,
   "ocr_model": "easy",
-  "dont_Open_After_Clean": true,
+  "dont_Open_After_Clean": false,
   "ai_clean": true
 }

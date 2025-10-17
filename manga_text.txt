@@ -1,3 +1,19 @@
-"": Let’s see.
+  
+“” Your Highness, sneaking around the palace at night without sleeping, aren’t you afraid the guards will catch you.
+“” They didn’t catch me. You did.
+“” The one who threw pebbles at my window with a note last time, was you, right~
+It’s obvious who did something like that!
 
-
+“” So, what intel are you bringing me this time?
+“” Be wary of that new palace maid who arrived today—the one with the mole on her forehead.
+“” How did Your Highness find out?
+“” Hmm… I saw it?
+() This matter involves many people. It’s quite dangerous.
+() For now, best not to tell the young lady the truth.
+“” If you’re going to lie, Your Highness, don’t use a questioning tone.
+“” Princess, go to bed. I’m heading back.
+“” Good night, Your Highness.
+“” Mm, good night.
+“” Your Highness!
+“” Wearing that outfit,
+“” You look so cool!

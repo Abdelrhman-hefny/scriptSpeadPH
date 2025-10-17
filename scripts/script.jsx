@@ -254,7 +254,10 @@ app.bringToFront();
 
   if (app.documents.length > 0) app.activeDocument = app.documents[0];
 
-  $.evalFile(
-    "C:/Users/abdoh/Downloads/testScript/scripts/read-bb-jsonfile.jsx"
-  );
+  try {
+    $.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/read-bb-jsonfile.jsx");
+  } catch (e) {
+    $.writeln("Skip read-bb-jsonfile.jsx: " + e);
+  }
+  
 })();

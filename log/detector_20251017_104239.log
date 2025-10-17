@@ -1,0 +1,9 @@
+2025-10-17 10:42:41,597 [WARNING] ⚠️ Using EasyOCR.
+2025-10-17 10:42:41,598 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-17 10:42:44,414 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-17 10:42:46,785 [INFO] 🔍 Found 1 images in C:\Users\abdoh\Downloads\222
+2025-10-17 10:43:00,925 [INFO] ✅ 01.jpg: 6 valid bubbles found. (Total boxes before validation: 6)
+2025-10-17 10:43:01,016 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\222\all_bubbles.json
+2025-10-17 10:43:01,017 [INFO] 🧠 ai_clean=True → Running Python cleaner script...
+2025-10-17 10:43:02,817 [INFO] ✅ Python cleaner executed successfully.
+2025-10-17 10:43:02,817 [INFO] === 🏁 Finished detector script ===

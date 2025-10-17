@@ -411,7 +411,7 @@ try:
                     raise FileNotFoundError(f"Photoshop not found: {pspath}")
                 if not os.path.exists(jsx_script):
                     raise FileNotFoundError(f"JSX script not found: {jsx_script}")
-                subprocess.run(f'"{pspath}" -r "{jsx_script}"', shell=True, check=True)
+                # subprocess.run(f'"{pspath}" -r "{jsx_script}"', shell=True, check=True)
                 logger.info("✅ Photoshop JSX executed successfully.")
     except Exception as e:
         logger.error(f"❌ Post-processing step failed: {e}")
