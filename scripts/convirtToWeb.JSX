@@ -38,7 +38,7 @@ function main() {
 
   // ✅ Added "-cw 800" to enforce width = 800 pixels
   var cmd =
-    'cmd /c "cd /d ' +
+    'cmd /k "cd /d ' +
     '"' +
     runDir +
     '"' +

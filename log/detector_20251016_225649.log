@@ -1,9 +1,0 @@
-2025-10-16 22:56:56,782 [WARNING] ⚠️ Using EasyOCR.
-2025-10-16 22:56:56,783 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-16 22:56:59,674 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-16 22:57:02,215 [INFO] 🔍 Found 7 images in C:\Users\abdoh\Downloads\26_ez_weekly
-2025-10-16 22:58:02,530 [INFO] ✅ 0.jpg: 13 valid bubbles found. (Total boxes before validation: 13)
-2025-10-16 22:58:48,528 [INFO] ✅ 1.jpg: 10 valid bubbles found. (Total boxes before validation: 10)
-2025-10-16 22:59:25,455 [INFO] ✅ 2.jpg: 10 valid bubbles found. (Total boxes before validation: 10)
-2025-10-16 23:00:03,688 [INFO] ✅ 3.jpg: 9 valid bubbles found. (Total boxes before validation: 9)
-2025-10-16 23:00:07,466 [INFO] === 🏁 Finished detector script ===

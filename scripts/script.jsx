@@ -47,7 +47,7 @@ app.bringToFront();
         param = trimStr(lines[1]);
       }
     } catch (e) {
-      alert("Error reading temp file: " + e);
+      $.writeln("Error reading temp file: " + e);
       return;
     }
   }
@@ -55,18 +55,18 @@ app.bringToFront();
   // 3. Validation
 
   if (!originalsFolder || !originalsFolder.exists) {
-    alert("Originals folder not found or invalid");
+    $.writeln("Originals folder not found or invalid");
     return;
   }
 
   if (arrayIndexOf(teams, chosenTeam) === -1) {
-    alert("Invalid team: " + chosenTeam);
+    $.writeln("Invalid team: " + chosenTeam);
     return;
   }
 
   var teamFolder = new Folder("~/Documents/waterMark/" + chosenTeam);
   if (!teamFolder.exists) {
-    alert("Team folder not found: " + teamFolder.fsName);
+    $.writeln("Team folder not found: " + teamFolder.fsName);
     return;
   }
 
@@ -88,7 +88,7 @@ app.bringToFront();
   var endFile = findByRegex(teamFolder, /^9{2,3}\.(?:png|jpe?g)$/i);
 
   if (!watermarkFile || !endFile) {
-    alert("Cannot find watermark or end page in team folder.");
+    $.writeln("Cannot find watermark or end page in team folder.");
     return;
   }
 
@@ -249,7 +249,7 @@ app.bringToFront();
     // var batFile = new File("C:\\Users\\abdoh\\Downloads\\testScript\\batch\\run_detext-bb-by-json.bat");
     // if(batFile.exists) batFile.execute();
   } catch (e) {
-    alert("BAT execution failed: " + e);
+    $.writeln("BAT execution failed: " + e);
   }
 
   if (app.documents.length > 0) app.activeDocument = app.documents[0];

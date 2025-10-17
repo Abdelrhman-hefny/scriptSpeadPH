@@ -1,19 +1,270 @@
-  
-“” Your Highness, sneaking around the palace at night without sleeping, aren’t you afraid the guards will catch you.
-“” They didn’t catch me. You did.
-“” The one who threw pebbles at my window with a note last time, was you, right~
-It’s obvious who did something like that!
+page 1
+“”: Huh?
 
-“” So, what intel are you bringing me this time?
-“” Be wary of that new palace maid who arrived today—the one with the mole on her forehead.
-“” How did Your Highness find out?
-“” Hmm… I saw it?
-() This matter involves many people. It’s quite dangerous.
-() For now, best not to tell the young lady the truth.
-“” If you’re going to lie, Your Highness, don’t use a questioning tone.
-“” Princess, go to bed. I’m heading back.
-“” Good night, Your Highness.
-“” Mm, good night.
-“” Your Highness!
-“” Wearing that outfit,
-“” You look so cool!
+**: Hyunsu · Now
+**: Hello, President. I'm contacting you to keep the promise we made the other day.
+**: [Push to reply] >>
+
+“”: It's Hyunsu, isn't it?
+
+"": But...
+
+"": A promise?
+
+"": Ah!
+
+page 2
+"": Perhaps the artifact mentioned that day?
+
+[]: Are there any changes to the requested artifact effects? I plan to craft and send it to you soon.
+
+(): Hyunsu, if you can make the artifact I need right now...
+
+[]: No changes. Hyunsu, what was your level again?
+
+[]: It's 59 ^^;
+
+(): Still quite low.
+
+[]: If it's not too much trouble, I'll entrust it to you, Hyunsu.
+
+"": Still, well...
+
+//: Since he's a promising young man, it should be okay to have a little expectation.
+
+page 3
+"": Should I try placing a request with the 'Blacksmith Hyun' as well?
+
+**: Breaking News >
+**: Blacksmith Hyun, Key Figure in Barad's Ifrit Subjugation...
+**: Reporter XXX
+**: 2025.10.14 18:45 Views 10,294
+**: +Subscribe
+**: The workshop of Blacksmith Hyun, who crafted the weapons for Barad, the key figure in the Ifrit subjugation.
+
+"": ...Never mind. I heard he doesn't even accept requests from rankers, so there's no way he'd take a request from an unofficial tanker like me.
+
+(): But I don't have much time left before the class advancement quest opportunity expires,
+
+"": Still, it's worth a try...!
+
+page 4
+<> Frost Mine
+
+"": Wow!
+
+"": So this is the Frost Mine......!
+
+<> You are the first user to enter the Frost Mine.
+
+<> EXP gain will be doubled for one week.
+
+(): Being the first to enter... somehow feels good, doesn't it?
+
+(): And I even get double EXP!
+
+"": Ms. Bella, have you been here before?
+
+"": No, this is my first time too.
+
+page 5
+(): It's still freezing cold here;
+
+"": How did you get here?
+
+"": This isn't a place one can enter without permission.
+
+"": I am Bella, Vice Captain of the Royal Knights.
+
+"": I entered with permission from the royal family.
+
+"": Wow, the royal family?
+
+"": Is this a royal seal? It's my first time seeing one!!
+
+"": Hello, I'm the miner Banya.
+
+"": I'm the blacksmith, Hyunsu.
+
+page 6
+"": It's nice to see outsiders after so long,
+
+//: But we can't just let anyone into this mine!
+
+"": Then, what should we do...
+
+"": But luckily!
+
+//: My father is the mining foreman!!
+
+"": Let me take you to him.
+
+"": This way.
+
+"": Thank you...?
+
+"": No need for thanks!
+
+page 7
+"": Huh?
+
+"": Isn't these monsters  over there?
+
+"": Ah, that's fascinating, right?
+
+"": It's said to be a kind of dungeon.
+
+[]: I heard that in the past, monsters used to pop out all over the mine.
+
+[]: But 100 years ago, a mage who came here sealed them inside that mine.
+
+"": Don't tell me that thing attached to those monsters...
+
+page 8
+"": Is it the Hundred-Year Cold Iron?
+
+"": That's right. But if you get greedy, you'll be in for big trouble.
+
+"": Because inside the sealing barrier is their territory.
+
+"": You can enter, but it'll be hard to come back alive.
+
+"": We miners also find it a pity, since that mine likely has the most minerals left.
+
+"": But still, since they're trapped inside and we can work safely, we should be satisfied with that!
+
+"": We've arrived. That person over there is my father.
+
+page 9
+"": Father!! We have guests, guests!!
+
+"": I've guided them here, so I'll be on my way now!
+
+"": Thank you for letting me know.
+
+(): I wonder why an outsider has come all the way here?
+
+"": Excuse me, pardon the interruption.
+
+page 10
+"": A royal knight... and
+
+"": An outsider, is it?
+
+"": That's correct.
+
+"": Hmm...
+
+[]: Mining Foreman Rex Lv.231
+
+"": That's an unusual combination.
+
+//: What brings you here?
+
+"": I am looking for Hundred-Year Cold Iron, or rather, a mineral even superior to it.
+
+"": A mineral superior to Hundred-Year Cold Iron?
+
+"": Yes, might you know of one?
+
+(): A mineral better than Hundred-Year Cold Iron?
+
+(): It exists, but I have no reason to tell you.
+
+page 11
+OT: Especially not to a greedy outsider!
+
+(): If word gets out that such a thing exists in the Frost Mine,
+
+(): this mine will surely fall into chaos.
+
+(): But this outsider came with royal permission.
+
+(): I need a good way to persuade them to leave peacefully...
+
+"": You, have you ever mined for minerals before?
+
+page 12
+"": No.
+
+"": An average miner digs up about 3 minerals per day.
+
+"": If you can mine 40 minerals within a week,
+
+//: I'll share my information with you.
+
+<> [Quest]
+ 
+
+"": So, will you accept my proposal?
+
+"": What if...
+
+page 13
+"": What if I mine more than 40?
+
+"": That's unlikely to happen, but if you succeed, I'll personally mine the mineral for you.
+
+ST: Just so you know, you can't receive help from your companions.
+
+"": Do you promise?
+
+"": Alright, it's a promise.
+
+"": Then I'll see you in a week.
+
+"": By the way...
+
+"": Banya! I know you're hiding over there! Come out!!
+
+page 14
+"": Where do you think you're running off to when you're injured??
+
+//: All you do is eavesdrop secretly!
+
+"": Ouch, ouch! Father, I'm sorry!
+
+"": Sir Hyunsu. Why did you provoke Miner Rex like that?
+
+"": Actually, because I knew I was coming to the mine,
+
+"": I had prepared something in advance.
+
+"": A better mineral... I will obtain it no matter what...!
+
+(): No matter how I think about it, it seems His Majesty has taken in a rather strange person as a close friend...?
+
+page 15
+[]: One week later
+
+(): They say that outsider hasn't left the mine for a whole week.
+
+(): But no matter what, it's an impossible task.
+
+"": Huh?!
+
+ST: Haha~
+
+"": You finally came out, outsider!
+
+"": At least your face looks like a miner's now!
+
+//: Since the promised deadline has arrived,
+
+"": Show me the results.
+
+page 16
+"": Just a moment-
+
+(): I knew it.
+
+(): There's no way an outsider could pull off somethi...
+
+"": It's 200 in total.
+
+<> Y-you, what exactly are you?!
+
+<> Don't tell me you're a legendary miner???
+
+page 17
+

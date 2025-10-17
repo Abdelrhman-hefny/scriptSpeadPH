@@ -1,39 +1,47 @@
-import sys, os, json, subprocess, requests, datetime
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QGridLayout,
-    QLabel,
-    QLineEdit,
-    QComboBox,
-    QRadioButton,
-    QPushButton,
-    QTextEdit,
-    QFileDialog,
-    QCheckBox,
-    QProgressBar,
-    QSpinBox,
-    QButtonGroup,
-    QMessageBox,
-    QGroupBox,
-)
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
-from urllib.parse import urlparse
-from glob import glob
+# app.py
+import sys, os, json, subprocess, requests, datetime, re, unicodedata, tempfile
 from pathlib import Path
-import time # تم إضافة import time
+from glob import glob
 
-# ----- المسارات -----
-CFG_PATH = r"C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
-TXT_PATH = r"C:\Users\abdoh\Downloads\testScript\temp-title.txt"
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QFileDialog, QMessageBox, QTextEdit,
+    QProgressBar, QSpinBox, QCheckBox, QRadioButton, QComboBox, QLineEdit, QLabel, QPushButton
+)
+from PyQt5.QtCore import QThread, pyqtSignal, QTimer
+from urllib.parse import urlparse
+
+from ui_manga import build_ui  # الواجهة مفصولة هنا
+
+# لا تكتب __pycache__/pyc
+sys.dont_write_bytecode = True
+
+# ----- المسارات الثابتة -----
+CFG_PATH        = r"C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
+TXT_PATH        = r"C:\Users\abdoh\Downloads\testScript\temp-title.txt"
 MANGA_TEXT_PATH = r"C:\Users\abdoh\Downloads\testScript\manga_text.txt"
-DEFAULT_PSPATH = r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
-LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
+DEFAULT_PSPATH  = r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
+DOWNLOADS_DIR   = r"C:\Users\abdoh\Downloads"  # قاعدة أي تحميلات للرابط
 
+# ===== Utilities =====
+BIDI_RE = re.compile(r'[\u200e\u200f\u202a-\u202e\u200b\u200c\u200d\ufeff]')
+
+def clean_title(s: str) -> str:
+    s = BIDI_RE.sub('', s or '')
+    s = unicodedata.normalize('NFKC', s)
+    s = re.sub(r'[<>:"/\\|?*\x00-\x1F]', ' ', s)  # disallow Windows reserved chars
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+def looks_like_url(s: str) -> bool:
+    p = urlparse((s or '').strip())
+    return p.scheme in ('http', 'https') and bool(p.netloc)
+
+def is_drive_url(s: str) -> bool:
+    p = urlparse((s or '').strip())
+    host = (p.netloc or '').lower()
+    return p.scheme in ('http', 'https') and any(
+        h in host for h in ('drive.google.com', 'docs.google.com', 'googleusercontent.com')
+    )
 
 # ======================== Worker ========================
 class WorkerThread(QThread):
@@ -50,9 +58,10 @@ class WorkerThread(QThread):
         continue_no_dialog,
         auto_next,
         enable_log=False,
-        ocr_model="manga",
+        ocr_model="easy",          # ثابت على EasyOCR
         dont_Open_After_Clean=False,
-        ai_clean=False,             # <<< NEW
+        ai_clean=False,
+        manual_title=None,         # اسم الفصل اليدوي عند روابط Drive
     ):
         super().__init__()
         self.folder_url = folder_url.strip()
@@ -64,13 +73,17 @@ class WorkerThread(QThread):
         self.continue_no_dialog = continue_no_dialog
         self.auto_next = auto_next
         self.enable_log = enable_log
-        self.ocr_model = ocr_model
+        self.ocr_model = "easy"    # تأكيد التثبيت على easy
         self.dont_Open_After_Clean = dont_Open_After_Clean
-        self.ai_clean = ai_clean      # <<< NEW
+        self.ai_clean = ai_clean
+        self.manual_title = (manual_title or "").strip()
 
+        # ملف لوج مؤقت فقط لو مفعّل
         if enable_log:
+            log_dir = os.path.join(tempfile.gettempdir(), "manga_logs")
+            os.makedirs(log_dir, exist_ok=True)
             today = datetime.datetime.now().strftime("%Y-%m-%d")
-            self.log_path = os.path.join(LOG_DIR, f"manga_log_{today}.log")
+            self.log_path = os.path.join(log_dir, f"manga_log_{today}.log")
         else:
             self.log_path = None
 
@@ -95,33 +108,44 @@ class WorkerThread(QThread):
             self.finished.emit(False, "No folder URL or path provided")
             return
 
+        # --- تحديد العنوان ---
         if os.path.exists(self.folder_url):
             title = os.path.basename(self.folder_url) or self.folder_url
             self.log(f"Local folder detected: {title}")
             self.log(f"Team detected: {self.team}")
         else:
-            self.log("Google Drive URL detected — extracting title...")
-            try:
-                parsed_url = urlparse(self.folder_url)
-                if not parsed_url.scheme or not parsed_url.netloc:
-                    raise ValueError("Invalid URL format")
-                html = requests.get(self.folder_url, timeout=10).text
-                title = (
-                    html.split("<title>")[1]
-                    .split("</title>")[0]
-                    .replace(" - Google Drive", "")
-                    .strip()
-                )
-                if not title:
-                    title = "Untitled_Manga"
-            except Exception as e:
-                self.log(f"Error extracting title: {e}")
-                self.finished.emit(False, "Failed to extract title from URL")
-                return
+            if is_drive_url(self.folder_url) and self.manual_title:
+                title = self.manual_title
+                self.log("Google Drive URL detected — using manual chapter title.")
+            else:
+                self.log("Google Drive/URL detected — extracting title...")
+                try:
+                    parsed_url = urlparse(self.folder_url)
+                    if not parsed_url.scheme or not parsed_url.netloc:
+                        raise ValueError("Invalid URL format")
+                    html = requests.get(self.folder_url, timeout=10).text
+                    title = (
+                        html.split("<title>")[1]
+                        .split("</title>")[0]
+                        .replace(" - Google Drive", "")
+                        .strip()
+                    )
+                    if not title:
+                        title = "Untitled_Manga"
+                except Exception as e:
+                    self.log(f"Error extracting title: {e}")
+                    self.finished.emit(False, "Failed to extract title from URL")
+                    return
 
-        title = title.replace("?", "").replace(":", "_")
+        title = clean_title(title)
 
-        # --- اكتب TXT + JSON بما فيهم ai_clean ---
+        # 👇 حدّد المسار المحلي النهائي (لو رابط → Downloads\title)
+        if os.path.exists(self.folder_url):
+            folder_local = self.folder_url
+        else:
+            folder_local = os.path.join(DOWNLOADS_DIR, title)
+
+        # --- اكتب TXT + JSON ---
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
             with open(TXT_PATH, "w", encoding="utf-8") as f:
@@ -129,7 +153,8 @@ class WorkerThread(QThread):
 
             cfg_obj = {
                 "title": title,
-                "folder_url": self.folder_url,
+                "folder_url": self.folder_url,  # ممكن تكون رابط
+                "folder": folder_local,         # 👈 المسار المحلي الفعلي للعمل
                 "team": self.team,
                 "pspath": self.pspath,
                 "mode": self.mode,
@@ -137,9 +162,9 @@ class WorkerThread(QThread):
                 "stopAfterFirstPage": bool(self.stop_after_first),
                 "continueWithoutDialog": bool(self.continue_no_dialog),
                 "autoNext": bool(self.auto_next),
-                "ocr_model": self.ocr_model,
+                "ocr_model": "easy",  # ثابت
                 "dont_Open_After_Clean": bool(self.dont_Open_After_Clean),
-                "ai_clean": bool(self.ai_clean),      # <<< NEW
+                "ai_clean": bool(self.ai_clean),
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -151,11 +176,12 @@ class WorkerThread(QThread):
             self.finished.emit(False, "Failed to save configuration")
             return
 
+        # --- تشغيل سكربت التحميل والمعالجة ---
         try:
             self.log("🚀 Running download_and_unzip.py ...")
             subprocess.run(
                 [
-                    "python",
+                    "python", "-B",
                     r"C:\Users\abdoh\Downloads\testScript\python\download_and_unzip.py",
                 ],
                 check=True,
@@ -173,208 +199,39 @@ class WorkerThread(QThread):
             self.log(f"❌ Unexpected error: {e}")
             self.finished.emit(False, "Unexpected error during script execution")
 
-
 # ======================== الواجهة ========================
 class MangaApp(QMainWindow):
     TEAMS = [
-        "rezo",
-        "violet",
-        "ez",
-        "seren",
-        "magus",
-        "nyx",
-        "arura",
-        "ken",
-        "mei",
-        "quantom",
+        "rezo", "violet", "ez", "seren", "magus",
+        "nyx", "arura", "ken", "mei", "quantom",
     ]
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Manga Downloader (مبسط)")
-        self.setGeometry(300, 180, 550, 780)
         self.setMinimumSize(400, 620)
 
-        # الويدجت الرئيسي والتخطيط
-        w = QWidget()
-        self.setCentralWidget(w)
-        main_layout = QVBoxLayout(w)
-        main_layout.setContentsMargins(10, 10, 10, 10)
-        main_layout.setSpacing(10)
+        # يبني الواجهة بالكامل ويربط العناصر بالنافذة (attributes)
+        build_ui(self)
 
-        # --- مجموعة إعدادات المسار ---
-        path_group = QGroupBox("Path Settings")
-        path_layout = QVBoxLayout()
-        path_layout.setSpacing(8)
-        path_group.setLayout(path_layout)
-
-        # URL + Browse
-        url_layout = QHBoxLayout()
-        self.url = QLineEdit()
-        self.url.setPlaceholderText("Enter folder path or Google Drive URL")
-        url_layout.addWidget(self.url, stretch=3)
-        btn_browse = QPushButton("Browse")
-        btn_browse.clicked.connect(self.browse)
-        url_layout.addWidget(btn_browse, stretch=1)
-        path_layout.addWidget(QLabel("Folder or Google Drive URL:"))
-        path_layout.addLayout(url_layout)
-
-        main_layout.addWidget(path_group)
-
-        # --- مجموعة إعدادات المانجا ---
-        manga_group = QGroupBox("Manga Settings")
-        manga_layout = QVBoxLayout()
-        manga_layout.setSpacing(8)
-        manga_group.setLayout(manga_layout)
-
-        # Team
-        manga_layout.addWidget(QLabel("Team:"))
-        self.team = QComboBox()
-        self.team.addItems(self.TEAMS)
-        manga_layout.addWidget(self.team)
-
-        # Mode
-        manga_layout.addWidget(QLabel("Mode:"))
-        mode_layout = QHBoxLayout()
-        self.rb_normal = QRadioButton("Normal")
-        self.rb_fast = QRadioButton("Fast")
-        self.rb_ultra = QRadioButton("Ultra")
-        self.rb_normal.setChecked(True)
-        gm = QButtonGroup(self)
-        gm.addButton(self.rb_normal)
-        gm.addButton(self.rb_fast)
-        gm.addButton(self.rb_ultra)
-        mode_layout.addWidget(self.rb_normal)
-        mode_layout.addWidget(self.rb_fast)
-        mode_layout.addWidget(self.rb_ultra)
-        mode_layout.addStretch()
-        manga_layout.addLayout(mode_layout)
-
-        # Font size
-        font_layout = QHBoxLayout()
-        font_layout.addWidget(QLabel("Font Size:"))
-        self.font_spin = QSpinBox()
-        self.font_spin.setRange(6, 72)
-        self.font_spin.setValue(10)
-        font_layout.addWidget(self.font_spin)
-        font_layout.addStretch()
-        manga_layout.addLayout(font_layout)
-
-        main_layout.addWidget(manga_group)
-
-        # --- مجموعة إعدادات إضافية ---
-        options_group = QGroupBox("Additional Options")
-        options_layout = QGridLayout()
-        options_layout.setSpacing(8)
-        options_group.setLayout(options_layout)
-
-        self.stop_chk = QCheckBox("Stop After First")
-        self.continue_chk = QCheckBox("Skip PS Dialog")
-        self.auto_next_chk = QCheckBox("Auto Next")
-        self.enable_log_chk = QCheckBox("Enable Log")
-        self.dont_Open_After_Clean = QCheckBox("don't Open After Clean")
-        self.ai_clean_chk = QCheckBox("AI Clean")      # <<< NEW
-
-        # ترتيب العناصر في الجريد
-        options_layout.addWidget(self.stop_chk,        0, 0)
-        options_layout.addWidget(self.continue_chk,    0, 1)
-        options_layout.addWidget(self.auto_next_chk,   1, 0)
-        options_layout.addWidget(self.enable_log_chk,  1, 1)
-        options_layout.addWidget(self.dont_Open_After_Clean,2, 0)
-        options_layout.addWidget(self.ai_clean_chk,    2, 1)  # <<< NEW
-
-        main_layout.addWidget(options_group)
-
-        # --- مجموعة OCR ---
-        ocr_group = QGroupBox("OCR Model")
-        ocr_layout = QHBoxLayout()
-        ocr_layout.setSpacing(10)
-        ocr_group.setLayout(ocr_layout)
-        self.rb_paddle = QRadioButton("PaddleOCR (ERROR)")
-        self.rb_manga = QRadioButton("MangaOCR")
-        self.rb_easy = QRadioButton("EasyOCR")
-        self.rb_manga.setChecked(True)
-        grp_ocr = QButtonGroup(self)
-        grp_ocr.addButton(self.rb_paddle)
-        grp_ocr.addButton(self.rb_manga)
-        grp_ocr.addButton(self.rb_easy)
-        ocr_layout.addWidget(self.rb_paddle)
-        ocr_layout.addWidget(self.rb_manga)
-        ocr_layout.addWidget(self.rb_easy)
-        ocr_layout.addStretch()
-        main_layout.addWidget(ocr_group)
-
-        # --- أزرار الإجراءات ---
-        actions_layout = QHBoxLayout()
-        actions_layout.setSpacing(10)
-        btn_save_settings = QPushButton("Save Settings")
-        btn_save_settings.clicked.connect(self.save_settings)
-        actions_layout.addWidget(btn_save_settings, stretch=1)
-
-        btn_open_manga_text = QPushButton("Open Manga Text")
-        btn_open_manga_text.clicked.connect(self.open_manga_text)
-        actions_layout.addWidget(btn_open_manga_text, stretch=1)
-        main_layout.addLayout(actions_layout)
-
-        # --- أزرار التحكم ---
-        control_layout = QHBoxLayout()
-        control_layout.setSpacing(10)
-        self.start_btn = QPushButton("Start")
-        self.start_btn.clicked.connect(self.start_process)
-        control_layout.addWidget(self.start_btn, stretch=1)
-        self.cancel_btn = QPushButton("Cancel")
-        self.cancel_btn.clicked.connect(self.cancel_process)
-        control_layout.addWidget(self.cancel_btn, stretch=1)
-        self.force_stop_btn = QPushButton("Force Stop")
-        self.force_stop_btn.clicked.connect(self.force_stop)
-        # self.force_stop_btn.setEnabled(False) # <--- هذا السطر يقوم بتعطيل الزر
-        control_layout.addWidget(self.force_stop_btn, stretch=1)
-        main_layout.addLayout(control_layout)
-
-        # --- Log viewer ---
-        main_layout.addWidget(QLabel("Log:"))
-        self.log = QTextEdit()
-        self.log.setReadOnly(True)
-        self.log.setMinimumHeight(150)
-        main_layout.addWidget(self.log, stretch=2)
-
-        # --- Progress bar ---
-        self.bar = QProgressBar()
-        self.bar.setRange(0, 0)
-        self.bar.hide()
-        main_layout.addWidget(self.bar)
-
-        # إضافة تمدد لدفع العناصر إلى الأعلى
-        main_layout.addStretch()
+        # تشيك لايف عند لصق/كتابة الرابط
+        self.url.textChanged.connect(self.on_url_changed)
 
         self.worker = None
         self.load_config_if_exists()
+
+    # ===== UI helpers =====
+    def on_url_changed(self, text: str):
+        t = (text or '').strip()
+        # يظهر فقط إن كان الرابط Google Drive/Docs (وليس مسار محلي)
+        show = (looks_like_url(t) and not os.path.exists(t)) and is_drive_url(t)
+        self.chapter_label.setVisible(show)
+        self.chapter_edit.setVisible(show)
 
     def browse(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
         if folder:
             self.url.setText(folder)
-
-    def browse_photoshop(self):
-        file, _ = QFileDialog.getOpenFileName(
-            self, "Select Photoshop Executable", "", "Executable Files (*.exe)"
-        )
-        if file:
-            self.ps_path.setText(file)
-
-    def open_after_clean_action(self):
-        try:
-            if self.dont_Open_After_Clean.isChecked():
-                if not self.is_image_open():
-                    os.startfile(LOG_DIR)
-                else:
-                    self.append_log(
-                        "⚠ Cannot open log folder while images are being processed."
-                    )
-            else:
-                os.startfile(LOG_DIR)
-        except Exception as e:
-            self.append_log(f"❌ Error opening log folder: {e}")
 
     def open_manga_text(self):
         try:
@@ -383,9 +240,7 @@ class MangaApp(QMainWindow):
                 self.append_log(f"✅ Opened {MANGA_TEXT_PATH} in Notepad.")
             else:
                 self.append_log(f"❌ File {MANGA_TEXT_PATH} does not exist.")
-                QMessageBox.critical(
-                    self, "Error", f"File {MANGA_TEXT_PATH} does not exist."
-                )
+                QMessageBox.critical(self, "Error", f"File {MANGA_TEXT_PATH} does not exist.")
         except Exception as e:
             self.append_log(f"❌ Error opening manga text file: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open manga text file: {e}")
@@ -403,14 +258,23 @@ class MangaApp(QMainWindow):
             return False
 
     def append_log(self, text):
-        # 1. إضافة النص الجديد
         self.log.append(text)
-        
-        # 2. طباعة النص في الكونسول (للمتابعة)
         print(text)
-        
-        # 3. 🚨 السطر الجديد الذي يقوم بالتمرير إلى الأسفل 🚨
         self.log.ensureCursorVisible()
+
+    def clear_win_terminal(self):
+        """يمسح شاشة ترمنال ويندوز (CMD/PowerShell) المرتبطة بهذه العملية فقط."""
+        try:
+            import ctypes
+            has_console = bool(ctypes.windll.kernel32.GetConsoleWindow())
+            if has_console:
+                os.system("cls")
+                self.append_log("🧹 Cleared Windows terminal (CMD/PowerShell).")
+                self.log.clear()
+            else:
+                self.append_log("ℹ️ No attached console to clear (app probably started without a console).")
+        except Exception as e:
+            self.append_log(f"❌ Failed to clear Windows terminal: {e}")
 
     def load_config_if_exists(self):
         if os.path.exists(CFG_PATH):
@@ -432,14 +296,6 @@ class MangaApp(QMainWindow):
                 self.continue_chk.setChecked(cfg.get("continueWithoutDialog", False))
                 self.auto_next_chk.setChecked(cfg.get("autoNext", False))
                 self.dont_Open_After_Clean.setChecked(cfg.get("dont_Open_After_Clean", False))
-                self.ai_clean_chk.setChecked(cfg.get("ai_clean", False))    # <<< NEW
-                ocr_model = cfg.get("ocr_model", "manga")
-                if ocr_model == "paddle":
-                    self.rb_paddle.setChecked(True)
-                elif ocr_model == "easy":
-                    self.rb_easy.setChecked(True)
-                else:
-                    self.rb_manga.setChecked(True)
             except Exception as e:
                 self.append_log(f"⚠ Error loading config: {e}")
 
@@ -450,29 +306,35 @@ class MangaApp(QMainWindow):
             QMessageBox.warning(self, "Error", "Please enter a URL or folder path.")
             return
 
+        # تحديد العنوان بناءً على نوع الرابط/المسار
         if os.path.exists(folder_url):
             title = os.path.basename(folder_url) or folder_url
         else:
-            self.append_log("Google Drive URL detected — extracting title...")
-            try:
-                parsed_url = urlparse(folder_url)
-                if not parsed_url.scheme or not parsed_url.netloc:
-                    raise ValueError("Invalid URL format")
-                html = requests.get(folder_url, timeout=10).text
-                title = (
-                    html.split("<title>")[1]
-                    .split("</title>")[0]
-                    .replace(" - Google Drive", "")
-                    .strip()
-                )
-                if not title:
+            if is_drive_url(folder_url):
+                manual = self.chapter_edit.text().strip()
+                title = manual if manual else "Untitled_Manga"
+            else:
+                try:
+                    parsed_url = urlparse(folder_url)
+                    if not parsed_url.scheme or not parsed_url.netloc:
+                        raise ValueError("Invalid URL format")
+                    html = requests.get(folder_url, timeout=10).text
+                    title = (
+                        html.split("<title>")[1]
+                        .split("</title>")[0]
+                        .replace(" - Google Drive", "")
+                        .strip()
+                    ) or "Untitled_Manga"
+                except Exception:
                     title = "Untitled_Manga"
-            except Exception as e:
-                self.append_log(f"Error extracting title: {e}")
-                QMessageBox.critical(self, "Error", "Failed to extract title from URL")
-                return
 
-        title = title.replace("?", "").replace(":", "_")
+        title = clean_title(title)
+
+        # 👇 حدّد المسار المحلي النهائي (لو رابط → Downloads\title)
+        if os.path.isdir(folder_url):
+            folder_local = folder_url
+        else:
+            folder_local = os.path.join(DOWNLOADS_DIR, title)
 
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
@@ -482,15 +344,11 @@ class MangaApp(QMainWindow):
                 if self.rb_fast.isChecked()
                 else "ultra" if self.rb_ultra.isChecked() else "normal"
             )
-            ocr_model = (
-                "paddle"
-                if self.rb_paddle.isChecked()
-                else "easy" if self.rb_easy.isChecked() else "manga"
-            )
 
             cfg_obj = {
                 "title": title,
-                "folder_url": folder_url,
+                "folder_url": folder_url,    # قد يكون رابط
+                "folder": folder_local,      # 👈 المسار المحلي النهائي للعمل
                 "team": self.team.currentText(),
                 "pspath": DEFAULT_PSPATH,
                 "mode": mode,
@@ -498,9 +356,9 @@ class MangaApp(QMainWindow):
                 "stopAfterFirstPage": bool(self.stop_chk.isChecked()),
                 "continueWithoutDialog": bool(self.continue_chk.isChecked()),
                 "autoNext": bool(self.auto_next_chk.isChecked()),
-                "ocr_model": ocr_model,
+                "ocr_model": "easy",  # ثابت — EasyOCR فقط
                 "dont_Open_After_Clean": bool(self.dont_Open_After_Clean.isChecked()),
-                "ai_clean": bool(self.ai_clean_chk.isChecked()),    # <<< NEW
+                "ai_clean": bool(self.ai_clean_chk.isChecked()),
             }
 
             with open(CFG_PATH, "w", encoding="utf-8") as f:
@@ -523,21 +381,13 @@ class MangaApp(QMainWindow):
 
         self.start_btn.setEnabled(False)
         self.cancel_btn.setEnabled(True)
-        # self.force_stop_btn.setEnabled(True)
         self.bar.show()
 
         mode = (
-            "fast"
-            if self.rb_fast.isChecked()
+            "fast" if self.rb_fast.isChecked()
             else "ultra" if self.rb_ultra.isChecked() else "normal"
         )
         enable_log = self.enable_log_chk.isChecked()
-        if self.rb_paddle.isChecked():
-            ocr_model = "paddle"
-        elif self.rb_easy.isChecked():
-            ocr_model = "easy"
-        else:
-            ocr_model = "manga"
 
         self.worker = WorkerThread(
             url,
@@ -548,9 +398,10 @@ class MangaApp(QMainWindow):
             self.continue_chk.isChecked(),
             self.auto_next_chk.isChecked(),
             enable_log,
-            ocr_model,
+            "easy",  # ثابت
             self.dont_Open_After_Clean.isChecked(),
-            self.ai_clean_chk.isChecked(),      # <<< NEW
+            self.ai_clean_chk.isChecked(),
+            manual_title=self.chapter_edit.text().strip(),  # تمرير الاسم اليدوي
         )
         self.worker.status.connect(self.append_log)
         self.worker.finished.connect(self.done)
@@ -562,20 +413,24 @@ class MangaApp(QMainWindow):
             self.append_log("⛔ Process cancelled.")
             self.done(False, "Cancelled")
 
-    # 🔄 الدالة المُعدَّلة: إغلاق إجباري، انتظار 3 ثوانٍ، وإعادة تشغيل مع فتح ملفات PSD
-# 🆕 الدالة الجديدة لفتح الفوتوشوب وملفات PSD بعد التأخير
+    # إعادة تشغيل Photoshop وفتح ملفات PSD (تستخدم المسار المحلي من JSON)
     def restart_ps_and_open_psds(self):
-        """
-        تقوم هذه الدالة بالبحث عن ملفات PSD في المسار المحفوظ وإعادة تشغيل 
-        Photoshop وفتح هذه الملفات بالترتيب.
-        """
         try:
-            # 1. قراءة مسار المجلد من ملف الإعدادات
             try:
-                # CFG_PATH هو مسار الإعدادات (temp-title.json)
                 with open(CFG_PATH, "r", encoding="utf-8") as f:
                     cfg = json.load(f)
-                folder_path = cfg.get("folder_url", "").strip()
+
+                folder_url = (cfg.get("folder_url", "") or "").strip()
+                title      = (cfg.get("title", "") or "").strip()
+
+                # أولويّة: folder من الـJSON → لو مش موجود: تحقّق من folder_url → وإلا Downloads\title
+                folder_path = (cfg.get("folder", "") or "").strip()
+                if not folder_path:
+                    if os.path.isdir(folder_url):
+                        folder_path = folder_url
+                    else:
+                        folder_path = os.path.join(DOWNLOADS_DIR, title)
+
             except Exception as e:
                 self.append_log(f"❌ لم يتم العثور على مسار المجلد في الإعدادات: {e}")
                 return
@@ -584,153 +439,61 @@ class MangaApp(QMainWindow):
                 self.append_log(f"❌ المسار المحدد ({folder_path}) ليس مجلدًا صالحًا.")
                 return
 
-            # 2. العثور على ملفات PSD وترتيبها أبجدياً
-            # glob للبحث عن جميع الملفات التي تنتهي بـ .psd
             psd_files = sorted(glob(os.path.join(folder_path, "*.psd")))
             if not psd_files:
                 self.append_log(f"⚠ لم يتم العثور على ملفات PSD في المجلد: {folder_path}")
                 return
 
-            # 3. إعادة تشغيل Photoshop وفتح الملفات
             self.append_log(f"⏱️ إعادة تشغيل Photoshop وفتح {len(psd_files)} ملف PSD...")
-            
-            # التأكد من صلاحية مسار Photoshop
             if not os.path.exists(DEFAULT_PSPATH):
                 self.append_log("❌ فشل: مسار Photoshop غير صالح لإعادة التشغيل.")
                 return
 
-            # بناء أمر التشغيل: يتم تمرير المسارات كـ arguments لـ Photoshop
-            # يجب استخدام قائمة (list) كأمر تشغيل في Popen لفتح ملفات متعددة
             command = [DEFAULT_PSPATH] + psd_files
-            
-            # استخدام subprocess.Popen لتشغيل عملية جديدة دون انتظار
-            # (shell=False هو الأكثر أمانًا)
-            subprocess.Popen(command, shell=False) 
+            subprocess.Popen(command, shell=False)
             self.append_log(f"✅ تم بدء تشغيل Photoshop وفتح {len(psd_files)} ملف. (في عملية جديدة)")
 
         except Exception as e:
             self.append_log(f"❌ فشل في إعادة تشغيل Photoshop وفتح الملفات: {e}")
             QMessageBox.critical(self, "Error", f"Failed to restart Photoshop: {e}")
 
-# ----------------------------------------------------------------------
-    
-    # 🔄 الدالة المُعدَّلة: إغلاق إجباري، انتظار 5 ثوانٍ، وإعادة تشغيل مع فتح ملفات PSD
     def force_stop(self):
         try:
-            # 1. إغلاق إجباري لـ Photoshop والعمليات ذات الصلة
             self.append_log("🛑 إغلاق إجباري لـ Photoshop...")
-            
-            # إغلاق آمن لعملية العامل (Worker) إن كانت تعمل
             if self.worker and self.worker.isRunning():
                 self.worker.terminate()
                 self.append_log("تم إنهاء عملية العامل (Worker) بنجاح.")
 
-            # قتل عمليات Photoshop بالقوة (F) وجميع العمليات الفرعية (T)
-            subprocess.Popen('taskkill /F /IM Photoshop.exe /T', shell=True) 
-            
+            subprocess.Popen('taskkill /F /IM Photoshop.exe /T', shell=True)
             self.done(False, "Force stopped Photoshop")
-            
-            # 2. استخدام QTimer لتأجيل عملية إعادة التشغيل
-            # 5000 ميلي ثانية = 5 ثوانٍ
+
             self.append_log("⏳ الانتظار 5 ثوانٍ قبل إعادة تشغيل Photoshop...")
-            QTimer.singleShot(5000, self.restart_ps_and_open_psds) 
+            QTimer.singleShot(5000, self.restart_ps_and_open_psds)
 
         except Exception as e:
             self.append_log(f"❌ خطأ غير متوقع أثناء الإيقاف الإجباري: {e}")
             QMessageBox.critical(self, "Error", f"Failed to force stop processes: {e}")
-            
+
     def done(self, ok, msg):
         self.start_btn.setEnabled(True)
         self.cancel_btn.setEnabled(True)
-        # self.force_stop_btn.setEnabled(False)
         self.bar.hide()
         if ok:
             self.append_log("✅ Done. Closing application...")
-            # QTimer.singleShot(700, QApplication.instance().quit)
         else:
             self.append_log(f"❌ {msg}")
-            # QMessageBox.critical(self, "Error", msg) # لا نعرض رسالة خطأ هنا لتجنب تكرار الرسائل
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    # حمّل الـQSS من ملف خارجي
+    qss_path = Path(__file__).with_name("styles.qss")
+    if qss_path.exists():
+        try:
+            app.setStyleSheet(qss_path.read_text(encoding="utf-8"))
+        except Exception as e:
+            print(f"⚠ Failed to load stylesheet: {e}")
+
     window = MangaApp()
-    app.setStyleSheet(
-        """
-        QWidget { 
-            background: #2C2F33; 
-            color: #FFFFFF; 
-            font: 10pt "Segoe UI"; 
-        }
-        QGroupBox { 
-            border: 1px solid #555; 
-            border-radius: 4px; 
-            margin-top: 12px; 
-            font-weight: bold; 
-        }
-        QGroupBox::title { 
-            subcontrol-origin: margin; 
-            subcontrol-position: top left; 
-            padding: 2px 6px; 
-            color: #FFFFFF; 
-        }
-        QPushButton { 
-            background: #007BFF; 
-            color: #FFFFFF; 
-            padding: 3px; 
-            border-radius: 4px; 
-            border: none; 
-            min-height: 20px; 
-        }
-        QPushButton:hover { 
-            background: #0056b3; 
-        }
-        QPushButton:disabled { 
-            background: #555; 
-            color: #999; 
-        }
-        QLineEdit, QComboBox, QTextEdit { 
-            background: #3A3F44; 
-            border: 1px solid #555; 
-            border-radius: 4px; 
-            padding:3px; 
-            color: #FFFFFF; 
-            min-height: 10px; 
-        }
-        QSpinBox { 
-            background: #3A3F44; 
-            border: 1px solid #555; 
-            border-radius: 4px; 
-            padding: 5px; 
-            color: #FFFFFF; 
-            min-height: 7px; 
-        }
-        QProgressBar { 
-            background: #3A3F44; 
-            border: 1px solid #555; 
-            border-radius: 4px; 
-            text-align: center; 
-            min-height: 20px; 
-        }
-        QProgressBar::chunk { 
-            background: #007BFF; 
-            border-radius: 4px; 
-        }
-        QCheckBox, QRadioButton { 
-            color: #FFFFFF; 
-            spacing: 5px; 
-        }
-        QComboBox::drop-down { 
-            border: none; 
-            width: 20px; 
-            height:20px;
-        }
-        QComboBox::down-arrow { 
-            image: none; 
-            width: 5px; 
-            height: 5px; 
-        }
-    """
-    )
     window.show()
     sys.exit(app.exec_())
