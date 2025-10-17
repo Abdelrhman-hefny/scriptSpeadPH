@@ -1,9 +1,0 @@
-2025-10-18 00:34:27,334 [WARNING] ⚠️ Using EasyOCR.
-2025-10-18 00:34:27,336 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-18 00:34:30,606 [WARNING] Using CPU. Note: This module is much faster with a GPU.
-2025-10-18 00:34:33,533 [INFO] 🔍 Found 1 images in C:\Users\abdoh\Downloads\111
-2025-10-18 00:34:44,127 [INFO] ✅ 01.jpg: 3 valid bubbles found. (Total boxes before validation: 3)
-2025-10-18 00:34:44,262 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\111\all_bubbles.json
-2025-10-18 00:34:44,292 [INFO] 🧠 ai_clean=True → Running Python cleaner script...
-2025-10-18 00:34:44,293 [ERROR] ❌ Post-processing step failed: Cleaner script not found: C:\Users\abdoh\Downloads\testScript\python\clean_text_regions_from_config.py
-2025-10-18 00:34:44,294 [INFO] === 🏁 Finished detector script ===

@@ -7,11 +7,22 @@ import subprocess
 CONFIG_JSON   = r"C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
 DOWNLOADS_DIR = r"C:\Users\abdoh\Downloads"
 
+# ── Progress Bar خفيف ──
+try:
+    from tqdm import tqdm
+    def pwrite(msg: str):  # يطبع بدون كسر الشريط
+        tqdm.write(str(msg))
+except ImportError:
+    def tqdm(x, **kwargs):  # fallback صامت إذا لم تتوفر tqdm
+        return x
+    def pwrite(msg: str):
+        print(msg)
+
 def get_local_base_from_cfg(cfg: dict) -> Path:
     title      = (cfg.get("title") or "Untitled").strip()
     folder     = (cfg.get("folder") or "").strip()
     folder_url = (cfg.get("folder_url") or "").strip()
-    if folder and os.path.isdir(folder):      return Path(folder)
+    if folder and os.path.isdir(folder):         return Path(folder)
     if folder_url and os.path.isdir(folder_url): return Path(folder_url)
     return Path(DOWNLOADS_DIR) / title
 
@@ -98,11 +109,12 @@ def find_clean_image_for_mask(mask_path: Path) -> Path | None:
 def clean_one(mask_path: Path, mode="auto", erode_iters=1, telea_radius=4):
     img_path = find_clean_image_for_mask(mask_path)
     if not img_path:
-        print(f"لا توجد صورة مقابلة للماسك: {mask_path.name}")
+        pwrite(f"لا توجد صورة مقابلة للماسك: {mask_path.name}")
         return
     img = cv2.imread(str(img_path), cv2.IMREAD_COLOR)
     if img is None:
-        print("Skip (bad image):", img_path); return
+        pwrite(f"Skip (bad image): {img_path}")
+        return
 
     mask = load_mask_alpha_to_binary(mask_path)
     k = np.ones((3,3), np.uint8)
@@ -129,7 +141,7 @@ def clean_one(mask_path: Path, mode="auto", erode_iters=1, telea_radius=4):
         raise ValueError("Unknown mode")
 
     cv2.imwrite(str(img_path), out)
-    print(f" Overwrote: {img_path.name}   [mask={mask_path.name}]")
+    # تم إلغاء الطباعة التفصيلية "Overwrote: ..." لتخفيف الإخراج
 
 def main():
     ap = argparse.ArgumentParser(description="Clean text regions in-place using masks in 'cleaned' folder from config JSON.")
@@ -140,18 +152,19 @@ def main():
 
     work_dir = load_work_dir()
     if not work_dir.exists():
-        print(f" مجلد غير موجود: {work_dir}")
+        pwrite(f" مجلد غير موجود: {work_dir}")
         return
 
     masks = sorted(Path(work_dir).glob("*_mask.png"))
     if not masks:
-        print(f"لا توجد أقنعة *_mask.png داخل: {work_dir}")
+        pwrite(f"لا توجد أقنعة *_mask.png داخل: {work_dir}")
         return
 
-    for mp in masks:
+    # ── Progress Bar بدل الطباعة لكل ملف ──
+    for mp in tqdm(masks, desc="Cleaning masks", unit="mask"):
         clean_one(mp, mode=args.mode, erode_iters=args.erode, telea_radius=args.radius)
 
-    print("Done.")
+    pwrite("Done.")
 
     try:
         with open(CONFIG_JSON, "r", encoding="utf-8") as f:
@@ -160,27 +173,27 @@ def main():
         def truthy(v): return str(v).strip().lower() in ("1", "true", "yes", "y", "on")
 
         dont_open_after_clean = truthy(cfg.get("dont_Open_After_Clean", False))
-        photoshop_exe = cfg.get("pspath", r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe")
+        photoshop_exe = cfg.get("pspath", r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Adobe Photoshop CC 2019\Photoshop.exe")
         jsx_script    = r"C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
 
         skip_jsx  = os.getenv("SKIP_JSX", "0") == "1"
         allow_jsx = os.getenv("ALLOW_JSX", "0") == "1"
 
         if skip_jsx:
-            print("SKIP_JSX=1 → skipping Photoshop JSX launch from cleaner.")
+            pwrite("SKIP_JSX=1 → skipping Photoshop JSX launch from cleaner.")
         elif dont_open_after_clean:
-            print("⏭️ dont_Open_After_Clean=True → Skipping Photoshop JSX script.")
+            pwrite("⏭️ dont_Open_After_Clean=True → Skipping Photoshop JSX script.")
         elif not allow_jsx:
-            print("SKIP: cleaner will not launch Photoshop (ALLOW_JSX != 1).")
+            pwrite("SKIP: cleaner will not launch Photoshop (ALLOW_JSX != 1).")
         else:
-            print("🚀 Running Photoshop JSX script from cleaner...")
+            pwrite("🚀 Running Photoshop JSX script from cleaner...")
             if not os.path.exists(photoshop_exe): raise FileNotFoundError(f"Photoshop not found: {photoshop_exe}")
             if not os.path.exists(jsx_script):    raise FileNotFoundError(f"JSX script not found: {jsx_script}")
             subprocess.run(f'"{photoshop_exe}" -r "{jsx_script}"', shell=True, check=True)
-            print("✅ Photoshop script executed successfully.")
+            pwrite("✅ Photoshop script executed successfully.")
 
     except Exception as e:
-        print(f"❌ Failed to decide/run JSX script: {e}")
+        pwrite(f"❌ Failed to decide/run JSX script: {e}")
 
 if __name__ == "__main__":
     main()
