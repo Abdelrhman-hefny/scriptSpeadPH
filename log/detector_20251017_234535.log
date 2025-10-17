@@ -1,0 +1,13 @@
+2025-10-17 23:45:35,331 [INFO] 🔍 Found 9 images in C:\Users\abdoh\Downloads\24
+2025-10-17 23:45:42,821 [INFO] ✅ 01.jpg: 5 valid bubbles (raw 5)
+2025-10-17 23:45:51,641 [INFO] ✅ 02.jpg: 9 valid bubbles (raw 9)
+2025-10-17 23:45:57,933 [INFO] ✅ 03.jpg: 6 valid bubbles (raw 6)
+2025-10-17 23:46:03,767 [INFO] ✅ 04.jpg: 12 valid bubbles (raw 12)
+2025-10-17 23:46:09,754 [INFO] ✅ 05.jpg: 11 valid bubbles (raw 11)
+2025-10-17 23:46:15,725 [INFO] ✅ 06.jpg: 11 valid bubbles (raw 11)
+2025-10-17 23:46:21,907 [INFO] ✅ 07.jpg: 7 valid bubbles (raw 7)
+2025-10-17 23:46:30,863 [INFO] ✅ 08.jpg: 10 valid bubbles (raw 10)
+2025-10-17 23:46:36,764 [INFO] ✅ 09.jpg: 5 valid bubbles (raw 5)
+2025-10-17 23:46:36,816 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\24\all_bubbles.json
+2025-10-17 23:46:36,816 [INFO] 🎨 ai_clean=False → BAT/outer flow handles Photoshop.
+2025-10-17 23:46:36,816 [INFO] === 🏁 Finished detector script ===

@@ -1,95 +1,55 @@
-//// // #target photoshop
-var folderName;
-var parentFolder;
+// #target photoshop
 
-if (app.documents.length > 0) {
-  var fullPath = app.activeDocument.fullName;
-  parentFolder = fullPath.parent;
-  folderName = parentFolder.name;
-} else {
-  alert("مفيش ملف مفتوح في فوتوشوب!");
-  exit();
+// --- Polyfill: لو JSON مش معرف، عرّفه بسرعة ---
+if (typeof JSON === "undefined") { JSON = {}; }
+if (typeof JSON.parse !== "function") {
+  JSON.parse = function (s) {
+    // إزالة BOM لو موجود
+    s = String(s || "").replace(/^\uFEFF/, "");
+    // ملاحظة: eval آمن هنا لأننا بنقرأ من ملفنا المحلي فقط
+    return eval("(" + s + ")");
+  };
 }
 
-// ==== JSON file path ====
+if (!app.documents.length) { alert("مفيش ملف مفتوح في فوتوشوب!"); exit(); }
+
+// مجلد الصورة المفتوحة لقراءة all_bubbles.json
+var parentFolder = app.activeDocument.fullName.parent;
 var jsonFile = new File(parentFolder + "/all_bubbles.json");
 
-// ==== Open and read JSON ====
+// قراءة JSON
 if (!jsonFile.exists || !jsonFile.open("r")) {
-  alert("JSON file not found!" + jsonFile + " FOLDER NAME: " + folderName);
+  alert("JSON file not found! " + jsonFile);
   exit();
 }
-var jsonString = jsonFile.read();
-jsonFile.close();
-jsonString = jsonString.replace(/^\uFEFF/, "");
+var jsonString = jsonFile.read(); jsonFile.close();
+jsonString = jsonString.replace(/^\uFEFF/, ""); // إزالة BOM إن وُجد
 
-// Parse JSON
 var bubblesData;
-if (typeof JSON !== "undefined" && JSON.parse) {
-  try {
-    bubblesData = JSON.parse(jsonString);
-  } catch (e) {
-    try {
-      bubblesData = eval("(" + jsonString + ")");
-    } catch (e2) {
-      alert("Error parsing JSON: " + e + "\nFallback eval failed: " + e2);
-      exit();
-    }
-  }
-} else {
-  try {
-    bubblesData = eval("(" + jsonString + ")");
-  } catch (e) {
-    alert("Error parsing JSON with eval: " + e);
-    exit();
-  }
-}
-
-if (!bubblesData) {
-  alert("No data found in JSON.");
+try {
+  bubblesData = JSON.parse(jsonString);
+} catch (e) {
+  alert("Error parsing JSON: " + e);
   exit();
 }
 
-// ================== اقرأ نوع المانجا ==================
-var tempFile = new File("~/Downloads/testScript/temp-title.txt");
-var mangaType = "japanise"; // الافتراضي
-
-if (tempFile.exists) {
-  tempFile.open("r");
-  var lines = [];
-  while (!tempFile.eof) {
-    lines.push(tempFile.readln());
-  }
-  tempFile.close();
-
-  if (lines.length >= 5) {
-    var line5 = lines[4].toLowerCase();
-    if (line5.indexOf("korian") !== -1) mangaType = "korian";
-    else if (line5.indexOf("japanise") !== -1) mangaType = "japanise";
-  }
-}
-
-$.writeln("📌 Manga type detected: " + mangaType);
+if (!bubblesData) { alert("No data found in JSON."); exit(); }
 
 // ================== Main Loop ==================
-if (!app.documents.length) {
-  alert("No open document");
-  exit();
-}
-
-var pathCounter = 1;
+var shrink = 10;    // تقليص من كل جانب
+var numPoints = 40; // نقاط البيضاوي لنعومة المسار
 
 for (var d = 0; d < app.documents.length; d++) {
   var doc = app.documents[d];
   app.activeDocument = doc;
   var filename = doc.name.replace(/\.[^\.]+$/, "");
 
-  // 🗑️ امسح أي باثات قديمة
+  // امسح أي Paths قديمة
   for (var p = doc.pathItems.length - 1; p >= 0; p--) {
     doc.pathItems[p].remove();
   }
 
-  // Find key
+  // إيجاد المفتاح داخل JSON (يحاول بدائل _mask / _clean وبعض المطابقة الجزئية)
   var key = filename;
   if (!bubblesData[key]) {
     var alt = filename + "_mask";
@@ -102,15 +62,11 @@ for (var d = 0; d < app.documents.length; d++) {
         if (bubblesData[stripped]) key = stripped;
         else {
           var keys = [];
-          for (var k in bubblesData)
-            if (bubblesData.hasOwnProperty(k)) keys.push(k);
+          for (var k in bubblesData) if (bubblesData.hasOwnProperty(k)) keys.push(k);
           if (keys.length === 1) key = keys[0];
           else {
-            for (var i = 0; i < keys.length; i++) {
-              if (keys[i].indexOf(filename) !== -1) {
-                key = keys[i];
-                break;
-              }
+            for (var i1 = 0; i1 < keys.length; i1++) {
+              if (keys[i1].indexOf(filename) !== -1) { key = keys[i1]; break; }
             }
           }
         }
@@ -119,57 +75,42 @@ for (var d = 0; d < app.documents.length; d++) {
   }
 
   var bubbles = bubblesData[key];
-  if (!bubbles || bubbles.length === 0) {
-    $.writeln("No bubbles found for key: " + key);
-    continue;
-  }
+  if (!bubbles || !bubbles.length) { continue; }
 
-  // ==== Draw Bubbles (كل فقاعة Path Item منفصل) ====
+  // رسم كل فقاعة كـ Path منفصل
   for (var i = 0; i < bubbles.length; i++) {
-    var bubble = bubbles[i];
-    var pts = bubble.points;
-    if (!pts || pts.length === 0) continue;
+    var pts = bubbles[i].points;
+    if (!pts || !pts.length) continue;
 
-    // احسب المدى الكامل (Bounding Box)
-    var xCoords = [], yCoords = [];
+    // حساب حدود الفقاعة
+    var minX = +Infinity, minY = +Infinity, maxX = -Infinity, maxY = -Infinity;
     for (var j = 0; j < pts.length; j++) {
-      var xy = pts[j];
-      var x = Number(xy[0]);
-      var y = Number(xy[1]);
+      var x = Number(pts[j][0]), y = Number(pts[j][1]);
       if (isNaN(x) || isNaN(y)) continue;
-      xCoords.push(x);
-      yCoords.push(y);
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
     }
-    if (xCoords.length === 0) continue;
-
-    // 🔹 حساب مركز الفقاعة
-    var minX = Math.min.apply(null, xCoords);
-    var maxX = Math.max.apply(null, xCoords);
-    var minY = Math.min.apply(null, yCoords);
-    var maxY = Math.max.apply(null, yCoords);
+    if (!isFinite(minX) || !isFinite(minY)) continue;
 
     var centerX = (minX + maxX) / 2;
     var centerY = (minY + maxY) / 2;
-
-    // 🔹 نصف القطر مع تقليص 10 بكسل من كل جهة
-    var shrink = 10; // تقليص 10 بكسل من كل جانب
     var radiusX = ((maxX - minX) / 2) - shrink;
     var radiusY = ((maxY - minY) / 2) - shrink;
+    if (radiusX <= 0 || radiusY <= 0) continue;
 
-    // ✳️ رسم باث بيضاوي مطابق لحجم الفقاعة مع التقليص
-    var numPoints = 40; // نقاط أكثر لنعومة الدائرة
+    // تكوين مسار بيضاوي
     var subPathArray = [];
-    for (var k = 0; k < numPoints; k++) {
-      var theta = (k / numPoints) * 2 * Math.PI;
+    for (var k2 = 0; k2 < numPoints; k2++) {
+      var theta = (k2 / numPoints) * 2 * Math.PI;
       var px = centerX + radiusX * Math.cos(theta);
       var py = centerY + radiusY * Math.sin(theta);
 
-      var p = new PathPointInfo();
-      p.kind = PointKind.CORNERPOINT;
-      p.anchor = [px, py];
-      p.leftDirection = [px, py];
-      p.rightDirection = [px, py];
-      subPathArray.push(p);
+      var pInfo = new PathPointInfo();
+      pInfo.kind = PointKind.CORNERPOINT;
+      pInfo.anchor = [px, py];
+      pInfo.leftDirection = [px, py];
+      pInfo.rightDirection = [px, py];
+      subPathArray.push(pInfo);
     }
 
     var subPathInfo = new SubPathInfo();
@@ -177,25 +118,14 @@ for (var d = 0; d < app.documents.length; d++) {
     subPathInfo.operation = ShapeOperation.SHAPEXOR;
     subPathInfo.entireSubPath = subPathArray;
 
-    // ⭐️ إضافة المسار كـ Path Item منفصل
-    var bubbleNumber = i + 1;
-    var pathName = "page_" + filename + "_bubble" + bubbleNumber;
-
-    try {
-      doc.pathItems.add(pathName, [subPathInfo]);
-      pathCounter++;
-    } catch (e) {
-      $.writeln("⚠️ Failed to add path: " + e);
-    }
+    // إضافة المسار
+    var pathName = "page_" + filename + "_bubble" + (i + 1);
+    try { doc.pathItems.add(pathName, [subPathInfo]); } catch (eAdd) {}
   }
-  $.writeln(
-    "✅ Processed " +
-    filename +
-    ". Created " +
-    bubbles.length +
-    " separate, sorted Path Items."
-  );
 }
 
+// //   تشغيل سكربت لاحق
 if (app.documents.length > 0) app.activeDocument = app.documents[0];
+
+// شغّل سكربت لاحق لو محتاج
 $.evalFile("C:/Users/abdoh/Downloads/testScript/scripts/scriptSPead.jsx");

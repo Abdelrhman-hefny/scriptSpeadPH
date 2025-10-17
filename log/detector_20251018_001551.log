@@ -1,0 +1,9 @@
+2025-10-18 00:15:53,527 [WARNING] ⚠️ Using EasyOCR.
+2025-10-18 00:15:53,528 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-18 00:15:55,933 [WARNING] Using CPU. Note: This module is much faster with a GPU.
+2025-10-18 00:15:58,258 [INFO] 🔍 Found 1 images in C:\Users\abdoh\Downloads\111
+2025-10-18 00:16:05,335 [INFO] ✅ 01.jpg: 3 valid bubbles found. (Total boxes before validation: 3)
+2025-10-18 00:16:05,425 [INFO] 💾 Saved all bubble data to: C:\Users\abdoh\Downloads\111\all_bubbles.json
+2025-10-18 00:16:05,425 [INFO] 🎨 ai_clean=False → Launching Photoshop JSX script...
+2025-10-18 00:16:05,624 [ERROR] ❌ Post-processing step failed: Command '"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe" -r "C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"' returned non-zero exit status 1.
+2025-10-18 00:16:05,624 [INFO] === 🏁 Finished detector script ===
