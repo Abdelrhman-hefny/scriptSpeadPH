@@ -1,0 +1,14 @@
+========================================
+Run: Sat Oct 18 2025 14:16:33 GMT+0300
+TXT: C:\Users\abdoh\Downloads\testScript\manga_text.txt
+----------------------------------------
+page 1 — 6 paths / 6 lines — OK
+page 2 — 8 paths / 9 lines — MISMATCH (-1)
+page 3 — 8 paths / 9 lines — MISMATCH (-1)
+page 4 — 5 paths / 4 lines — MISMATCH (+1)
+page 5 — 5 paths / 4 lines — MISMATCH (+1)
+page 6 — 6 paths / 5 lines — MISMATCH (+1)
+page 7 — 3 paths / 3 lines — OK
+page 8 — 8 paths / 8 lines — OK
+----------------------------------------
+Total mismatches: 5

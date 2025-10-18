@@ -1,8 +1,8 @@
 {
   "title": "26_seren_shes",
-  "folder_url": "C:\\Users\\abdoh\\Downloads\\26_seren_shes",
+  "folder_url": "C:/Users/abdoh/Downloads/26_seren_shes",
   "folder": "C:\\Users\\abdoh\\Downloads\\26_seren_shes",
-  "team": "ez",
+  "team": "seren",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
   "mode": "fast",
   "fontSize": 35,
@@ -10,6 +10,6 @@
   "continueWithoutDialog": false,
   "autoNext": false,
   "ocr_model": "easy",
-  "dont_Open_After_Clean": true,
-  "ai_clean": false
+  "dont_Open_After_Clean": false,
+  "ai_clean": true
 }

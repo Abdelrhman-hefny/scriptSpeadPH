@@ -1,270 +1,194 @@
-page 1
-“”: Huh?
+PR: Strawberrypink
+page 1 
 
-**: Hyunsu · Now
-**: Hello, President. I'm contacting you to keep the promise we made the other day.
-**: [Push to reply] >>
+"": Do you happen to know about the Five-Colored Mana Stone?
 
-“”: It's Hyunsu, isn't it?
+"": Agnes… Where did you hear about the Five-Colored Mana Stone?
 
-"": But...
+"": I discovered it in the first emperor's portrait, and I've just come from the library.
 
-"": A promise?
+"": It was top secret. I had all records of it thoroughly erased…
 
-"": Ah!
+SFX: Sigh...
 
-page 2
-"": Perhaps the artifact mentioned that day?
+"": It's not like I can stop you anyway.
 
-[]: Are there any changes to the requested artifact effects? I plan to craft and send it to you soon.
+"": It's about time I told you.
 
-(): Hyunsu, if you can make the artifact I need right now...
+page 2 
 
-[]: No changes. Hyunsu, what was your level again?
+OT: Episode 77
 
-[]: It's 59 ^^;
+OT: Long, long ago,
 
-(): Still quite low.
+OT: there was a moment when a rift opened, threatening to swallow the world.
 
-[]: If it's not too much trouble, I'll entrust it to you, Hyunsu.
+OT: And in the midst of that chaos,
 
-"": Still, well...
+[]: the first emperor's mana and the purple mana stone combined,
 
-//: Since he's a promising young man, it should be okay to have a little expectation.
+[]: shining with a brilliant five-colored light before closing the rift.
 
-page 3
-"": Should I try placing a request with the 'Blacksmith Hyun' as well?
+[]: And that is how the first emperor protected the empire.
 
-**: Breaking News >
-**: Blacksmith Hyun, Key Figure in Barad's Ifrit Subjugation...
-**: Reporter XXX
-**: 2025.10.14 18:45 Views 10,294
-**: +Subscribe
-**: The workshop of Blacksmith Hyun, who crafted the weapons for Barad, the key figure in the Ifrit subjugation.
+[]: The people of the empire said, "As long as the first emperor and the mana stone exist, the empire will stand strong."
 
-"": ...Never mind. I heard he doesn't even accept requests from rankers, so there's no way he'd take a request from an unofficial tanker like me.
+[]: Perhaps from expending too much mana, the first emperor, not long after that…
 
-(): But I don't have much time left before the class advancement quest opportunity expires,
+page 3 
 
-"": Still, it's worth a try...!
+[]: …passed away, and with him, his Five-Colored Mana Stone also vanished.
 
-page 4
-<> Frost Mine
+OT: Fearing the people of the empire would tremble in anxiety if they learned the truth, the imperial family kept it a secret.
 
-"": Wow!
+"": We thought things would stabilize, but the rifts opened once more,
 
-"": So this is the Frost Mine......!
+"": and because of this, many sought out the first emperor's tomb, hoping to find informations
 
-<> You are the first user to enter the Frost Mine.
+//: about the Five-Colored Mana Stone, but...
 
-<> EXP gain will be doubled for one week.
+"": No one could pass the final threshold.
 
-(): Being the first to enter... somehow feels good, doesn't it?
+"": Why not?
 
-(): And I even get double EXP!
+"": Because there is a barrier placed on the first emperor's tomb.
 
-"": Ms. Bella, have you been here before?
+(): What kind of barrier could it be?
 
-"": No, this is my first time too.
+page 4 
 
-page 5
-(): It's still freezing cold here;
+(): But I have to go.
 
-"": How did you get here?
+(): To save Kylo and the people of the empire...!
 
-"": This isn't a place one can enter without permission.
+"": Father.
 
-"": I am Bella, Vice Captain of the Royal Knights.
+"": I will go.
 
-"": I entered with permission from the royal family.
+page 5 
 
-"": Wow, the royal family?
+<>: No...!
 
-"": Is this a royal seal? It's my first time seeing one!!
+"": Countless souls have lost their lives trying to enter that tomb...!
 
-"": Hello, I'm the miner Banya.
+"": Besides, you have no reason to go!
 
-"": I'm the blacksmith, Hyunsu.
+<>: But…!
 
-page 6
-"": It's nice to see outsiders after so long,
+page 6 
 
-//: But we can't just let anyone into this mine!
+"": Many people are trembling in fear.
 
-"": Then, what should we do...
+"": As the Saintess of Light and the princess, I must be the one to go.
 
-"": But luckily!
+<>: Agnes! Are you truly saying this without understanding Father's feelings?!
 
-//: My father is the mining foreman!!
+"": I cannot lose you, too...
 
-"": Let me take you to him.
+"": Stop it, Agnes. Don't make things any harder on Father.
 
-"": This way.
+page 7 
 
-"": Thank you...?
+"": I can't back down...
 
-"": No need for thanks!
+(): I'm sorry, Father.
 
-page 7
-"": Huh?
+(): There is someone I must protect…!
 
-"": Isn't these monsters  over there?
+page 8 
 
-"": Ah, that's fascinating, right?
+"": I can't possibly enter the tomb alone.
 
-"": It's said to be a kind of dungeon.
+"": But to ask Kylo for help...
 
-[]: I heard that in the past, monsters used to pop out all over the mine.
+//: It's been awkward since that incident....
 
-[]: But 100 years ago, a mage who came here sealed them inside that mine.
+"": As a princess, my actions were rash.
 
-"": Don't tell me that thing attached to those monsters...
+"": I will be sure to repay you for this, one way or another.
 
-page 8
-"": Is it the Hundred-Year Cold Iron?
+"": Repay me...?
 
-"": That's right. But if you get greedy, you'll be in for big trouble.
+"": Your Highness, you continue to confuse me.
 
-"": Because inside the sealing barrier is their territory.
+"": Sir Gray...?
 
-"": You can enter, but it'll be hard to come back alive.
+page 9 
 
-"": We miners also find it a pity, since that mine likely has the most minerals left.
+"": One moment you approach me so suddenly, and the next you push me away when I try to get closer.
 
-"": But still, since they're trapped inside and we can work safely, we should be satisfied with that!
+"": Is it so difficult... To lean on me, even just a little?
 
-"": We've arrived. That person over there is my father.
+"": That's not it...
 
-page 9
-"": Father!! We have guests, guests!!
+"": I'm just afraid you'll be in danger...
 
-"": I've guided them here, so I'll be on my way now!
+"": That's the retreat order. Let's fall back now, Princess.
 
-"": Thank you for letting me know.
+"": Haah… What should I do?
 
-(): I wonder why an outsider has come all the way here?
+page 10 
 
-"": Excuse me, pardon the interruption.
+"": Where are you going all alone again?
 
-page 10
-"": A royal knight... and
+"": Sir Gray?
 
-"": An outsider, is it?
+"": I-I was just going for a night walk…
 
-"": That's correct.
+"": I was assigned to be your escort today.
 
-"": Hmm...
+"": You're going to the first emperor's tomb, aren't you?
 
-[]: Mining Foreman Rex Lv.231
+"": Is it truly that difficult to rely on me?
 
-"": That's an unusual combination.
+page 11 
 
-//: What brings you here?
+"": I'm sorry. That's all I can say.
 
-"": I am looking for Hundred-Year Cold Iron, or rather, a mineral even superior to it.
+"": But…
 
-"": A mineral superior to Hundred-Year Cold Iron?
+"": I can promise you this one thing, that I can give you my all.
 
-"": Yes, might you know of one?
+page 12 
 
-(): A mineral better than Hundred-Year Cold Iron?
+"": I won't ask for much.
 
-(): It exists, but I have no reason to tell you.
+"": Just please allow me to protect you, Your Highness.
 
-page 11
-OT: Especially not to a greedy outsider!
+"": For my sake...
 
-(): If word gets out that such a thing exists in the Frost Mine,
+"": Won't you permit me at least that...?
 
-(): this mine will surely fall into chaos.
+"": ...Then I'll be in your care, Sir Gray.
 
-(): But this outsider came with royal permission.
+page 13 
 
-(): I need a good way to persuade them to leave peacefully...
+"": I'll be going with you as well.
 
-"": You, have you ever mined for minerals before?
+"": There is a trap there that requires at least three people to disable.
 
-page 12
-"": No.
+"": And you planned to protect Her Highness without even knowing that?
 
-"": An average miner digs up about 3 minerals per day.
+SFX: Grit
 
-"": If you can mine 40 minerals within a week,
+"": Whoa, whoa, don't fight. Since it's come to this, let's just head out right away!
 
-//: I'll share my information with you.
+page 14 
 
-<> [Quest]
- 
+"": Now, hurry up and follow me!
 
-"": So, will you accept my proposal?
+"": They're moving just as expected.
 
-"": What if...
+"": That's right.
 
-page 13
-"": What if I mine more than 40?
+"": Duke Solton.
 
-"": That's unlikely to happen, but if you succeed, I'll personally mine the mineral for you.
+OT: To be continued...
 
-ST: Just so you know, you can't receive help from your companions.
+OT: Epilogue 77.
 
-"": Do you promise?
+page 15 
 
-"": Alright, it's a promise.
+OT: Have a happy Chuseok!
 
-"": Then I'll see you in a week.
-
-"": By the way...
-
-"": Banya! I know you're hiding over there! Come out!!
-
-page 14
-"": Where do you think you're running off to when you're injured??
-
-//: All you do is eavesdrop secretly!
-
-"": Ouch, ouch! Father, I'm sorry!
-
-"": Sir Hyunsu. Why did you provoke Miner Rex like that?
-
-"": Actually, because I knew I was coming to the mine,
-
-"": I had prepared something in advance.
-
-"": A better mineral... I will obtain it no matter what...!
-
-(): No matter how I think about it, it seems His Majesty has taken in a rather strange person as a close friend...?
-
-page 15
-[]: One week later
-
-(): They say that outsider hasn't left the mine for a whole week.
-
-(): But no matter what, it's an impossible task.
-
-"": Huh?!
-
-ST: Haha~
-
-"": You finally came out, outsider!
-
-"": At least your face looks like a miner's now!
-
-//: Since the promised deadline has arrived,
-
-"": Show me the results.
-
-page 16
-"": Just a moment-
-
-(): I knew it.
-
-(): There's no way an outsider could pull off somethi...
-
-"": It's 200 in total.
-
-<> Y-you, what exactly are you?!
-
-<> Don't tell me you're a legendary miner???
-
-page 17
 

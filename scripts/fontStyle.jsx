@@ -3,7 +3,7 @@
  * Purpose: تطبيق Gradient/Stroke/Glow/Shadow على طبقات النص مباشرةً من JSON
  * Compat: Photoshop CC 2019 (ES3). لا دوال ES5. لا إنشاء طبقات.
  * ===================================================================== */
-#target photoshop
+// #target photoshop
 app.bringToFront();
 
 (function () {
