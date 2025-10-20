@@ -37,7 +37,7 @@ if (!bubblesData) { alert("No data found in JSON."); exit(); }
 
 // ================== Main Loop ==================
 var shrink = 10;    // تقليص من كل جانب
-var numPoints = 40; // نقاط البيضاوي لنعومة المسار
+var numPoints = 10; // نقاط البيضاوي لنعومة المسار
 
 for (var d = 0; d < app.documents.length; d++) {
   var doc = app.documents[d];

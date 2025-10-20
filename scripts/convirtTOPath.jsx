@@ -65,6 +65,34 @@ app.bringToFront();
   // تحويل التحديد لباث
   doc.selection.makeWorkPath(2.0);
 
+  // ===== دوال لضمان اسم فريد =====
+  function pathNameExists(name) {
+    for (var i = 0; i < doc.pathItems.length; i++) {
+      if (doc.pathItems[i].name === name) return true;
+    }
+    return false;
+  }
+
+  function uniquePathName(baseName) {
+    // لو الاسم الأساسي فاضي، رجّع baseName زي ما هو
+    if (!baseName) baseName = "bubble";
+
+    // لو مش موجود، استخدمه على طول
+    if (!pathNameExists(baseName)) return baseName;
+
+    // جرّب لحد ما تلاقي اسم فريد بإضافة رقم عشوائي
+    for (var tries = 0; tries < 50; tries++) {
+      var rnd = Math.floor(Math.random() * 9000) + 1000; // رقم 4 خانات
+      var candidate = baseName + "_" + rnd;
+      if (!pathNameExists(candidate)) return candidate;
+    }
+    // كـ fallback مضمون
+    return baseName + "_" + (new Date().getTime());
+  }
+
+  var baseName = prefix + (count + 1);     // التسلسل المعتاد
+  var finalName = uniquePathName(baseName); // ضمان التفرد لو فيه تعارض
+
   var workPath = doc.pathItems["Work Path"];
-  workPath.name = prefix + (count + 1);
+  workPath.name = finalName;
 })();

@@ -17,7 +17,6 @@ sys.dont_write_bytecode = True
 
 # ----- المسارات الثابتة -----
 CFG_PATH        = r"C:\Users\abdoh\Downloads\testScript\config\temp-title.json"
-TXT_PATH        = r"C:\Users\abdoh\Downloads\testScript\temp-title.txt"
 MANGA_TEXT_PATH = r"C:\Users\abdoh\Downloads\testScript\manga_text.txt"
 DEFAULT_PSPATH  = r"C:\Program Files\Adobe\Adobe Photoshop CC 2019\Photoshop.exe"
 DOWNLOADS_DIR   = r"C:\Users\abdoh\Downloads"  # قاعدة أي تحميلات للرابط
@@ -145,11 +144,9 @@ class WorkerThread(QThread):
         else:
             folder_local = os.path.join(DOWNLOADS_DIR, title)
 
-        # --- اكتب TXT + JSON ---
+        # --- اكتب JSON فقط ---
         try:
             os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
-            with open(TXT_PATH, "w", encoding="utf-8") as f:
-                f.write(f"{title}\n{self.folder_url}\n{self.team}\n{self.pspath}\n")
 
             cfg_obj = {
                 "title": title,
@@ -172,7 +169,7 @@ class WorkerThread(QThread):
 
             self.log(f"✅ Saved config to {CFG_PATH}")
         except Exception as e:
-            self.log(f"❌ Error saving files: {e}")
+            self.log(f"❌ Error saving configuration: {e}")
             self.finished.emit(False, "Failed to save configuration")
             return
 

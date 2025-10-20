@@ -1,194 +1,46 @@
-PR: Strawberrypink
-page 1 
+page 1
 
-"": Do you happen to know about the Five-Colored Mana Stone?
+"": Manager Wang, I just discovered a promising ability user, named Xu Jingming...
 
-"": Agnes… Where did you hear about the Five-Colored Mana Stone?
+"": The spoils he brought back alone are more than what a dozen small teams combined brought!
 
-"": I discovered it in the first emperor's portrait, and I've just come from the library.
+"": Xu Jingming? I'll check his records.
 
-"": It was top secret. I had all records of it thoroughly erased…
+[]: Base Chief Manager Wang Chuang
 
-SFX: Sigh...
+page 2
+"": Manager Zhao, that Xu Jingming you mentioned is very important to me. If he comes again, notify me immediately.
 
-"": It's not like I can stop you anyway.
+"": ...Understood.
 
-"": It's about time I told you.
+(): This Xu Jingming actually made Old Wang so excited.
 
-page 2 
+(): He must be a big deal. It's good I didn't slight him!
 
-OT: Episode 77
+"": I didn't expect another disciple of Yang Zhentian to arrive at my base.
 
-OT: Long, long ago,
+"": He's Peak Tier 2, and his talent is even stronger than Liu Ming's. He's practically a monster; we absolutely cannot offend him.
 
-OT: there was a moment when a rift opened, threatening to swallow the world.
+(): The space rings sold here cost over ten million, and their capacity is only the size of a suitcase. So expensive!
 
-OT: And in the midst of that chaos,
+(): But space rings are truly convenient. I really want to buy one!
 
-[]: the first emperor's mana and the purple mana stone combined,
+(): I wonder how expensive a space ring capable of holding a long spear would be...
 
-[]: shining with a brilliant five-colored light before closing the rift.
+page 3
 
-[]: And that is how the first emperor protected the empire.
+"": Ding-ling-ling~ Ding-ling-ling~
+//: Ding-ling-ling~
 
-[]: The people of the empire said, "As long as the first emperor and the mana stone exist, the empire will stand strong."
+"": Brother Ming, it's been a while since we talked. When are you coming back to school?
 
-[]: Perhaps from expending too much mana, the first emperor, not long after that…
+"": In about half a month, I guess. Why, is something up?
 
-page 3 
+"": He's your target. Break his arms and legs, then bring him to me.
 
-[]: …passed away, and with him, his Five-Colored Mana Stone also vanished.
+"": Got it.
 
-OT: Fearing the people of the empire would tremble in anxiety if they learned the truth, the imperial family kept it a secret.
+"": During the month you were gone, there's a new freshman who enrolled at school, and he's incredibly arrogant...
 
-"": We thought things would stabilize, but the rifts opened once more,
-
-"": and because of this, many sought out the first emperor's tomb, hoping to find informations
-
-//: about the Five-Colored Mana Stone, but...
-
-"": No one could pass the final threshold.
-
-"": Why not?
-
-"": Because there is a barrier placed on the first emperor's tomb.
-
-(): What kind of barrier could it be?
-
-page 4 
-
-(): But I have to go.
-
-(): To save Kylo and the people of the empire...!
-
-"": Father.
-
-"": I will go.
-
-page 5 
-
-<>: No...!
-
-"": Countless souls have lost their lives trying to enter that tomb...!
-
-"": Besides, you have no reason to go!
-
-<>: But…!
-
-page 6 
-
-"": Many people are trembling in fear.
-
-"": As the Saintess of Light and the princess, I must be the one to go.
-
-<>: Agnes! Are you truly saying this without understanding Father's feelings?!
-
-"": I cannot lose you, too...
-
-"": Stop it, Agnes. Don't make things any harder on Father.
-
-page 7 
-
-"": I can't back down...
-
-(): I'm sorry, Father.
-
-(): There is someone I must protect…!
-
-page 8 
-
-"": I can't possibly enter the tomb alone.
-
-"": But to ask Kylo for help...
-
-//: It's been awkward since that incident....
-
-"": As a princess, my actions were rash.
-
-"": I will be sure to repay you for this, one way or another.
-
-"": Repay me...?
-
-"": Your Highness, you continue to confuse me.
-
-"": Sir Gray...?
-
-page 9 
-
-"": One moment you approach me so suddenly, and the next you push me away when I try to get closer.
-
-"": Is it so difficult... To lean on me, even just a little?
-
-"": That's not it...
-
-"": I'm just afraid you'll be in danger...
-
-"": That's the retreat order. Let's fall back now, Princess.
-
-"": Haah… What should I do?
-
-page 10 
-
-"": Where are you going all alone again?
-
-"": Sir Gray?
-
-"": I-I was just going for a night walk…
-
-"": I was assigned to be your escort today.
-
-"": You're going to the first emperor's tomb, aren't you?
-
-"": Is it truly that difficult to rely on me?
-
-page 11 
-
-"": I'm sorry. That's all I can say.
-
-"": But…
-
-"": I can promise you this one thing, that I can give you my all.
-
-page 12 
-
-"": I won't ask for much.
-
-"": Just please allow me to protect you, Your Highness.
-
-"": For my sake...
-
-"": Won't you permit me at least that...?
-
-"": ...Then I'll be in your care, Sir Gray.
-
-page 13 
-
-"": I'll be going with you as well.
-
-"": There is a trap there that requires at least three people to disable.
-
-"": And you planned to protect Her Highness without even knowing that?
-
-SFX: Grit
-
-"": Whoa, whoa, don't fight. Since it's come to this, let's just head out right away!
-
-page 14 
-
-"": Now, hurry up and follow me!
-
-"": They're moving just as expected.
-
-"": That's right.
-
-"": Duke Solton.
-
-OT: To be continued...
-
-OT: Epilogue 77.
-
-page 15 
-
-OT: Have a happy Chuseok!
-
-
+"": Hm?
+page 4

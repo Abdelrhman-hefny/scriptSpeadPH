@@ -58,38 +58,24 @@ if not exist "%pspath%" (
 :: ===== Display the entered URL =====
 echo You entered: %folder_url%
 
-:: ===== Check if local folder exists =====
+:: ===== Resolve title =====
 if exist "%folder_url%" (
     for %%F in ("%folder_url%") do set "title=%%~nxF"
 ) else (
     echo Google Drive URL detected, extracting title...
     for /f "delims=" %%A in ('powershell -NoLogo -NoProfile -Command ^
-        "$html = Invoke-WebRequest '%folder_url%' | Select-Object -ExpandProperty Content; $start = $html.IndexOf('<title>')+7; $end = $html.IndexOf('</title>'); $title = $html.Substring($start, $end-$start); $title -replace ' - Google Drive',''" 
+        "$html = Invoke-WebRequest '%folder_url%' | Select-Object -ExpandProperty Content; $start = $html.IndexOf('<title>')+7; $end = $html.IndexOf('</title>'); if($start -ge 7 -and $end -gt $start){$t=$html.Substring($start,$end-$start)} else {$t='UntitledFolder'}; $t -replace ' - Google Drive',''" 
     ') do set "title=%%A"
 )
 
-
 set "cleanTitle=%title:?=%"
+if not defined cleanTitle set "cleanTitle=UntitledFolder"
 
-:: ===== Save to TXT =====
-set "savePath=C:\Users\abdoh\Downloads\testScript\temp-title.txt"
-
-if defined cleanTitle (
-    echo %cleanTitle% > "%savePath%"
-) else (
-    echo UntitledFolder > "%savePath%"
-)
-
-echo %folder_url% >> "%savePath%"
-echo %chosenTeam% >> "%savePath%"
-echo %pspath% >> "%savePath%"
-echo %mangaType% >> "%savePath%"
-
-:: Escape backslashes for JSON
+:: ===== Escape backslashes for JSON =====
 set "json_folder=%folder_url:\=\\%"
 set "json_pspath=%pspath:\=\\%"
 
-:: ===== Save JSON =====
+:: ===== Save JSON ONLY =====
 (
     echo {
     echo   "title": "%cleanTitle%",

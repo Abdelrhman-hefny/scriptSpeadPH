@@ -52,7 +52,7 @@
 
           // تجاهل السطور اللي عبارة عن ؟ أو ؟! أو ... أو “” …
           // if (/^[?…“”\s]+$/.test(line)) continue;
-          if (/^[?\s…“”]+$/.test(line) && !/^!+$/.test(line)) continue;
+        //   if (/^[?\s…“”]+$/.test(line) && !/^!+$/.test(line)) continue;
 
           if (/^page\s*\d+/i.test(line)) {
               pageStartIndices.push(allLines.length);
