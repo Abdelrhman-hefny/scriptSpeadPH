@@ -1,8 +1,8 @@
 {
-  "title": "22",
-  "folder_url": "C:/Users/abdoh/Downloads/22",
-  "folder": "C:\\Users\\abdoh\\Downloads\\22",
-  "team": "ken",
+  "title": "21_EZ",
+  "folder_url": "https://drive.google.com/drive/folders/1HM71eJqccJoqruN5-RIpvIoVGNCBSeUX",
+  "folder": "C:\\Users\\abdoh\\Downloads\\21_EZ",
+  "team": "ez",
   "pspath": "C:\\Program Files\\Adobe\\Adobe Photoshop CC 2019\\Photoshop.exe",
   "mode": "fast",
   "fontSize": 35,
@@ -10,6 +10,6 @@
   "continueWithoutDialog": false,
   "autoNext": false,
   "ocr_model": "easy",
-  "dont_Open_After_Clean": true,
-  "ai_clean": false
+  "dont_Open_After_Clean": false,
+  "ai_clean": true
 }

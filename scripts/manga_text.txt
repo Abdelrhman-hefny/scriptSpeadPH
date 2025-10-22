@@ -1,0 +1,6 @@
+// Paste your text here. Use 'page 1' to mark the start of page 1
+page 1
+Hello, world!
+st:Action text
+page 2
+SFX:Boom!

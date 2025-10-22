@@ -8,9 +8,26 @@ $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/splitSubpaths.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/fileUtils.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/colorUtils.jsx");
 $.evalFile("C:/Users/abdoh/Downloads/testScript/lib/textFX.jsx");
-$.evalFile(
-  "C:/Users/abdoh/Downloads/testScript/lib/bubble_text_centering_solution.jsx"
-);
+$.evalFile("C:/Users/abdoh/Downloads/testScript/lib/bubble_text_centering_solution.jsx");
+
+// ===== JSON (OLD SAFE READER) =====
+function parseJSONSafe(s) {
+  s = String(s || "").replace(/^\uFEFF/, ""); // strip BOM
+  if (typeof JSON !== "undefined" && JSON.parse) {
+    try { return JSON.parse(s); } catch (e) {}
+  }
+  try { return eval("(" + s + ")"); } catch (e2) { return null; } // tolerates // and trailing commas
+}
+function readJSONFile(file) {
+  try {
+    if (!file || !file.exists) return null;
+    file.encoding = "UTF8";
+    if (!file.open("r")) return null;
+    var raw = file.read();
+    file.close();
+    return parseJSONSafe(raw);
+  } catch (e) { return null; }
+}
 
 // Utility: read page number (e.g., "12.psd" -> 12)
 function getPageNumberFromDocName(docName) {
@@ -185,7 +202,7 @@ function getSmartPathsForPage(doc) {
 }
 
 /* ============================================================
-   جديد: Helpers لكشف وجود Text داخل مستطيل الباث (لتفادي التكرار)
+   Helpers لكشف وجود Text داخل مستطيل الباث (لتفادي التكرار)
    ============================================================ */
 function _rectFromBounds(b) {
   return { l: toNum(b[0]), t: toNum(b[1]), r: toNum(b[2]), b: toNum(b[3]) };
@@ -270,9 +287,7 @@ function openNotepad() {
       f = new File(p);
     if (!f.exists) {
       f.open("w");
-      f.writeln(
-        "// Paste your text here. Use 'page 1' to mark the start of page 1"
-      );
+      f.writeln("// Paste your text here. Use 'page 1' to mark the start of page 1");
       f.writeln("// Example:");
       f.writeln("page 1");
       f.writeln("Hello, world!");
@@ -287,111 +302,73 @@ function openNotepad() {
   }
 }
 
-// MAIN: orchestrates reading settings, picking fonts, inserting text, centering, and saving
+// MAIN
 (function () {
   openNotepad();
   if (typeof app === "undefined" || !app) return;
 
-  // Config I/O
+  // Config I/O (ABSOLUTE PATHS)
   var basePath = "C:/Users/abdoh/Downloads/testScript/",
-    configFile = File(basePath + "config/temp-title.json"),
-    foldersFile = File(basePath + "config/folders.json");
-  function readJSON(file) {
-    if (!file.exists) return null;
-    try {
-      file.open("r");
-      var c = JSON.parse(file.read());
-      file.close();
-      return c;
-    } catch (e) {
-      return null;
-    }
-  }
-  var cfg = readJSON(configFile),
-    txtFile = File(basePath + "manga_text.txt");
+      configFile = File(basePath + "config/temp-title.json"),
+      foldersFile = File(basePath + "config/folders.json");
+
+  // ⬇️ استبدلنا القراءة هنا
+  var cfg = readJSONFile(configFile),
+      txtFile = File(basePath + "manga_text.txt");
+
   if (!cfg) {
     alert("Cannot read temp-title.json");
   } else if (cfg.autoNext === true) {
-    var folders = readJSON(foldersFile);
+    var folders = readJSONFile(foldersFile);
     if (folders && folders.folders && folders.folders.length > 0) {
       for (var i = 0; i < folders.folders.length; i++) {
         if (folders.folders[i].id === cfg.title) {
           var found = folders.folders[i],
-            parentFolder = Folder(found.path).parent;
+              parentFolder = Folder(found.path).parent;
           txtFile = File(parentFolder.fsName + "/" + found.txt_file);
           break;
         }
       }
     }
   }
-  if (!txtFile.exists) {
-    try {
-      txtFile.open("w");
-      txtFile.close();
-    } catch (e) {
-      return;
-    }
-  }
+  if (!txtFile.exists) { try { txtFile.open("w"); txtFile.close(); } catch (e) { return; } }
 
   // Load team settings
   var teams;
   try {
-    teams = loadTeams(
-      File("C:/Users/abdoh/Downloads/testScript/config/teams.json")
-    );
+    teams = loadTeams(File("C:/Users/abdoh/Downloads/testScript/config/teams.json"));
   } catch (e) {
     return;
   }
   var settingsFile = new File(txtFile.path + "/config/ps_text_settings.json"),
-    teamNames = getTeamNames(teams),
-    settingsPath = Folder.myDocuments + "/waterMark/lastChoice.txt",
-    lastTeamIdx = 0;
+      teamNames = getTeamNames(teams),
+      settingsPath = Folder.myDocuments + "/waterMark/lastChoice.txt",
+      lastTeamIdx = 0;
+
+  // اقرأ الإعدادات بالطريقة القديمة لو كانت JSON
   try {
     if (settingsFile.exists) {
-      if (settingsFile.open("r")) {
-        var raw = settingsFile.read();
-        settingsFile.close();
-        var lines = String(raw || "").split(/\r?\n/);
-        if (lines.length > 0) {
-          var t = parseInt(lines[0], 10);
-          if (!isNaN(t) && t >= 0 && t < teamNames.length) lastTeamIdx = t;
+      var sobj = readJSONFile(settingsFile); // قد تكون JSON كاملة
+      if (sobj && typeof sobj === "object") {
+        if (sobj.teamIndex != null) lastTeamIdx = parseInt(sobj.teamIndex,10) || 0;
+      } else {
+        // صيغة قديمة: سطر رقم فقط
+        if (settingsFile.open("r")) {
+          var raw = settingsFile.read(); settingsFile.close();
+          var lines = String(raw || "").split(/\r?\n/);
+          if (lines.length > 0) {
+            var t = parseInt(lines[0], 10);
+            if (!isNaN(t) && t >= 0 && t < teamNames.length) lastTeamIdx = t;
+          }
         }
       }
     }
   } catch (_re) {}
 
   // UI defaults
-  var lastSettings = {
-    teamIndex: lastTeamIdx,
-    baseFontSize: 30,
-    ultraFastMode: false,
-    stopAfterFirstPage: false,
-  };
-  try {
-    if (settingsFile.exists) {
-      settingsFile.open("r");
-      var sraw = settingsFile.read();
-      settingsFile.close();
-      var sobj = null;
-      try {
-        sobj = JSON.parse(sraw);
-      } catch (_je) {
-        sobj = null;
-      }
-      if (sobj) {
-        if (sobj.teamIndex !== undefined)
-          lastSettings.teamIndex = parseInt(sobj.teamIndex, 10);
-        if (sobj.lastBaseFontSize)
-          lastSettings.baseFontSize = parseInt(sobj.lastBaseFontSize, 10);
-        if (sobj.ultraFastMode !== undefined)
-          lastSettings.ultraFastMode = sobj.ultraFastMode;
-        if (sobj.stopAfterFirstPage !== undefined)
-          lastSettings.stopAfterFirstPage = sobj.stopAfterFirstPage;
-      }
-    }
-  } catch (_re) {}
+  var lastSettings = { teamIndex: lastTeamIdx, baseFontSize: 30, ultraFastMode: false, stopAfterFirstPage: false };
 
-  // UI: settings dialog (team, base size, speed, stop-after-first)
+  // UI dialog (unchanged) …
   var settingsDialog = new Window("dialog", "Script Settings");
   settingsDialog.orientation = "column";
   settingsDialog.alignChildren = ["fill", "top"];
@@ -402,115 +379,65 @@ function openNotepad() {
   teamGroup.alignChildren = ["fill", "top"];
   teamGroup.add("statictext", undefined, "Choose team:");
   var teamDropdown = teamGroup.add("dropdownlist", undefined, []);
-  for (var di = 0; di < teamNames.length; di++)
-    teamDropdown.add("item", di + 1 + " - " + teamNames[di]);
-  try {
-    teamDropdown.selection = teamDropdown.items[lastSettings.teamIndex];
-  } catch (_se) {
-    if (teamDropdown.items.length > 0)
-      teamDropdown.selection = teamDropdown.items[0];
-  }
+  for (var di = 0; di < teamNames.length; di++) teamDropdown.add("item", di + 1 + " - " + teamNames[di]);
+  try { teamDropdown.selection = teamDropdown.items[lastSettings.teamIndex]; } catch (_se) { if (teamDropdown.items.length > 0) teamDropdown.selection = teamDropdown.items[0]; }
+
   var fontGroup = settingsDialog.add("panel", undefined, "Font");
   fontGroup.orientation = "column";
   fontGroup.alignChildren = ["fill", "top"];
   var fontSizeGroup = fontGroup.add("group");
   fontSizeGroup.add("statictext", undefined, "Base font size (pt):");
-  var fontSizeInput = fontSizeGroup.add(
-    "edittext",
-    undefined,
-    String(lastSettings.baseFontSize)
-  );
+  var fontSizeInput = fontSizeGroup.add("edittext", undefined, String(lastSettings.baseFontSize));
   fontSizeInput.characters = 10;
+
   var performanceGroup = settingsDialog.add("panel", undefined, "Performance");
   performanceGroup.orientation = "column";
   performanceGroup.alignChildren = ["fill", "top"];
-  var ultraFastCheck = performanceGroup.add(
-    "checkbox",
-    undefined,
-    "Ultra Fast Mode"
-  );
+  var ultraFastCheck = performanceGroup.add("checkbox", undefined, "Ultra Fast Mode");
   ultraFastCheck.value = lastSettings.ultraFastMode;
+
   var runGroup = settingsDialog.add("panel", undefined, "Run");
   runGroup.orientation = "column";
   runGroup.alignChildren = ["fill", "top"];
-  var stopAfterFirstCheck = runGroup.add(
-    "checkbox",
-    undefined,
-    "Stop after current page"
-  );
+  var stopAfterFirstCheck = runGroup.add("checkbox", undefined, "Stop after current page");
   stopAfterFirstCheck.value = lastSettings.stopAfterFirstPage;
+
   var buttonGroup = settingsDialog.add("group");
   buttonGroup.alignment = "right";
   var okButton = buttonGroup.add("button", undefined, "OK"),
-    cancelButton = buttonGroup.add("button", undefined, "Cancel");
-  var dialogResult = null,
-    chosenTeamIdx = null,
-    baseFontSize = null,
-    ultraFastMode = null,
-    stopAfterFirstPage = null;
+      cancelButton = buttonGroup.add("button", undefined, "Cancel");
+
+  var dialogResult = null, chosenTeamIdx = null, baseFontSize = null, ultraFastMode = null, stopAfterFirstPage = null;
   okButton.onClick = function () {
     var fontSize = parseInt(fontSizeInput.text, 10);
-    if (isNaN(fontSize) || fontSize <= 0) {
-      alert("Enter a valid font size");
-      return;
-    }
-    if (!teamDropdown.selection) {
-      alert("Choose a team");
-      return;
-    }
+    if (isNaN(fontSize) || fontSize <= 0) { alert("Enter a valid font size"); return; }
+    if (!teamDropdown.selection) { alert("Choose a team"); return; }
     chosenTeamIdx = teamDropdown.selection.index;
     baseFontSize = fontSize;
     ultraFastMode = ultraFastCheck.value;
     stopAfterFirstPage = stopAfterFirstCheck.value;
     try {
-      var toSave = {
-        teamIndex: chosenTeamIdx,
-        lastBaseFontSize: baseFontSize,
-        ultraFastMode: ultraFastMode,
-        stopAfterFirstPage: stopAfterFirstPage,
-      };
-      settingsFile.open("w");
-      settingsFile.write(JSON.stringify(toSave));
-      settingsFile.close();
+      var toSave = { teamIndex: chosenTeamIdx, lastBaseFontSize: baseFontSize, ultraFastMode: ultraFastMode, stopAfterFirstPage: stopAfterFirstPage };
+      settingsFile.open("w"); settingsFile.write(JSON.stringify(toSave)); settingsFile.close();
     } catch (_we) {}
     try {
       var teamSettingsFile = new File(settingsPath);
-      teamSettingsFile.open("w");
-      teamSettingsFile.writeln(chosenTeamIdx);
-      teamSettingsFile.close();
+      teamSettingsFile.open("w"); teamSettingsFile.writeln(chosenTeamIdx); teamSettingsFile.close();
     } catch (_we) {}
-    dialogResult = true;
-    settingsDialog.close();
+    dialogResult = true; settingsDialog.close();
   };
-  cancelButton.onClick = function () {
-    dialogResult = false;
-    settingsDialog.close();
-  };
+  cancelButton.onClick = function () { dialogResult = false; settingsDialog.close(); };
 
-  // Headless mode: load from temp-title.json when continueWithoutDialog=true
-  var tempSettingsFile = File(
-      "C:/Users/abdoh/Downloads/testScript/config/temp-title.json"
-    ),
-    continueWithoutDialog = false,
-    jsonSettings = null;
-  if (tempSettingsFile.exists) {
-    tempSettingsFile.open("r");
-    var jsonText = tempSettingsFile.read();
-    tempSettingsFile.close();
-    try {
-      jsonSettings = JSON.parse(jsonText);
-      continueWithoutDialog = jsonSettings.continueWithoutDialog === true;
-    } catch (e) {
-      $.writeln("Settings JSON read error: " + e);
-    }
-  }
+  // Headless mode via temp-title.json (read by old reader)
+  var tempSettingsFile = File("C:/Users/abdoh/Downloads/testScript/config/temp-title.json"),
+      continueWithoutDialog = false,
+      jsonSettings = readJSONFile(tempSettingsFile);
+  if (jsonSettings) continueWithoutDialog = jsonSettings.continueWithoutDialog === true;
+
   if (continueWithoutDialog && jsonSettings) {
     chosenTeamIdx = 0;
     for (var ii = 0; ii < teamNames.length; ii++) {
-      if (teamNames[ii].toLowerCase() === jsonSettings.team.toLowerCase()) {
-        chosenTeamIdx = ii;
-        break;
-      }
+      if (teamNames[ii].toLowerCase() === String(jsonSettings.team || "").toLowerCase()) { chosenTeamIdx = ii; break; }
     }
     baseFontSize = parseInt(jsonSettings.fontSize, 10) || 30;
     stopAfterFirstPage = jsonSettings.stopAfterFirstPage === true;
@@ -524,240 +451,143 @@ function openNotepad() {
   var currentTeam = teamNames[chosenTeamIdx];
   if (!teams[currentTeam]) return;
   var defaultFont = teams[currentTeam].defaultFont,
-    minFontSize = teams[currentTeam].minFontSize,
-    boxPaddingRatio = teams[currentTeam].boxPaddingRatio,
-    fontMap = teams[currentTeam].fontMap,
-    compiledFontIndex = buildFontIndex(fontMap),
-    verticalCenterCompensationRatio = 0.06,
-    isEzTeam = /^(ez japan|ez scan)$/i.test(currentTeam);
-  if (minFontSize && minFontSize > baseFontSize)
-    minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
+      minFontSize = teams[currentTeam].minFontSize,
+      boxPaddingRatio = teams[currentTeam].boxPaddingRatio,
+      fontMap = teams[currentTeam].fontMap,
+      compiledFontIndex = buildFontIndex(fontMap),
+      verticalCenterCompensationRatio = 0.06,
+      isEzTeam = /^(ez japan|ez scan)$/i.test(currentTeam);
+  if (minFontSize && minFontSize > baseFontSize) minFontSize = Math.max(8, Math.floor(baseFontSize * 0.7));
 
   // Text input
-  var allLines = [],
-    pageStartIndices = [];
+  var allLines = [], pageStartIndices = [];
   try {
     var textData = readMangaText(txtFile);
-    allLines = textData.lines;
-    pageStartIndices = textData.pageStarts;
-  } catch (e) {
-    return;
-  }
+    allLines = textData.lines; pageStartIndices = textData.pageStarts;
+  } catch (e) { return; }
   if (allLines.length === 0) return;
 
   // Logging (minimal)
-  var log = [],
-    errors = [];
-  function L(_s) {}
-  function E(s) {
-    errors.push(s);
-  }
+  var log = [], errors = [];
+  function E(s) { errors.push(s); }
 
-  // Performance: disable history (1 state) + dialogs off
-  var __prevHistoryStates = undefined,
-    __prevDisplayDialogs = undefined;
-  try {
-    __prevHistoryStates = app.preferences.numberOfHistoryStates;
-  } catch (_e) {}
-  try {
-    __prevDisplayDialogs = app.displayDialogs;
-  } catch (_e) {}
-  try {
-    app.preferences.numberOfHistoryStates = 1;
-  } catch (_e) {}
-  try {
-    app.displayDialogs = DialogModes.NO;
-  } catch (_e) {}
+  // Performance: disable history + dialogs off
+  var __prevHistoryStates = undefined, __prevDisplayDialogs = undefined;
+  try { __prevHistoryStates = app.preferences.numberOfHistoryStates; } catch (_e) {}
+  try { __prevDisplayDialogs = app.displayDialogs; } catch (_e) {}
+  try { app.preferences.numberOfHistoryStates = 1; } catch (_e) {}
+  try { app.displayDialogs = DialogModes.NO; } catch (_e) {}
 
-  // Document ordering (by page number), start from current doc if applicable
+  // Order docs by page number
   var documentsArray = [];
-  for (var d0 = 0; d0 < app.documents.length; d0++)
-    documentsArray.push(app.documents[d0]);
+  for (var d0 = 0; d0 < app.documents.length; d0++) documentsArray.push(app.documents[d0]);
   documentsArray.sort(function (a, b) {
-    var A = getPageNumberFromDocName(a.name) || 999999,
-      B = getPageNumberFromDocName(b.name) || 999999;
-    return A - B;
+    var A = getPageNumberFromDocName(a.name) || 999999, B = getPageNumberFromDocName(b.name) || 999999; return A - B;
   });
   try {
     var activeDoc = app.activeDocument;
     if (activeDoc) {
-      var activeName = activeDoc.name,
-        activePageNum = getPageNumberFromDocName(activeName),
-        startIdx = 0;
+      var activeName = activeDoc.name, activePageNum = getPageNumberFromDocName(activeName), startIdx = 0;
       for (var si = 0; si < documentsArray.length; si++) {
         var dn = documentsArray[si].name;
-        if (dn === activeName) {
-          startIdx = si;
-          break;
-        }
+        if (dn === activeName) { startIdx = si; break; }
         var pn = getPageNumberFromDocName(dn);
-        if (activePageNum !== null && pn === activePageNum) {
-          startIdx = si;
-          break;
-        }
+        if (activePageNum !== null && pn === activePageNum) { startIdx = si; break; }
       }
       if (startIdx > 0) documentsArray = documentsArray.slice(startIdx);
     }
   } catch (_ad) {}
 
-  var totalInserted = 0,
-    totalSkipped = 0,
-    totalErrors = 0,
-    lineIndex = 0,
-    pageCounter = 0;
+  var totalInserted = 0, totalSkipped = 0, totalErrors = 0, lineIndex = 0, pageCounter = 0;
 
-  // MAIN LOOP: per document → per path → insert text layer
+  // MAIN LOOP
   for (var d = 0; d < documentsArray.length; d++) {
     var doc = documentsArray[d],
-      prevUnits = app.preferences.rulerUnits;
-    try {
-      app.preferences.rulerUnits = Units.PIXELS;
-    } catch (_ue) {}
-    try {
-      app.activeDocument = doc;
-    } catch (e) {
-      E("Cannot activate document index " + d + ": " + e);
-      continue;
-    }
-    try {
-      lastBubbleIndex = 0;
-    } catch (_ri) {}
-    try {
-      splitWorkPathIntoNamedPaths(doc, "bubble_");
-    } catch (e) {}
+        prevUnits = app.preferences.rulerUnits;
+    try { app.preferences.rulerUnits = Units.PIXELS; } catch (_ue) {}
+    try { app.activeDocument = doc; } catch (e) { E("Cannot activate document index " + d + ": " + e); continue; }
+    try { lastBubbleIndex = 0; } catch (_ri) {}
+    try { splitWorkPathIntoNamedPaths(doc, "bubble_"); } catch (e) {}
 
     var pageNumber = getPageNumberFromDocName(doc.name),
-      pagePaths = getSmartPathsForPage(doc);
+        pagePaths = getSmartPathsForPage(doc);
     if (!pagePaths || pagePaths.length === 0) continue;
 
-    var startLineIndex = getSmartTextLinesForPage(
-        allLines,
-        pageStartIndices,
-        pageNumber,
-        pageCounter
-      ),
-      matchResult = matchPathsWithTexts(pagePaths, allLines, startLineIndex, L),
-      pathTextMatches = matchResult.matches;
+    var startLineIndex = getSmartTextLinesForPage(allLines, pageStartIndices, pageNumber, pageCounter),
+        matchResult = matchPathsWithTexts(pagePaths, allLines, startLineIndex, null),
+        pathTextMatches = matchResult.matches;
 
-    // مهم: تحديث مؤشر السطر بعد حساب التطابقات
     lineIndex = matchResult.nextLineIndex;
 
-    // --- جديد: لو الصفحة ماطلعش لها أي سطور (حتى مع وجود باثات) → سكيب الصفحة بالكامل ---
     if (!pathTextMatches || pathTextMatches.length === 0) {
       try { app.preferences.rulerUnits = prevUnits; } catch (_ur) {}
-      pageCounter++;
-      continue; // لا تضيف نص افتراضي
+      pageCounter++; continue;
     }
 
-    var lastUsedFont = null,
-      lastFontSize = baseFontSize,
-      lastWasBracketTag = false;
+    var lastUsedFont = null, lastFontSize = baseFontSize, lastWasBracketTag = false;
 
     for (var k = 0; k < pathTextMatches.length; k++) {
-      // Font choice + tag handling (supports ST in normal mode; fixed)
       var m = pathTextMatches[k],
-        pathItem = m.pathItem,
-        lineText = m.lineText,
-        originalLineText = m.lineText,
-        pathName = "(unknown)";
-      try {
-        pathName = pathItem.name;
-      } catch (e) {}
-      var smartIdx = (function () {
-        try {
-          return pathItem._smartIndex;
-        } catch (_e) {
-          return undefined;
-        }
-      })();
-      var isBracketTag = false,
-        isOTTag = false,
-        inheritPrevFont = false,
-        isSTTag = /^\s*ST\s*:?\s*/.test(originalLineText || ""),
-        matchedPrefixKey = null,
-        strokeInfo = { needed: false, text: lineText };
+          pathItem = m.pathItem,
+          lineText = m.lineText,
+          originalLineText = m.lineText,
+          pathName = "(unknown)";
+      try { pathName = pathItem.name; } catch (e) {}
+
+      var smartIdx = (function () { try { return pathItem._smartIndex; } catch (_e) { return undefined; } })();
+      var isBracketTag = false, isOTTag = false, inheritPrevFont = false,
+          isSTTag = /^\s*ST\s*:?\s*/.test(originalLineText || ""),
+          matchedPrefixKey = null,
+          strokeInfo = { needed: false, text: lineText };
 
       if (ultraFastMode) {
         if (/^\s*\[\s*\]\s*:?/.test(lineText)) isBracketTag = true;
         if (/^\s*(?:OT|Ot)\s*:?\s*/.test(lineText)) isOTTag = true;
         if (/^\/\/:?/.test(lineText)) inheritPrevFont = true;
         lineText = lineText.replace(/^\s*(NA:|SFX:|\*\*:|#\s*)\s*/i, "");
-        if (inheritPrevFont)
-          lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
+        if (inheritPrevFont) lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
       } else {
         strokeInfo = parseStrokeTag(lineText);
         lineText = strokeInfo.text;
         try {
-          if (/^\/\/:?/.test(lineText)) {
-            inheritPrevFont = true;
-            lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, ""));
-          }
+          if (/^\/\/:?/.test(lineText)) { inheritPrevFont = true; lineText = trimString(String(lineText).replace(/^\/\/:?\s*/, "")); }
         } catch (_ih) {}
-        try {
-          if (/^\s*\[\s*\]\s*:?.*/.test(String(lineText))) isBracketTag = true;
-        } catch (_bt) {}
-        try {
-          if (/^\s*(?:OT|Ot)\s*:?\s*.*/.test(String(lineText))) isOTTag = true;
-        } catch (_ot) {}
+        try { if (/^\s*\[\s*\]\s*:?.*/.test(String(lineText))) isBracketTag = true; } catch (_bt) {}
+        try { if (/^\s*(?:OT|Ot)\s*:?\s*.*/.test(String(lineText))) isOTTag = true; } catch (_ot) {}
       }
 
-      if (!lineText) {
-        totalSkipped++;
-        continue;
-      }
-      if (
-        !pathItem ||
-        !pathItem.subPathItems ||
-        pathItem.subPathItems.length === 0
-      ) {
-        E("Invalid or empty path: " + pathName);
-        totalErrors++;
-        continue;
+      if (!lineText) { totalSkipped++; continue; }
+      if (!pathItem || !pathItem.subPathItems || pathItem.subPathItems.length === 0) {
+        E("Invalid or empty path: " + pathName); totalErrors++; continue;
       }
 
       var usedFont, curFontSize;
       if (ultraFastMode) {
-        var wantedFont = defaultFont,
-          fr = findFontInCompiledMap(lineText, compiledFontIndex);
-        if (fr.found) {
-          wantedFont = fr.font;
-          matchedPrefixKey = fr.key;
-          lineText = trimString(lineText.substring(fr.key.length));
-        }
+        var wantedFont = defaultFont, fr = findFontInCompiledMap(lineText, compiledFontIndex);
+        if (fr.found) { wantedFont = fr.font; matchedPrefixKey = fr.key; lineText = trimString(lineText.substring(fr.key.length)); }
         if (wantedFont === defaultFont && /^\s*ST\s*:?\s*/.test(lineText)) {
           for (var key in fontMap) {
             if (key.toLowerCase() === "st" || key.toLowerCase() === "st:") {
-              wantedFont = fontMap[key];
-              lineText = lineText.replace(/^\s*ST\s*:?\s*/, "");
-              break;
+              wantedFont = fontMap[key]; lineText = lineText.replace(/^\s*ST\s*:?\s*/, ""); break;
             }
           }
         }
-        if (isBracketTag)
-          lineText = lineText.replace(/^\s*\[\s*\]\s*:?\s*/, "");
-        if (isOTTag) lineText = lineText.replace(/^\s*(?:OT|Ot)\s*:?\s*/, "");
-        usedFont = wantedFont;
-        curFontSize = baseFontSize;
+        if (isBracketTag) lineText = lineText.replace(/^\s*\[\s*\]\s*:?\s*/, "");
+        if (isOTTag)     lineText = lineText.replace(/^\s*(?:OT|Ot)\s*:?\s*/, "");
+        usedFont = wantedFont; curFontSize = baseFontSize;
       } else {
         if (inheritPrevFont) {
-          usedFont = lastUsedFont || defaultFont;
-          curFontSize = lastFontSize || baseFontSize;
+          usedFont = lastUsedFont || defaultFont; curFontSize = lastFontSize || baseFontSize;
         } else {
-          var wf = defaultFont,
-            fr2 = findFontInCompiledMap(lineText, compiledFontIndex);
+          var wf = defaultFont, fr2 = findFontInCompiledMap(lineText, compiledFontIndex);
           if (fr2.found) {
-            wf = fr2.font;
-            matchedPrefixKey = fr2.key;
-            if (!isOTTag)
-              lineText = trimString(lineText.substring(fr2.key.length));
+            wf = fr2.font; matchedPrefixKey = fr2.key;
+            if (!isOTTag) lineText = trimString(lineText.substring(fr2.key.length));
           } else if (isSTTag) {
             for (var key2 in fontMap) {
               if (key2 && typeof key2 === "string") {
                 var k2 = key2.toLowerCase();
-                if (k2 === "st" || k2 === "st:") {
-                  wf = fontMap[key2];
-                  break;
-                }
+                if (k2 === "st" || k2 === "st:") { wf = fontMap[key2]; break; }
               }
             }
           }
@@ -766,75 +596,55 @@ function openNotepad() {
         }
       }
 
-      // ======= تخصيص: لو الخط CCShoutOutGSN زوّد 20pt =======
-      if (usedFont === "CCShoutOutGSN") {
-        curFontSize += 20;
-      }
+      if (usedFont === "CCShoutOutGSN") { curFontSize += 20; }
 
-      // Box metrics, create text layer, apply style/centering
       try {
         pathItem.makeSelection();
-        if (!doc.selection || !doc.selection.bounds)
-          throw new Error("No valid selection for path: " + pathName);
+        if (!doc.selection || !doc.selection.bounds) throw new Error("No valid selection for path: " + pathName);
 
         var b = doc.selection.bounds,
-          x1 = toNum(b[0]),
-          y1 = toNum(b[1]),
-          x2 = toNum(b[2]),
-          y2 = toNum(b[3]),
-          w = x2 - x1,
-          h = y2 - y1;
+            x1 = toNum(b[0]), y1 = toNum(b[1]), x2 = toNum(b[2]), y2 = toNum(b[3]),
+            w = x2 - x1, h = y2 - y1;
 
-        // --- جديد: سكيب لو فيه Text موجود بالفعل داخل مستطيل الباث ---
         var selRect = { l: x1, t: y1, r: x2, b: y2 };
         if (_hasVisibleTextIntersecting(doc, selRect, 0.12)) {
           try { doc.selection.deselect(); } catch (_de) {}
-          totalSkipped++;
-          continue; // لا تنشئ طبقة نص جديدة فوق القديمة
+          totalSkipped++; continue;
         }
 
         var boxW = Math.max(10, w * (1 - boxPaddingRatio)),
-          boxH = Math.max(10, h * (1 - boxPaddingRatio)),
-          cx = (x1 + x2) / 2,
-          cy = (y1 + y2) / 2;
+            boxH = Math.max(10, h * (1 - boxPaddingRatio)),
+            cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
         var tlen = lineText.length,
-          pad = Math.max(2, Math.min(8, Math.min(boxW, boxH) * 0.03)),
-          availW = Math.max(10, boxW - pad * 2),
-          availH = Math.max(10, boxH - pad * 2);
+            pad = Math.max(2, Math.min(8, Math.min(boxW, boxH) * 0.03)),
+            availW = Math.max(10, boxW - pad * 2),
+            availH = Math.max(10, boxH - pad * 2);
 
-        // ======= مهم: استخدم الحجم المعدّل فعليًا =======
         var newFontSize = curFontSize;
 
-        try {
-          if (tlen > 25) {
-            var approxChars = Math.max(
-                5,
-                Math.floor(availW / Math.max(1, newFontSize * 0.6))
-              ),
-              words = String(lineText).split(/(\s+)/),
-              acc = "";
+        if (tlen > 25) {
+          try {
+            var approxChars = Math.max(5, Math.floor(availW / Math.max(1, newFontSize * 0.6))),
+                words = String(lineText).split(/(\s+)/),
+                acc = "";
             for (var wi = 0; wi < words.length; wi++) {
               var tent = acc + words[wi];
               if (tent.replace(/\s+/g, " ").length > approxChars) break;
               acc = tent;
             }
-            if (acc && acc.length < lineText.length)
-              lineText =
-                acc + "\r" + trimString(lineText.substring(acc.length));
-          }
-        } catch (_br) {}
+            if (acc && acc.length < lineText.length) lineText = acc + "\r" + trimString(lineText.substring(acc.length));
+          } catch (_br) {}
+        }
 
         var tl = doc.artLayers.add();
         tl.kind = LayerKind.TEXT;
-        if (!tl.textItem)
-          throw new Error("Failed to create text item for path: " + pathName);
+        if (!tl.textItem) throw new Error("Failed to create text item for path: " + pathName);
         tl.textItem.kind = TextType.PARAGRAPHTEXT;
         tl.textItem.contents = lineText;
         tl.textItem.justification = Justification.CENTER;
         tl.textItem.font = usedFont;
         tl.textItem.size = newFontSize;
 
-        // EZ team horizontal scale tweaks by prefix
         if (isEzTeam) {
           try {
             var keyForScale = matchedPrefixKey || "";
@@ -842,25 +652,15 @@ function openNotepad() {
               tl.textItem.horizontalScale = 97;
             } else if (
               /^\s*(["“”]{2}:?|\(\):?)/.test(originalLineText || "") ||
-              keyForScale === '""' ||
-              keyForScale === '"":' ||
-              keyForScale === "““" ||
-              keyForScale === "““:" ||
-              keyForScale === "()" ||
-              keyForScale === "():"
-            ) {
-              tl.textItem.horizontalScale = 95;
-            } else if (
-              /^\s*<>:?/.test(originalLineText || "") ||
-              keyForScale === "<>" ||
-              keyForScale === "<>:"
-            ) {
+              keyForScale === '""' || keyForScale === '"":' || keyForScale === "““" || keyForScale === "““:" ||
+              keyForScale === "()" || keyForScale === "():"
+            ) { tl.textItem.horizontalScale = 95; }
+            else if (/^\s*<>:?/.test(originalLineText || "") || keyForScale === "<>" || keyForScale === "<>:") {
               tl.textItem.horizontalScale = 90;
             }
           } catch (_hs) {}
         }
 
-        // Typography presets (minimal in ultraFastMode)
         if (!ultraFastMode) {
           optimizeFontSettings(tl, usedFont, newFontSize);
           if (isBracketTag || (inheritPrevFont && lastWasBracketTag)) {
@@ -884,103 +684,51 @@ function openNotepad() {
           if (isOTTag) tl.textItem.capitalization = TextCase.ALLCAPS;
         }
 
-        // Place inside bubble rect
         var startLeft = cx - availW / 2,
-          startTop =
-            cy - availH / 2 - newFontSize * verticalCenterCompensationRatio;
+            startTop  = cy - availH / 2 - newFontSize * verticalCenterCompensationRatio;
         tl.textItem.width = availW;
         tl.textItem.height = availH;
         tl.textItem.position = [startLeft, startTop];
 
-        // Auto color (normal) vs default black (ultra)
         if (!ultraFastMode) {
           var vis = tl.visible;
           tl.visible = false;
           var centerRgb = samplePixel(doc, cx, cy);
           tl.visible = vis;
-          var centerBright = luminance(
-              centerRgb[0],
-              centerRgb[1],
-              centerRgb[2]
-            ),
-            tc = new SolidColor();
-          if (centerBright < 128) {
-            tc.rgb.red = 255;
-            tc.rgb.green = 255;
-            tc.rgb.blue = 255;
-          } else {
-            tc.rgb.red = 0;
-            tc.rgb.green = 0;
-            tc.rgb.blue = 0;
-          }
+          var centerBright = luminance(centerRgb[0], centerRgb[1], centerRgb[2]),
+              tc = new SolidColor();
+          if (centerBright < 128) { tc.rgb.red = 255; tc.rgb.green = 255; tc.rgb.blue = 255; }
+          else                    { tc.rgb.red = 0;   tc.rgb.green = 0;   tc.rgb.blue = 0;   }
           tl.textItem.color = tc;
           if (strokeInfo.needed) applyWhiteStroke3px(tl);
         } else {
-          var defc = new SolidColor();
-          defc.rgb.red = 0;
-          defc.rgb.green = 0;
-          defc.rgb.blue = 0;
-          tl.textItem.color = defc;
+          var defc = new SolidColor(); defc.rgb.red = 0; defc.rgb.green = 0; defc.rgb.blue = 0; tl.textItem.color = defc;
         }
 
-        // Centering: tail-aware (fallback to geometric)
         try {
           pathItem.makeSelection();
           if (doc.selection && doc.selection.bounds) {
             var centered = centerTextInBubbleWithTail();
             if (!centered) {
-              var tb = tl.bounds,
-                tlx = toNum(tb[0]),
-                tty = toNum(tb[1]),
-                trx = toNum(tb[2]),
-                tby = toNum(tb[3]),
-                cX = (tlx + trx) / 2,
-                cY = (tty + tby) / 2,
-                dx = cx - cX,
-                dy = cy - cY - newFontSize * verticalCenterCompensationRatio;
-              if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1)
-                tl.translate(dx, dy);
+              var tb = tl.bounds, tlx = toNum(tb[0]), tty = toNum(tb[1]), trx = toNum(tb[2]), tby = toNum(tb[3]),
+                  cX = (tlx + trx) / 2, cY = (tty + tby) / 2,
+                  dx = cx - cX, dy = cy - cY - newFontSize * verticalCenterCompensationRatio;
+              if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) tl.translate(dx, dy);
             }
           } else {
-            var tb2 = tl.bounds,
-              tlx2 = toNum(tb2[0]),
-              tty2 = toNum(tb2[1]),
-              trx2 = toNum(tb2[2]),
-              tby2 = toNum(tb2[3]),
-              cX2 = (tlx2 + trx2) / 2,
-              cY2 = (tty2 + tby2) / 2,
-              dx2 = cx - cX2,
-              dy2 = cy - cY2 - newFontSize * verticalCenterCompensationRatio;
-            if (Math.abs(dx2) > 0.1 || Math.abs(dy2) > 0.1)
-              tl.translate(dx2, dy2);
+            var tb2 = tl.bounds, tlx2 = toNum(tb2[0]), tty2 = toNum(tb2[1]), trx2 = toNum(tb2[2]), tby2 = toNum(tb2[3]),
+                cX2 = (tlx2 + trx2) / 2, cY2 = (tty2 + tby2) / 2,
+                dx2 = cx - cX2, dy2 = cy - cY2 - newFontSize * verticalCenterCompensationRatio;
+            if (Math.abs(dx2) > 0.1 || Math.abs(dy2) > 0.1) tl.translate(dx2, dy2);
           }
         } catch (_ce) {
-          var tb3 = tl.bounds,
-            tlx3 = toNum(tb3[0]),
-            tty3 = toNum(tb3[1]),
-            trx3 = toNum(tb3[2]),
-            tby3 = toNum(tb3[3]),
-            cX3 = (tlx3 + trx3) / 2,
-            cY3 = (tty3 + tby3) / 2,
-            dx3 = cx - cX3,
-            dy3 = cy - cY3 - newFontSize * verticalCenterCompensationRatio;
-          if (Math.abs(dx3) > 0.1 || Math.abs(dy3) > 0.1)
-            tl.translate(dx3, dy3);
+          var tb3 = tl.bounds, tlx3 = toNum(tb3[0]), tty3 = toNum(tb3[1]), trx3 = toNum(tb3[2]), tby3 = toNum(tb3[3]),
+              cX3 = (tlx3 + trx3) / 2, cY3 = (tty3 + tby3) / 2,
+              dx3 = cx - cX3, dy3 = cy - cY3 - newFontSize * verticalCenterCompensationRatio;
+          if (Math.abs(dx3) > 0.1 || Math.abs(dy3) > 0.1) tl.translate(dx3, dy3);
         }
 
-        // Optional stroke/tracking (normal mode)
         if (!ultraFastMode) {
-          var stroke = tl.effects.add();
-          stroke.kind = "stroke";
-          stroke.enabled = true;
-          stroke.mode = "normal";
-          stroke.opacity = 75;
-          stroke.size = Math.max(1, Math.floor(newFontSize * 0.02));
-          stroke.position = "outside";
-          stroke.color = new SolidColor();
-          stroke.color.rgb.red = 255;
-          stroke.color.rgb.green = 255;
-          stroke.color.rgb.blue = 255;
           if (tlen > 15) tl.textItem.tracking = -20;
           else if (tlen <= 5) tl.textItem.tracking = 20;
           tl.textItem.leading = Math.round(newFontSize * 1.05);
@@ -993,39 +741,24 @@ function openNotepad() {
         lastWasBracketTag = isBracketTag;
       } catch (bubbleErr) {
         var errMsg =
-          "File=" +
-          doc.name +
-          " | BubbleIndex=" +
-          (m.pathIndex + 1) +
+          "File=" + doc.name +
+          " | BubbleIndex=" + (m.pathIndex + 1) +
           (smartIdx !== undefined ? " | SmartIndex=" + smartIdx : "") +
-          " | PathName=" +
-          pathName +
-          " | LineIndex=" +
-          m.lineIndex +
-          " : EXCEPTION : " +
-          bubbleErr.toString() +
+          " | PathName=" + pathName +
+          " | LineIndex=" + m.lineIndex +
+          " : EXCEPTION : " + bubbleErr.toString() +
           (bubbleErr.line ? " at line " + bubbleErr.line : "");
         E(errMsg);
         totalErrors++;
-        try {
-          doc.selection.deselect();
-        } catch (e2) {}
+        try { doc.selection.deselect(); } catch (e2) {}
       }
     }
 
-    // Save doc if needed; free history cache; restore units
+    // Save doc; free history; restore units
     try {
       var wasSaved = false;
-      if (!doc.saved) {
-        try {
-          doc.save();
-          wasSaved = true;
-        } catch (_sv) {
-          wasSaved = false;
-        }
-      } else {
-        wasSaved = true;
-      }
+      if (!doc.saved) { try { doc.save(); wasSaved = true; } catch (_sv) { wasSaved = false; } }
+      else { wasSaved = true; }
       if (!wasSaved) {
         try {
           var targetFile = doc.fullName;
@@ -1039,17 +772,13 @@ function openNotepad() {
         } catch (_sva) {}
       }
     } catch (_finalize) {}
-    try {
-      app.purge(PurgeTarget.HISTORYCACHES);
-    } catch (_pg) {}
-    try {
-      app.preferences.rulerUnits = prevUnits;
-    } catch (_ur) {}
+    try { app.purge(PurgeTarget.HISTORYCACHES); } catch (_pg) {}
+    try { app.preferences.rulerUnits = prevUnits; } catch (_ur) {}
     pageCounter++;
     if (stopAfterFirstPage && d === 0) break;
   }
 
-  // Logs (optional) + autoNext close + reset environment
+  // Logs + autoNext + reset env
   try {
     if (!ultraFastMode) {
       try {
@@ -1065,45 +794,36 @@ function openNotepad() {
         errFile.close();
       } catch (e2) {}
     }
-  } catch (e) {
-    alert("An error occurred: " + e);
-  }
-  tempSettingsFile.encoding = "UTF8";
-  tempSettingsFile.open("r");
-  var config = JSON.parse(tempSettingsFile.read());
-  tempSettingsFile.close();
-  if (config.autoNext === true) {
+  } catch (e) { alert("An error occurred: " + e); }
+
+  // ⬇️ اقرأ temp-title.json تاني بالطريقة القديمة قبل الإغلاق
+  var config = readJSONFile(tempSettingsFile);
+  if (config && config.autoNext === true) {
     for (var i3 = app.documents.length - 1; i3 >= 0; i3--) {
       var ddoc = app.documents[i3];
       try {
-        if (ddoc.saved === false) {
-          ddoc.save();
-        }
+        if (ddoc.saved === false) { ddoc.save(); }
         ddoc.close(SaveOptions.SAVECHANGES);
-      } catch (e) {
-        $.writeln("Close file error: " + e);
-      }
+      } catch (e) { $.writeln("Close file error: " + e); }
     }
     $.writeln("All files saved and closed (autoNext = true).");
   } else {
     $.writeln("autoNext = false → no files were closed.");
   }
+
   try {
-    config.continueWithoutDialog = false;
-    tempSettingsFile.encoding = "UTF8";
-    tempSettingsFile.open("w");
-    tempSettingsFile.write(JSON.stringify(config, null, 2));
-    tempSettingsFile.close();
-    $.writeln("continueWithoutDialog set to false and saved.");
+    if (config) {
+      config.continueWithoutDialog = false;
+      tempSettingsFile.encoding = "UTF8";
+      tempSettingsFile.open("w");
+      tempSettingsFile.write(JSON.stringify(config, null, 2));
+      tempSettingsFile.close();
+      $.writeln("continueWithoutDialog set to false and saved.");
+    }
   } catch (e) {
     $.writeln("temp-title.json save error: " + e);
   }
-  try {
-    if (__prevHistoryStates !== undefined)
-      app.preferences.numberOfHistoryStates = __prevHistoryStates;
-  } catch (_rh) {}
-  try {
-    if (__prevDisplayDialogs !== undefined)
-      app.displayDialogs = __prevDisplayDialogs;
-  } catch (_rd) {}
+
+  try { if (__prevHistoryStates !== undefined) app.preferences.numberOfHistoryStates = __prevHistoryStates; } catch (_rh) {}
+  try { if (__prevDisplayDialogs !== undefined) app.displayDialogs = __prevDisplayDialogs; } catch (_rd) {}
 })();

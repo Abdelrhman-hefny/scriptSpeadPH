@@ -26,6 +26,8 @@ try:
 except ImportError:
     pass  # سيتم التعامل مع عدم وجوده لاحقًا
 
+# ===== (تم حذف إعداد اللوج كليًا) =====
+
 success = True
 
 try:
@@ -70,27 +72,26 @@ try:
         except Exception:
             OCR_TYPE = None  # بدون OCR عند عدم توفر المكتبات
 
-    # ===== إعدادات الكشف (تم تعديل قيم حساسية) =====
-    CONFIDENCE_THRESHOLD = 0.25 # 🔄 رفع لتقليل الفقاعات الوهمية الفارغة
+    # ===== إعدادات الكشف =====
+    CONFIDENCE_THRESHOLD = 0.15
     IOU_THRESHOLD = 0.7
-    MERGE_IOU_THRESHOLD = 0.45 # 🔄 خفضت من 0.5 للتعامل مع التداخل بشكل أفضل (ندمج فقط المتداخلين جداً)
+    MERGE_IOU_THRESHOLD = 0.5
     SLICE_OVERLAP = 300
     SLICE_HEIGHT = 4000
-    MIN_BUBBLE_AREA = 400  # 🔄 قيمة وسطى
+    MIN_BUBBLE_AREA = 1000
     CONTAINMENT_THRESHOLD = 0.95
-    MIN_DIM_THRESHOLD = 25  # 🔄 قيمة وسطى
-    YOLO_IMG_SIZE = 1280    # 🔄 إرجاع القيمة الأصلية (1280) أفضل لتوازن السرعة/الدقة
+    MIN_DIM_THRESHOLD = 50
+    YOLO_IMG_SIZE = 1280
     BOX_EXPANSION_PIXELS = 10
 
     # فلتر نسبة الأبعاد ضد الفقاعات الشريطية
-    AR_MAX_WIDE = 6.0
-    AR_MAX_TALL = 6.0
-    RIBBON_H_FRAC = 0.035
-    RIBBON_W_FRAC = 0.035
+    AR_MAX_WIDE = 6.0   # عرض/ارتفاع كبير جدًا
+    AR_MAX_TALL = 6.0   # ارتفاع/عرض كبير جدًا
+    RIBBON_H_FRAC = 0.035  # أقصى ارتفاع للشريط كجزء من ارتفاع الصفحة
+    RIBBON_W_FRAC = 0.035  # أقصى عرض للشريط العمودي
 
-    # ===== دوال مساعدة (مع تحسينات على has_text و merge_and_clean_boxes) =====
+    # ===== دوال مساعدة =====
     def preprocess_image(img):
-        # ... (تم الإبقاء على دالة التجهيز كما هي) ...
         lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
         l, a, b = cv2.split(lab)
         clahe_l = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
@@ -158,7 +159,7 @@ try:
         area_small = (x2s - x1s) * (y2s - y1s)
         return (inter_area / area_small) >= CONTAINMENT_THRESHOLD if area_small > 0 else False
 
-    def merge_and_clean_boxes(boxes_raw, scores_raw, iou_threshold): # 🔄 إضافة iou_threshold كـ باراميتر
+    def merge_and_clean_boxes(boxes_raw, scores_raw):
         if not boxes_raw:
             return [], []
         indices = np.argsort(-np.array(scores_raw))
@@ -173,9 +174,7 @@ try:
                 continue
             keep = True
             for j in picked_indices:
-                # 🔄 استخدام iou_threshold الذي يمكن تغييره
-                if box_iou(boxes[i], final_boxes[j]) > iou_threshold: 
-                    # دمج الصناديق المتداخلة بشكل كبير
+                if box_iou(boxes[i], final_boxes[j]) > MERGE_IOU_THRESHOLD:
                     fb = final_boxes[j]
                     x1 = min(boxes[i][0], fb[0]); y1 = min(boxes[i][1], fb[1])
                     x2 = max(boxes[i][2], fb[2]); y2 = max(boxes[i][3], fb[3])
@@ -188,7 +187,6 @@ try:
                 final_scores.append(scores[i])
                 picked_indices.append(len(final_boxes) - 1)
 
-        # إزالة الصناديق المحتواة كليًا
         to_remove = set()
         for i in range(len(final_boxes)):
             for j in range(len(final_boxes)):
@@ -201,13 +199,12 @@ try:
         final_scores = [s.item() for idx, s in enumerate(final_scores_np) if idx not in to_remove]
         return final_boxes, final_scores
 
-    # --- تحميل ماسك خارجي ---
-    def load_external_mask(cleaned_dir, idx, thr=5):
+    # --- تحميل ماسك خارجي من مجلد cleaned لكل صورة (01_mask.png, 02_mask.png, ...) ---
+    def load_external_mask(cleaned_dir, idx, thr=10):
         mask_path = os.path.join(cleaned_dir, f"{idx:02d}_mask.png")
         m = cv2.imread(mask_path, cv2.IMREAD_UNCHANGED)
         if m is None:
             return None
-        # ... (تم الإبقاء على منطق تحميل الماسك كما هو) ...
         if m.ndim == 3 and m.shape[2] == 4:
             a = m[:, :, 3]
             return (a > thr).astype(np.uint8) * 255
@@ -218,13 +215,10 @@ try:
             return (m > thr).astype(np.uint8) * 255
         return None
 
-    # --- استخراج صناديق من الماسك الخارجي ---
+    # --- استخراج صناديق من الماسك الخارجي مباشرةً (لتحسين الـ recall) ---
     def boxes_from_ext_mask(ext_mask, min_w, min_h, min_area):
         if ext_mask is None:
             return []
-        kernel = np.ones((3, 3), np.uint8)
-        ext_mask = cv2.dilate(ext_mask, kernel, iterations=1)
-        
         cnts, _ = cv2.findContours((ext_mask > 0).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         out = []
         for c in cnts:
@@ -234,128 +228,44 @@ try:
             out.append([float(x), float(y), float(x + w), float(y + h)])
         return out
 
-    # 🌟 has_text: تحسين كبير لتقليل الإيجابيات الخاطئة (مشكلة 1)
-    def has_text(image, box, ext_mask=None, is_direct_text=False):
+    # 🌟 has_text: طريقة خفيفة جدًا + استخدام ماسك cleaned للتأكيد
+    def has_text(image, box, ext_mask=None):
         x1, y1, x2, y2 = map(int, box)
         crop = image[y1:y2, x1:x2]
         if crop.size == 0:
             return False
 
-        # 1. التحقق من الماسك الخارجي (الأكثر موثوقية)
+        # تأكيد سريع بالماسك الخارجي (لو موجود)
         if ext_mask is not None:
             m = ext_mask[y1:y2, x1:x2]
             if m.size > 0:
                 overlap = float(cv2.countNonZero(m)) / float(m.size)
-                # 🔄 رفع العتبة لتقليل اكتشاف الفقاعات الفارغة
-                if overlap > 0.02: 
+                if overlap > 0.01:  # ≥1%
                     return True
 
-        # 2. التحقق من خصائص النص (أبطأ ولكنه ضروري)
         gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-        
-        # 🔄 عتبة مختلفة للنصوص المباشرة (أغمق) مقارنة بالفقاعات البيضاء
-        thresh_val = 190 if not is_direct_text else 140
-        _, thresh = cv2.threshold(gray, thresh_val, 255, cv2.THRESH_BINARY_INV)
-        
-        # توسيع لربط النقاط الصغيرة
-        kernel = np.ones((3, 3), np.uint8)
-        thresh = cv2.dilate(thresh, kernel, iterations=2)
-
+        _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
         h, w = thresh.shape[:2]
-        # التركيز على المنطقة الداخلية
-        center = thresh[int(h * 0.2):int(h * 0.8), int(w * 0.05):int(w * 0.95)]
+        center = thresh[int(h * 0.25):int(h * 0.75), int(w * 0.1):int(w * 0.9)]
         if center.size == 0:
             return False
 
-        # كثافة الحبر (Ink Density)
         ink = float(np.count_nonzero(center)) / float(center.size)
-        
-        # 🔄 عتبات أكثر صرامة لتقليل اكتشاف الفقاعات الفارغة
-        min_ink = 0.015 if not is_direct_text else 0.01
-        if ink < min_ink:
+        if ink >= 0.015:
+            return True
+        if ink < 0.005:
             return False
 
-        # 3. تحقق التعقيد/التغير (لمنع النقاط العشوائية من المرور)
         bw = (center > 0).astype(np.uint8)
         row_changes = np.mean(np.sum(np.abs(np.diff(bw, axis=1)), axis=1)) / max(1, center.shape[1])
         col_changes = np.mean(np.sum(np.abs(np.diff(bw, axis=0)), axis=0)) / max(1, center.shape[0])
-        if row_changes <= 0.06 or col_changes <= 0.04:
-            return False
-
-        # 4. فلتر OCR إضافي (لو متاح) للتأكيد
-        if OCR_TYPE is not None:
-            text_detected = False
-            if OCR_TYPE == "paddle":
-                results = ocr.ocr(crop, cls=False)
-                text_detected = bool(results and results[0])
-            elif OCR_TYPE == "easy":
-                results = ocr_ko.readtext(crop)
-                text_detected = bool(results and any(conf > 0.3 for _, _, conf in results))  # ثقة OCR > 30%
-            if text_detected:
-                return True
-            else:
-                return False  # إذا مش لقى نص في OCR، رفض
-
-        return True
+        return (row_changes > 0.06) and (col_changes > 0.04)
 
     def get_box_center(box):
         x1, y1, x2, y2 = box
         return (x1 + x2) / 2, (y1 + y2) / 2
-    
-    # 🌟 دالة جديدة: كشف النص المباشر (مشكلة 3)
-    def get_direct_text_boxes(image_path, h, w):
-        """يستخدم OCR أو معالجة صور بسيطة للعثور على النصوص المباشرة."""
-        direct_boxes = []
-        try:
-            image = cv2.imread(image_path)
-            # 1. محاولة OCR المباشر
-            if OCR_TYPE == "paddle":
-                results = ocr.ocr(image, cls=False)
-                for line in results[0] if results else []:
-                    # يتم إرجاع [ [x1, y1], [x2, y2], [x3, y3], [x4, y4] ]
-                    box = line[0]
-                    points = np.array(box, dtype=np.int32)
-                    x, y, cw, ch = cv2.boundingRect(points)
-                    x2 = x + cw; y2 = y + ch
-                    direct_boxes.append([x, y, x2, y2])
-            elif OCR_TYPE == "easy":
-                results = ocr_ko.readtext(image)
-                for (bbox, text, conf) in results:
-                    if conf < 0.4: continue  # فلتر ثقة OCR
-                    points = np.array(bbox, dtype=np.int32)
-                    x, y, cw, ch = cv2.boundingRect(points)
-                    x2 = x + cw; y2 = y + ch
-                    direct_boxes.append([x, y, x2, y2])
 
-            # 2. فلترة وتحسين صناديق OCR
-            final_direct_boxes = []
-            for box in direct_boxes:
-                x1, y1, x2, y2 = map(int, box)
-                width = x2 - x1; height = y2 - y1
-                area = width * height
-
-                # فلترة الحجم الصغير جداً
-                if width < MIN_DIM_THRESHOLD * 1.5 or height < MIN_DIM_THRESHOLD * 1.5 or area < MIN_BUBBLE_AREA * 0.7:
-                    continue
-
-                # فلترة النصوص الطويلة جداً/القصيرة جداً بالنسبة للصفحة
-                if width > w * 0.8 or height > h * 0.8:
-                    continue
-                
-                # التحقق النهائي من وجود نص
-                exp = 8 # توسيع بسيط
-                x1e = max(0, x1 - exp); y1e = max(0, y1 - exp)
-                x2e = min(w, x2 + exp); y2e = min(h, y2 + exp)
-
-                if has_text(image, (x1e, y1e, x2e, y2e), is_direct_text=True):
-                    final_direct_boxes.append([x1e, y1e, x2e, y2e])
-
-            return final_direct_boxes
-        except Exception:
-            # يمكن إضافة منطق معالجة صور بسيط هنا في حال فشل OCR
-            return []
-
-    # ===== معالجة كل الصفحات =====
+    # ===== معالجة كل الصفحات (كما هي + tqdm للصور) =====
     image_files = sorted(
         [
             f
@@ -366,7 +276,7 @@ try:
 
     all_bubbles = {}
 
-    cleaned_dir = os.path.join(base, "cleaned")
+    cleaned_dir = os.path.join(base, "cleaned")  # مجلد الماسكات الخارجية
 
     for idx, img_file in enumerate(tqdm(image_files, desc="Progress", unit="img"), start=1):
         img_path = os.path.join(image_folder, img_file)
@@ -374,19 +284,22 @@ try:
         if image is None:
             continue
 
+        # حمل ماسك الصورة الحالية (إن وُجد)
         ext_mask = load_external_mask(cleaned_dir, idx)
 
         enhanced = preprocess_image(image)
         all_boxes, all_scores = [], []
         h, w = image.shape[:2]
 
-        MIN_W = max(MIN_DIM_THRESHOLD, int(0.01 * w))
-        MIN_H = max(MIN_DIM_THRESHOLD, int(0.01 * h))
-        MIN_AREA_REL = max(MIN_BUBBLE_AREA, int(0.001 * (w * h))) # 🔄 قيمة وسطى
+        # عتبات ديناميكية تبعًا لحجم الصفحة
+        MIN_W = max(MIN_DIM_THRESHOLD, int(0.02 * w))
+        MIN_H = max(MIN_DIM_THRESHOLD, int(0.02 * h))
+        MIN_AREA_REL = max(MIN_BUBBLE_AREA, int(0.0015 * (w * h)))
 
-        # 1. كشف الفقاعات (YOLO)
+        # شرائح ثابتة
         slices = smart_slice_image(enhanced, SLICE_HEIGHT, SLICE_OVERLAP, delta=200)
 
+        # YOLO
         for slice_img, offset_y in slices:
             results = model(
                 slice_img, imgsz=YOLO_IMG_SIZE, conf=CONFIDENCE_THRESHOLD, iou=IOU_THRESHOLD, verbose=False
@@ -394,7 +307,6 @@ try:
             for r in results:
                 xyxy = r.boxes.xyxy.cpu().numpy()
                 confs = r.boxes.conf.cpu().numpy()
-                
                 if xyxy.size:
                     xyxy[:, 1] += offset_y
                     xyxy[:, 3] += offset_y
@@ -402,27 +314,17 @@ try:
                     all_scores.extend(confs.tolist())
             del slice_img
 
-        # 2. إضافة صناديق الماسك الخارجي
+        # صناديق إضافية من ماسك cleaned لتحسين الـ recall
         ext_boxes = boxes_from_ext_mask(ext_mask, MIN_W, MIN_H, MIN_AREA_REL)
         if ext_boxes:
             all_boxes.extend(ext_boxes)
-            all_scores.extend([0.99] * len(ext_boxes))
+            all_scores.extend([0.99] * len(ext_boxes))  # سكور مرتفع لاعتبارها قوية
 
-        # 3. إضافة صناديق النص المباشر (مشكلة 3)
-        direct_text_boxes = get_direct_text_boxes(img_path, h, w)
-        if direct_text_boxes:
-            all_boxes.extend(direct_text_boxes)
-            all_scores.extend([0.9] * len(direct_text_boxes)) # سكور عالي لكن أقل من الماسك
+        # دمج وتنظيف
+        merged_boxes, merged_scores = merge_and_clean_boxes(all_boxes, all_scores)
 
-        # 4. دمج وتنظيف (مشكلة 2)
-        # نستخدم MERGE_IOU_THRESHOLD للدمج
-        merged_boxes, merged_scores = merge_and_clean_boxes(all_boxes, all_scores, MERGE_IOU_THRESHOLD) 
-
-        # 5. الفلترة النهائية والتحقق من النص
         valid_bubbles = []
-        for i, (x1, y1, x2, y2) in enumerate(merged_boxes):
-            score = merged_scores[i]
-            
+        for (x1, y1, x2, y2) in merged_boxes:
             exp = BOX_EXPANSION_PIXELS
             x1e = max(0, int(x1 - exp)); y1e = max(0, int(y1 - exp))
             x2e = min(w, int(x2 + exp)); y2e = min(h, int(y2 + exp))
@@ -432,35 +334,34 @@ try:
             if area <= 0:
                 continue
 
-            # فلتر الشريطيات
+            # فلتر الشريطيات (وهميات عريضة-قصيرة أو طويلة-نحيفة)
             ar = (width / max(1, height))
             if (ar > AR_MAX_WIDE and height <= int(RIBBON_H_FRAC * h)) or ((1.0 / ar) > AR_MAX_TALL and width <= int(RIBBON_W_FRAC * w)):
                 continue
 
             # فلتر أبعاد/مساحة ديناميكي
-            is_small = width < MIN_W or height < MIN_H or area < MIN_AREA_REL
-            
-            # 🌟 التحقق من وجود النص (مشكلة 1)
-            is_direct_text = score < CONFIDENCE_THRESHOLD # تخمين النص المباشر بدرجة ثقة أقل من YOLO
-
-            if is_small:
-                # يجب أن يمر الصغير جداً من اختبار النص القوي أو الماسك
-                if not has_text(image, (x1e, y1e, x2e, y2e), ext_mask=ext_mask, is_direct_text=is_direct_text):
-                    continue
-            else:
-                # الفقاعات الكبيرة لا تزال بحاجة إلى مرور اختبار النص لتقليل الإيجابيات الخاطئة
-                if not has_text(image, (x1e, y1e, x2e, y2e), ext_mask=ext_mask, is_direct_text=is_direct_text):
+            if width < MIN_W or height < MIN_H or area < MIN_AREA_REL:
+                # الصغير جدًا لا يمر إلا لو تداخل ماسك كفاية + نص فعلي
+                small_ok = False
+                if ext_mask is not None:
+                    sub = ext_mask[y1e:y2e, x1e:x2e]
+                    if sub.size > 0:
+                        overlap = float(cv2.countNonZero(sub)) / float(sub.size)
+                        if overlap >= 0.01 and has_text(image, (x1e, y1e, x2e, y2e), ext_mask=ext_mask):
+                            small_ok = True
+                if not small_ok:
                     continue
 
-            # إذا مر بالفلتر، يتم تسجيله
-            cx, cy = get_box_center((x1e, y1e, x2e, y2e))
-            polygon = [
-                [int(x1e), int(y1e)],
-                [int(x2e), int(y1e)],
-                [int(x2e), int(y2e)],
-                [int(x1e), int(y2e)],
-            ]
-            valid_bubbles.append({"center_x": cx, "center_y": cy, "points": polygon})
+            # تحقق نص نهائي (سريع) ويأخذ الماسك بالحسبان
+            if has_text(image, (x1e, y1e, x2e, y2e), ext_mask=ext_mask):
+                cx, cy = get_box_center((x1e, y1e, x2e, y2e))
+                polygon = [
+                    [int(x1e), int(y1e)],
+                    [int(x2e), int(y1e)],
+                    [int(x2e), int(y2e)],
+                    [int(x1e), int(y2e)],
+                ]
+                valid_bubbles.append({"center_x": cx, "center_y": cy, "points": polygon})
 
         key = f"{idx:02d}_mask"
         all_bubbles[key] = [
@@ -477,7 +378,7 @@ try:
         json.dump(all_bubbles, f, indent=2, ensure_ascii=False)
 
     ai_clean = bool(cfg.get("ai_clean", False))
-    dont_open_after_clean = bool(cfg.get("dont_Open_After_Clean", False))
+    dont_open_after_clean = bool(cfg.get("dont_Open_After_Clean", False))  # ← false = run, true = skip
 
     python_cleaner = r"C:\Users\abdoh\Downloads\testScript\python\clean_text_regions_from_config.py"
     jsx_script = r"C:\Users\abdoh\Downloads\testScript\scripts\script.jsx"
@@ -504,4 +405,5 @@ finally:
         time.sleep(2)
     os._exit(0)
 
-    #googe 2
+
+#يعمل 2

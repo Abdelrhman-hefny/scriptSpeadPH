@@ -1,46 +1,329 @@
+TL: N3m3 
+
 page 1
 
-"": Manager Wang, I just discovered a promising ability user, named Xu Jingming...
-
-"": The spoils he brought back alone are more than what a dozen small teams combined brought!
-
-"": Xu Jingming? I'll check his records.
-
-[]: Base Chief Manager Wang Chuang
+ 
 
 page 2
-"": Manager Zhao, that Xu Jingming you mentioned is very important to me. If he comes again, notify me immediately.
 
-"": ...Understood.
+"": You don't mean that bag of bones over there that looks like he’s on the verge of death, do you?
 
-(): This Xu Jingming actually made Old Wang so excited.
+ST: Huh... 
 
-(): He must be a big deal. It's good I didn't slight him!
+“”: He was perfectly fine just a moment ago…
 
-"": I didn't expect another disciple of Yang Zhentian to arrive at my base.
+"": Still, he properly participated in all the training exercises.
 
-"": He's Peak Tier 2, and his talent is even stronger than Liu Ming's. He's practically a monster; we absolutely cannot offend him.
+"": Even though I told him it would be tough to keep up with our training regimen…
 
-(): The space rings sold here cost over ten million, and their capacity is only the size of a suitcase. So expensive!
+//: he followed along with a fire in his eyes.
 
-(): But space rings are truly convenient. I really want to buy one!
+"": At this rate, he'll become an incredible swordsman in a few years time.
 
-(): I wonder how expensive a space ring capable of holding a long spear would be...
+"": I see. That's good.
+
+"": !! Yes! You can look forward to it!
+
+"": But, why don't you save that praise for him instead of me?
+
+"": …Pardon?
+
+"": What good does it do me to hear it?
+
+ST: It's not like he'd be happy if I praised him anyway.
+
+"": Uh, for some reason, I felt like I had to report it to you, my Lady...
+
+"": More importantly, what was it that you wanted to ask…?
+
+"": Oh, right.
+
+ST: I almost forgot.
+
+"": It's about the dark mages,
+
+//: where can I go to find them?
+
+"": What? Why so suddenly…
+
+"": Don't tell me…
 
 page 3
 
-"": Ding-ling-ling~ Ding-ling-ling~
-//: Ding-ling-ling~
+"": You're not thinking of taking them on yourself, are you?
 
-"": Brother Ming, it's been a while since we talked. When are you coming back to school?
+"": What, did you think I wanted to meet them to become friends?
 
-"": In about half a month, I guess. Why, is something up?
+"": Of course I'm going to go and crush...
 
-"": He's your target. Break his arms and legs, then bring him to me.
+“”: You can't!!!!!
 
-"": Got it.
+“”: I know you managed to survive last time by sheer luck, but
 
-"": During the month you were gone, there's a new freshman who enrolled at school, and he's incredibly arrogant...
+//: you never know what might happen next time!
 
-"": Hm?
+"": ...What? Luck?
+
+“”: Did he say luck?
+
+“”: Luuuuuuck?
+
+“”: Alright then. Let's see you experience firsthand whether it was luck or skill.
+
+“”: Let's find out which is stronger, your luck or my skill.
+
+"": N-No, Lady Daphne, wait a moment...! Please calm down…
+
+"": You can't do this…!!
+
+"": I can!!!!
+
+"": D-D-Daphne...!!
+
+"": Y-You're still not well, why are you o-outside!
+
 page 4
+
+"": Huh, Vipera?
+
+"": Why are you...
+
+"": What? Why are you here?!
+
+"": ???
+
+"": Th-That's not the problem!
+
+"": What?
+
+"": D-Daphne. Y-You should be more w-worried about your b-body.
+
+//: It hasn't even been that long since you c-collapsed...!
+
+"": Hello? Can't you see me?
+
+ST: It's been two years since we last saw each other, you know?
+
+"": I-I brought some potions…
+
+"": Here!
+
+"": D-Do you want to try it?
+
+page 5
+
+ST: A potion?
+
+"": Did you learn this from that Taty fellow?
+
+"": N-No, I've always been able to m-make them on my o-own.
+
+"": Let's see...
+
+(): It's clean, with no impurities, and the purity is quite high…
+
+//: As expected, you truly have talent.
+
+ST: My eye for talent never misses.
+
+(): If I train her properly for a few years, she'll become quite useful.
+
+"": ...! She's smiling. I guess she likes the potion!
+
+(): Honestly, I thought she'd call it trash and throw it away again...
+
+"": As I thought...
+
+OT: Daphne has definitely changed.
+
+ST: By the way, what effect does this have?
+
+[]: I can't forget how Daphne bullied me all this time, but
+
+[]: the fact that a famously prideful elf took me as his disciple
+
+//: must have been because Daphne ordered him to.
+
+"": You said your name was Vipera?
+
+//: From today onwards, I will teach you!
+
+ST: An elf?
+
+"": Wh-Who…
+
+page 6
+
+"": I really despise humans!
+
+//: But you're different!
+
+"": Why? Because if I raise you well, I can escape!
+
+"": So let's do our best, okay? Hm? Hm?
+
+(): He seemed a little strange, but well...
+
+[]: Perhaps sending that elf was Daphne's way of apologizing?
+
+[]: If so, as her older sister, I should forgive her, right...?
+
+(): Vipera, my lovely daughter.
+
+(): Please take good care of Daphne...
+
+OT: And Mom asked me to, so...
+
+"": Here! Take this too!
+
+"": Huh?
+
+ 
+
+"": It has Yukos leaves, Lisa magic mushrooms, and Modok roots. It restores stamina and recovers some mana. This one is a Telere leaf decoction, effective in healing wounds. Oh! And this one is made from ground-up Madness Fangs, it's great for stopping bleeding, so if you ever get seriously hurt, you have to drink this one before a recovery potion because taking them at the same time lessens the effect, but it stops the bleeding, so it must come first…
+
+ST: Mumble
+
+ST: Mumble
+
+page 7
+
+"": And…
+
+"": S-Sorry, I got too carried away...!!
+
+//: I-If you don't like them, should I just take them back?
+
+"": No, this is great. I'll make good use of them. 
+
+//: Thank you.
+
+"": …!
+
+"": …Yeah!
+
+"": What a relie...
+
+"": Wait, wait!!! I don't understand what's going on here?!?
+
+ST: And stop ignoring me!
+
+ST: This is…
+
+ST: Waaah…
+
+"": Vipera, you! You wouldn't budge at all when I yelled at you to come out of your room.
+
+//: What's with this all of a sudden? And since when did you get so close to Daphne?!
+
+ST: Ah
+
+"": C-Close? Do we look close…?
+
+"": Is this really the time to be blushing about that?
+
+"": B-But Daphne granted my r-request.
+
+//: I'm g-grateful. And I feel s-sorry, but she also gave me a gift...
+
+"": A gift?
+
+"": Yeah...! S-Something absolutely priceless!
+
+(): …
+
+ST: I did that?
+
+"": S-So I'm going to act like a proper older sister too!
+
+"": …
+
+page 8
+
+(): The kid who was locked up in her room for two whole years because Daphne bullied her…
+
+ST: Th-Then, is it o-okay if I finish explaining?
+
+ST: Make it short.
+
+(): Did Vipera also sense something from Daphne's recent change in behavior?
+
+(): This feels… kind of like a normal family…
+
+ST: Hmph!
+
+"": Well, anyway, what's with this potion?
+
+//: Since when did you get into alchemy?
+
+"": Is this stuff even legit?
+
+"": O-Of course it is!
+
+"": It should be very effective! B-Because I tested it with my own body!
+
+"": What did you just say?
+
+"": Like cutting myself and pouring the potion on the wound,
+
+ST: This time with a knife…
+
+ST: Huuu!!!
+
+"": or drinking it after an incredibly hard workout,
+
+"": or drinking it in a state of exhaustion after using up all my mana…
+
+ST: Quick, before I pass out…
+
+"": Th-There was an e... effect?
+
+ST: Hehe
+
+page 9
+
+"": D-Did I do something wrong...?
+
+(): I knew she was crazy about alchemy, but I didn't think it was this bad…
+
+ST: The side effects of potions can be detrimental…
+
+"": Arius. Did the knights say they'll keep up this level of training?
+
+"": Huh...? Yeah, they said they're going to do this every day.
+
+"": Then they'll be collapsing from exhaustion every day, right?
+
+"": Yes? They'll be low on stamina, low on mana, and be injured as well…
+
+ 
+
+"": Vipera! From now on, use the knights for your experiments!
+
+//: You are forbidden from using your own body!
+
+"": That's right! Those guys are sturdy, so they’ll be useful!
+
+"": Huh? Yeah? I-I can do that…?
+
+“”: Aren't we in danger…?
+
+“”: We're dead either way…
+
+"": In any case, I'm glad you came back outside, Vipera.
+
+"": It's been a while since the three of us were together.
+
+"": Th-The three of us...!
+
+"": It would've been perfect if our older brother were here too. Right?
+
+"": Y-Yeah... but this is g-good too!
+
+"": That's right! This is great too!
+
+page 10
+
+(): This feels strange...
+
+OT: To be continued...

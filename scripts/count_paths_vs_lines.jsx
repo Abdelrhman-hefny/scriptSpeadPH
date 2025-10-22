@@ -11,7 +11,7 @@ app.bringToFront();
 (function () {
   // -------- Config --------
   var BASE_DIR = "C:/Users/abdoh/Downloads/testScript";
-  var TMP_DIR  = BASE_DIR + "/reports";
+  var TMP_DIR  = BASE_DIR + "/logs/reports";
   var KEEP_OPEN = true; // true = leave CMD open (cmd /k). false = close after printing.
 
   // -------- Utils --------
@@ -34,6 +34,8 @@ app.bringToFront();
          .replace(/\|/g,"^|").replace(/</g,"^<").replace(/>/g,"^>");
     return "echo " + s;
   }
+
+  // ----- تعديل مهم هنا: إغلاق أي نافذة قديمة بنفس العنوان قبل الطباعة -----
   function runInCmd(lines){
     ensureFolder(TMP_DIR);
     var bat = new File(TMP_DIR + "/__show_report.cmd");
@@ -41,15 +43,37 @@ app.bringToFront();
     bat.encoding = "UTF8";
     if(!bat.open("w")) return;
 
+    var WIN_TITLE = "Paths vs Lines Report";
+
     bat.writeln("@echo off");
     bat.writeln("setlocal EnableExtensions");
+    bat.writeln("set \"WIN_TITLE=" + WIN_TITLE + "\"");
+
+    // جرّب إغلاق أي CMD بعنوان النافذة دي (لو مفتوح من تشغيل سابق)
+    bat.writeln("rem --- close previous report window if exists ---");
+    bat.writeln("taskkill /FI \"WINDOWTITLE eq %WIN_TITLE%\" /F >nul 2>nul");
+    // بديل عبر PowerShell لو taskkill ما جاب نتيجة
+    bat.writeln("powershell -NoProfile -Command \"Get-Process cmd ^| Where-Object { $_.MainWindowTitle -eq '%WIN_TITLE%' } ^| Stop-Process -Force\" 2>nul");
+
+    // عيّن عنوان النافذة الحالية لضمان جلسة وحيدة
+    bat.writeln("title %WIN_TITLE%");
+
+    // اطبع السطور
     for (var i=0; i<lines.length; i++) bat.writeln(batchEchoEscape(lines[i]));
     bat.writeln("echo.");
-    if (KEEP_OPEN) bat.writeln("cmd /d /k");
+
+    if (KEEP_OPEN) {
+      bat.writeln("cmd /d /k");
+    } else {
+      bat.writeln("endlocal");
+      bat.writeln("exit /b");
+    }
     bat.close();
 
     try { bat.execute(); } catch(e) {}
   }
+  // ----- نهاية التعديل -----
+
   function getPageNumberFromDocName(name){
     try{ var m=String(name).match(/^(\d+)/); return m?toInt(m[1]):null; }
     catch(e){ return null; }
@@ -179,7 +203,6 @@ app.bringToFront();
     var lineCount = (pagesMap[pn] ? pagesMap[pn].length : 0);
 
     if(docsByPage[pn] && docsByPage[pn].length){
-      // If more than one doc has the same page number, sum paths and warn
       var docsArr = docsByPage[pn];
       var totalPaths = 0;
       for(var j=0;j<docsArr.length;j++){
@@ -194,7 +217,6 @@ app.bringToFront();
         out.push("page " + pn + " - " + totalPaths + " paths (from " + docsArr.length + " docs) / " + lineCount + " lines - " + status);
       }
     } else {
-      // Page exists in text but no open doc with that page number
       mismatches++;
       out.push("page " + pn + " - [NO OPEN DOC] / " + lineCount + " lines - MISMATCH (-" + lineCount + ")");
     }

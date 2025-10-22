@@ -64,13 +64,23 @@ okBtn.onClick = function () {
   saveLastValue(newSize);
 
   var totalChanged = 0;
+  
+  // قيمة الإزاحة لتعويض ارتفاع صندوق النص
+  var verticalOffset = 40; 
 
   function processLayers(layers) {
     for (var i = 0; i < layers.length; i++) {
       var layer = layers[i];
       if (layer.typename === "ArtLayer" && layer.kind == LayerKind.TEXT) {
         try {
+          // 1. تغيير حجم الخط
           layer.textItem.size = newSize;
+
+          // 2. تعديل الموقع لتعويض التغير في الحجم (التحريك لأسفل)
+          var currentPosition = layer.textItem.position;
+          var newY = currentPosition[1] + verticalOffset; // إضافة 40 بكسل إلى الإحداثي Y
+          layer.textItem.position = [currentPosition[0], newY]; // تطبيق الموقع الجديد
+          
           totalChanged++;
         } catch (e) {}
       } else if (layer.typename === "LayerSet") {
